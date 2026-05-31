@@ -37,16 +37,16 @@ class CeshiController extends PayController
         //     // 金额不合法，提示错误
         //     $this->error('不合法的支付金额！');
         // }
-         $existOrder = M('Order')->where([
-            'pay_tongdao' => 'ceshi',
-            'pay_amount'  => I('request.pay_amount'),
-            'pay_status'  => ['in', '0'],
-            'isdel'       => 0,
-        ])->find();
-         
-        if ($existOrder) {
+        $requestMoney = floatval(I('request.pay_amount'));
+        if ($requestMoney <= 0) {
+            $this->error('金额不正确');
+        }
+
+        $merchant = $this->pickFreeMerchantAccount($requestMoney);
+        if (empty($merchant)) {
             $this->error('通道繁忙');
         }
+
         $orderid = I("request.pay_orderid");
         $body = I('request.pay_productname');
         $notifyurl = $this->_site . 'Pay_Huazf_notifyurl.html'; //异步通知
@@ -70,23 +70,10 @@ class CeshiController extends PayController
             $this->error('金额不正确');
         }
 
-        // 同金额未完成订单拦截（按 pay_order 表字段）
-       
-
-        $channelNo = $this->getChannelNoByMoney($money);
-        if (!$channelNo) {
-            $this->error('未找到对应通道');
-        }
-
-        // 从二维码池读取当前有效二维码
-        $qrcodeRow = M('qrcode_pool')->where([
-            'channel_no'  => $channelNo,
-            'money'       => $money,
-            'status'      => 1,
-            'expire_time' => ['gt', time()],
-        ])->order('id desc')->find();
-     
-        if (empty($qrcodeRow)) {
+        $this->reserveMerchantForOrder($merchant['id'], $money, $outTradeId);
+        $qrcodeRow = $this->fetchMerchantQrcode($merchant, $money, $outTradeId);
+        if (empty($qrcodeRow) || empty($qrcodeRow['qrcode'])) {
+            $this->releaseMerchantByMoney($merchant['id'], $money);
             $this->error('二维码不存在，请稍后再试');
         }
 
@@ -158,18 +145,19 @@ public function showQrcode()
         }
 
         if (empty($qrcode)) {
-            $qrcodeRow = M('qrcode_pool')->where([
-                'money'       => $money,
-                'status'      => 1,
-                'expire_time' => ['gt', time()],
-            ])->order('id desc')->find();
+            $merchant = $this->pickFreeMerchantAccount($money);
+            if (empty($merchant)) {
+                $this->error('通道繁忙');
+            }
 
-            if (empty($qrcodeRow)) {
+            $qrcodeRow = $this->fetchMerchantQrcode($merchant, $money, $orderid);
+            if (empty($qrcodeRow) || empty($qrcodeRow['qrcode'])) {
+                $this->releaseMerchantByMoney($merchant['id'], $money);
                 $this->error('二维码不存在，请稍后再试');
             }
 
-            $qrcode = $qrcodeRow['qrcode_url'];
-            $expire = intval($qrcodeRow['expire_time']);
+            $qrcode = $qrcodeRow['qrcode'];
+            $expire = time() + 60;
         }
 
         $this->assign('data', [
@@ -335,57 +323,13 @@ public function showQrcode()
                 continue;
             }
 
-            $result = $this->fetchDeviceDataByAccount($account, $money);
-            if (!is_array($result) || !isset($result['code']) || intval($result['code']) !== 0) {
+            $result = $this->fetchMerchantQrcode($account, $money, 'pool_' . $money . '_' . time());
+            if (empty($result) || empty($result['qrcode'])) {
                 $skip++;
                 continue;
             }
 
-            $data = isset($result['rows']) ? $result['rows'] : array();
-            if (empty($data) || !is_array($data)) {
-                $skip++;
-                continue;
-            }
-
-            $qrcode = '';
-            foreach ($data as $item) {
-                if (!empty($item['scanCode'])) {
-                    $qrcode = $item['scanCode'];
-                    break;
-                }
-            }
-            if ($qrcode === '') {
-                $skip++;
-                continue;
-            }
-
-            $now = time();
-            $expire = $now + 60;
-            $row = array(
-                'channel_no'  => intval($account['id']),
-                'money'       => $money,
-                'account_id'  => intval($account['id']),
-                'qrcode_url'  => $qrcode,
-                'qrcode_data' => json_encode($result, JSON_UNESCAPED_UNICODE),
-                'status'      => 1,
-                'orderid'     => '',
-                'create_time' => $now,
-                'expire_time' => $expire,
-                'update_time' => $now,
-            );
-
-            $exist = M('qrcode_pool')->where(array(
-                'money'      => $money,
-                'account_id' => intval($account['id']),
-            ))->find();
-
-            if ($exist) {
-                M('qrcode_pool')->where(array('id' => $exist['id']))->save($row);
-            } else {
-                M('qrcode_pool')->add($row);
-            }
-
-            $this->markMerchantBusy($account['id'], $money, $qrcode);
+            $this->markMerchantBusy($account['id'], $money, $result['qrcode']);
             $success++;
         }
 
@@ -396,7 +340,7 @@ public function showQrcode()
     /**
      * 金额 -> 通道号
      */
-    private function parseAmountPool($value)
+    protected function parseAmountPool($value)
     {
         $value = trim((string)$value);
         if ($value === '') {
@@ -412,6 +356,11 @@ public function showQrcode()
             $pool[] = (string)intval(round(floatval($part)));
         }
         return array_values(array_unique($pool));
+    }
+
+    protected function getChannelNoByMoney($money)
+    {
+        return intval($money);
     }
 
     private function pickFreeMerchantAccount($money)
@@ -472,6 +421,18 @@ public function showQrcode()
         return floatval($row['paying_money']) <= 0;
     }
 
+    private function reserveMerchantForOrder($accountId, $money, $orderId)
+    {
+        return M('channel_account')->where(array(
+            'id' => intval($accountId),
+            'paying_money' => array('elt', 0),
+        ))->save(array(
+            'paying_money' => $money,
+            'last_paying_time' => time(),
+            'current_orderid' => $orderId,
+        ));
+    }
+
     private function markMerchantBusy($accountId, $money, $qrcode = '')
     {
         return M('channel_account')->where(array(
@@ -510,7 +471,7 @@ public function showQrcode()
         ));
     }
 
-    private function fetchDeviceDataByAccount($account, $money)
+    private function fetchMerchantQrcode($account, $money, $orderId)
     {
         $cookieFile = RUNTIME_PATH . 'jiuaigou_cookie_' . intval($account['id']) . '.txt';
         if (!file_exists($cookieFile) || filesize($cookieFile) == 0) {
@@ -555,7 +516,28 @@ public function showQrcode()
         $response = curl_exec($ch);
         curl_close($ch);
 
-        return json_decode($response, true);
+        $result = json_decode($response, true);
+        if (!is_array($result) || empty($result['rows'])) {
+            return array();
+        }
+
+        $qrcode = '';
+        foreach ($result['rows'] as $item) {
+            if (!empty($item['scanCode'])) {
+                $qrcode = $item['scanCode'];
+                break;
+            }
+        }
+
+        if ($qrcode === '') {
+            return array();
+        }
+
+        return array(
+            'qrcode' => $qrcode,
+            'expire' => time() + 60,
+            'raw' => $result,
+        );
     }
 
     /**
