@@ -42,11 +42,6 @@ class CeshiController extends PayController
             $this->error('金额不正确');
         }
 
-        $merchant = $this->pickFreeMerchantAccount($requestMoney);
-        if (empty($merchant)) {
-            $this->error('通道繁忙');
-        }
-
         $orderid = I("request.pay_orderid");
         $body = I('request.pay_productname');
         $notifyurl = $this->_site . 'Pay_Huazf_notifyurl.html'; //异步通知
@@ -68,6 +63,11 @@ class CeshiController extends PayController
         $outTradeId = $return['orderid'];
         if ($money <= 0) {
             $this->error('金额不正确');
+        }
+
+        $merchant = $this->pickFreeMerchantAccount($money);
+        if (empty($merchant)) {
+            $this->error('通道繁忙');
         }
 
         $this->reserveMerchantForOrder($merchant['id'], $money, $outTradeId);
@@ -131,6 +131,15 @@ public function showQrcode()
             $this->error('订单不存在');
         }
 
+        $merchantId = intval($orderInfo['account_id']);
+        if (!$merchantId) {
+            $this->error('商户信息缺失');
+        }
+        $merchant = M('channel_account')->where(['id' => $merchantId])->find();
+        if (empty($merchant)) {
+            $this->error('商户不存在');
+        }
+
         if (in_array(intval($orderInfo['pay_status']), [1, 2], true)) {
             $callbackurl = isset($orderInfo['pay_callbackurl']) ? $orderInfo['pay_callbackurl'] : '';
             if ($callbackurl) {
@@ -145,11 +154,6 @@ public function showQrcode()
         }
 
         if (empty($qrcode)) {
-            $merchant = $this->pickFreeMerchantAccount($money);
-            if (empty($merchant)) {
-                $this->error('通道繁忙');
-            }
-
             $qrcodeRow = $this->fetchMerchantQrcode($merchant, $money, $orderid);
             if (empty($qrcodeRow) || empty($qrcodeRow['qrcode'])) {
                 $this->releaseMerchantByMoney($merchant['id'], $money);
@@ -218,12 +222,16 @@ public function showQrcode()
             $str = '交易成功！订单号：' . $orderid;
             file_put_contents('success.txt', $str . "\n", FILE_APPEND);
 
+            $orderInfo = M('Order')->where(['pay_orderid' => $orderid])->find();
             M('Order')->where(['pay_orderid' => $orderid])->save([
                 'pay_status'      => 2,
                 'pay_successdate' => time(),
                 'lock_status'     => 0,
                 'notify_msg'      => '支付成功',
             ]);
+            if (!empty($orderInfo)) {
+                $this->releaseMerchantByMoney(intval($orderInfo['account_id']), floatval($orderInfo['pay_amount']));
+            }
 
             exit('OK');
         }
@@ -262,6 +270,7 @@ public function showQrcode()
                 'lock_status' => 0,
                 'notify_msg'  => '超时未支付自动取消',
             ]);
+            $this->releaseMerchantByMoney(intval($v['account_id']), floatval($v['pay_amount']));
         }
 
         echo 'done:' . count($lists);
@@ -529,7 +538,14 @@ public function showQrcode()
         curl_close($ch);
 
         $result = json_decode($response, true);
-        if (!is_array($result) || empty($result['rows'])) {
+        if (!is_array($result) || !isset($result['code']) || intval($result['code']) !== 0 || empty($result['rows'])) {
+            M('channel_account')->where(['id' => intval($account['id'])])->save(array(
+                'cookie_status' => 0,
+                'paying_money' => 0,
+                'last_paying_time' => time(),
+                'current_orderid' => '',
+                'current_qrcode_url' => '',
+            ));
             return array();
         }
 
@@ -542,6 +558,13 @@ public function showQrcode()
         }
 
         if ($qrcode === '') {
+            M('channel_account')->where(['id' => intval($account['id'])])->save(array(
+                'cookie_status' => 0,
+                'paying_money' => 0,
+                'last_paying_time' => time(),
+                'current_orderid' => '',
+                'current_qrcode_url' => '',
+            ));
             return array();
         }
 
@@ -550,6 +573,11 @@ public function showQrcode()
             'expire' => time() + 60,
             'raw' => $result,
         );
+    }
+
+    private function getMerchantCookieFile($account)
+    {
+        return RUNTIME_PATH . 'jiuaigou_cookie_' . intval($account['id']) . '.txt';
     }
 
     private function fetchDeviceData($cookieFile)
