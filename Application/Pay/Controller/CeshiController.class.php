@@ -473,7 +473,7 @@ public function showQrcode()
 
     private function fetchMerchantQrcode($account, $money, $orderId)
     {
-        $cookieFile = RUNTIME_PATH . 'jiuaigou_cookie_' . intval($account['id']) . '.txt';
+        $cookieFile = $this->getMerchantCookieFile($account);
         if (!file_exists($cookieFile) || filesize($cookieFile) == 0) {
             $cookie = trim((string)$account['cookie']);
             if ($cookie !== '') {
@@ -481,7 +481,7 @@ public function showQrcode()
             }
         }
 
-        $this->fetchDeviceData($account['id']);
+        $this->fetchDeviceData($cookieFile);
 
         // 再拉列表，取最新的二维码
         $listUrl = 'https://jiuaigou.net/bs/biz/cargo/list';
@@ -490,7 +490,7 @@ public function showQrcode()
             'pageNum' => 1,
             'orderByColumn' => 'number',
             'isAsc' => 'asc',
-            'deviceId' => intval($account['id']),
+            'deviceId' => 4351,
             'useStatus' => '',
             'status' => ''
         ));
@@ -500,7 +500,7 @@ public function showQrcode()
             'Connection: keep-alive',
             'Content-Type: application/x-www-form-urlencoded',
             'Origin: https://jiuaigou.net',
-            'Referer: https://jiuaigou.net/bs/biz/cargo?deviceId=' . intval($account['id']) . '&time=' . (time() * 1000),
+            'Referer: https://jiuaigou.net/bs/biz/cargo?deviceId=4351&time=' . (time() * 1000),
             'Sec-Fetch-Dest: empty',
             'Sec-Fetch-Mode: cors',
             'Sec-Fetch-Site: same-origin',
@@ -552,9 +552,8 @@ public function showQrcode()
         );
     }
 
-    private function fetchDeviceData($deviceCode)
+    private function fetchDeviceData($cookieFile)
     {
-        $cookieFile = RUNTIME_PATH . 'jiuaigou_cookie.txt';
         $targetUrl = 'https://jiuaigou.net/bs/biz/cargo/batch/create/scanCode';
         $postData = array(
             'ids' => '29046,30608,30609,30610,30611'
