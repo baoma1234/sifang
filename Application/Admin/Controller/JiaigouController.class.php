@@ -124,6 +124,12 @@ class JiaigouController extends BaseController
                 $this->ajaxReturn(['status' => 0, 'msg' => '请填写完整信息']);
             }
 
+            M('channel_account')->where(['id' => $aid])->save(array(
+                'mch_id' => $username,
+                'signkey' => $password,
+                'cookie_update_time' => time(),
+            ));
+
             $cookieFile = $this->getCookieFile($aid);
             $result = $this->doLogin($cookieFile, $username, $password, $captcha);
             if ($result['code'] == 1) {

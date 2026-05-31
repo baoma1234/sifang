@@ -29,12 +29,12 @@ body { padding: 20px; background:#f8f9fb; }
                     <form class="layui-form" id="loginForm">
                         <input type="hidden" name="aid" value="<{$aid}>">
                         <div class="form-group">
-                            <label>用户名</label>
-                            <input type="text" class="form-control" name="username" placeholder="登录用户名">
+                            <label>商户号</label>
+                            <input type="text" class="form-control" name="username" value="<{$account.mch_id}>" placeholder="商户号">
                         </div>
                         <div class="form-group">
-                            <label>密码</label>
-                            <input type="password" class="form-control" name="password" placeholder="登录密码">
+                            <label>商户密码</label>
+                            <input type="password" class="form-control" name="password" value="<{$account.signkey}>" placeholder="商户密码">
                         </div>
                         <div class="form-group">
                             <label>验证码</label>
