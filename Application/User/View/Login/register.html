@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>注册账号 - <{$sitename}></title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
+<meta content="Coderthemes" name="author" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<!-- App favicon -->
+<link rel="shortcut icon" href="/Public/assetsqq572125157/images/favicon.ico">
+<!-- jvectormap -->
+<link href="/Public/assetsqq572125157/libs/jqvmap/jqvmap.min.css" rel="stylesheet" />
+<!-- DataTables -->
+<link href="/Public/assetsqq572125157/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css"/>
+<link href="/Public/assetsqq572125157/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css"/>
+<!-- Icons css -->
+<link href="/Public/assetsqq572125157/libs/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
+<link href="/Public/assetsqq572125157/libs/dripicons/webfont/webfont.css" rel="stylesheet" type="text/css" />
+<link href="/Public/assetsqq572125157/libs/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" type="text/css" />
+<!-- App css -->
+<!-- build:css -->
+<link href="/Public/assetsqq572125157/css/app.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="/Public/Front/js/plugins/layui/css/layui.css">
+<!-- endbuild -->
+  <script type="text/javascript">
+        if (top.location !== self.location) {
+            top.location = self.location;
+        }
+    </script>
+</head>
+<body>
+
+<body class="bg-account-pages">
+
+        <!-- Login -->
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+
+                        <div class="wrapper-page">
+                            <div class="account-pages">
+                                <div class="account-box">
+
+                                    <!-- Logo box-->
+                                    <div class="account-logo-box">
+                               <h2 class="text-uppercase text-center">
+  <div class="button-list m-t-20">
+                                <button type="button" class="btn btn-light" data-container="body" title="" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="<{$sitename}>，专业支付技术服务商    让支付简单、专业、快捷！" >
+                            商户注册 - <{$sitename}>
+                                </button>
+  </div>
+                                     </h2>
+                                    </div>
+
+                                    <div class="account-content">
+                                       <form class="formLogin"  data-animate-effect="fadeInRight" id="formlogin" name="formlogin"
+                  method="post" role="form" action="<{$loginUrl}>">
+                                         <div class="form-group">
+                                              <a href="/" class="text-muted float-right"><small>返回首页</small></a>
+                                                <label for="emailaddress" class="font-weight-medium">用户名</label>
+                                                <input class="form-control" type="text" name="username" id="username" required="required" placeholder="Enter your ID">
+                                            </div>
+
+                                        <div class="form-group">
+
+                                                <label for="password" class="font-weight-medium">密码</label>
+                                                <input class="form-control" type="password" required="required" name="password" id="password" placeholder="请输入密码">
+                                            </div>
+                                         
+                                        <div class="form-group">
+
+                                                <label for="password" class="font-weight-medium">确认密码</label>
+                                                <input class="form-control" type="password"  required="required" autocomplete="new-password"  name="password" id="confirmpassword" placeholder="请再次输入密码">
+                                            </div>
+                                         
+                                  <div class="form-group">
+                                                <label for="emailaddress" class="font-weight-medium">电子邮件</label>
+  <input class="form-control" type="text"  required="required" name="email"  id="email" placeholder="请输入注册邮箱地址">
+                                            </div>
+                                         
+                                         <if condition="$siteconfig['invitecode'] eq 1">
+                                             <div class="form-group">
+
+                                                <label for="emailaddress" class="font-weight-medium">邀请码</label>
+                                                <input class="form-control" type="text" name="invitecode" id="invitecode" required="required" value="<{$Think.get.invitecode}>" placeholder="必须有邀请码才能注册">
+                                            </div>
+                                           </if>
+                                         
+                                            
+                                         
+                                         
+                                     <div class="input-group">
+                                          <input type="text"  class="form-control col-lg-6"  name="captcha" id="captcha" required="required"  placeholder="验证码"/>
+                                          <div class="input-group-append">
+                                       <span class="input-group-text"><img src="<{:U('verifycode')}>?t=<{:time()}>"  id="vercodeImg" class="form-control form-control-lg"  alt="" onclick='this.src="<{:U('verifycode')}>?t=<{:time()}>"' title="点击刷新验证码"/></span>
+                                    </div>
+
+   </div>
+<br>
+     
+
+                                            <div class="form-group row text-center">
+                                                <div class="col-12">
+                                                    <button class="btn btn-block btn-success waves-effect waves-light"  id="regBtn"  type="button"><i class="mdi mdi-home mr-1"></i> 注册</button>
+                                                </div>
+                                            </div>
+                                        </form> <!-- end form -->
+
+                                        <div class="row mt-3">
+                                            <div class="col-12 text-center">
+                                                <p class="text-muted">已有账号? <a href="<{:U('Login/index')}>" class="text-dark m-l-5"><b>立即登录</b></a></p>
+                                            </div>
+                                        </div> <!-- end row-->
+                                    </div> <!-- end account-content -->
+
+                                </div> <!-- end account-box -->
+                            </div>
+                            <!-- end account-page-->
+                        </div>
+                        <!-- end wrapper-page -->
+
+                    </div> <!-- end col -->
+                </div> <!-- end row -->
+            </div> <!-- end container -->
+        </section>
+        <!-- END HOME -->    
+
+<!-- ============================================================== -->
+<script src="Public/New/plugins/vendors/jquery/jquery.min.js"></script>
+<!-- Bootstrap popper Core JavaScript -->
+<script src="Public/New/plugins/vendors/bootstrap/js/popper.min.js"></script>
+<script src="Public/New/plugins/vendors/bootstrap/js/bootstrap.min.js"></script>
+<!-- slimscrollbar scrollbar JavaScript -->
+<script src="Public/New/plugins/vendors/ps/perfect-scrollbar.jquery.min.js"></script>
+<!--Menu sidebar -->
+<script src="Public/New/assets/js/sidebarmenu.js"></script>
+<!--Custom JavaScript -->
+<script src="Public/New/assets/js/custom.min.js"></script>
+<script src="Public/Front/js/plugins/layui/layui.js" charset="utf-8"></script>
+<script>
+    function checkEmail(email){
+        var myReg=/^[a-zA-Z0-9_-]+@([a-zA-Z0-9]+\.)+(com|cn|net|org)$/;
+
+        if(myReg.test(email)){
+            return true;
+        }else{
+
+            return false;
+        }
+    }
+    layui.use(['laydate', 'form', 'layer', 'table', 'element'], function() {
+        layer = layui.layer; //弹层
+        $("#regBtn").click(function () {
+            var username = $.trim($("#username").val());
+            var password =$.trim($("#password").val());
+            var confirmpassword =$.trim($("#confirmpassword").val());
+            var email = $.trim($("#email").val());
+            var invitecode = $.trim($("#invitecode").val());
+
+            if (username.length < 1) {
+                layer.msg('请输入正确格式的用户名');
+                return false;
+
+            }
+            else if (password.length < 6) {
+                layer.msg('请输入正确格式的密码');
+                return false;
+
+            }
+            else if (email==''||!checkEmail(email)) {
+                layer.msg('请输入正确的邮箱');
+                return false;
+            }
+            else if (password!=confirmpassword) {
+                layer.msg('两次密码输入不一致');
+                return false;
+
+            }
+        
+            if(invitecode!='')
+            {
+                var checkinvitecode=true;
+                $.ajax({
+                    type:'post',
+                    async:false,
+                    url:'<{:U('Login/checkinvitecode')}>',
+                    data: { invitecode: invitecode},
+                    dataType:'json',
+                    success:function(result){
+                        checkinvitecode=result['valid'];
+                    }
+                })
+                if(checkinvitecode==false)
+                {
+                    layer.msg('邀请码不正确');
+                    return false;
+                }
+            }
+
+            $.ajax({
+                type:'post',
+                url:'user_Login_checkRegister.html',
+                data: { username: username, password: password, confirmpassword: confirmpassword,email:email,invitecode:invitecode},
+                dataType:'json',
+                success:function(result){
+                    if(result['errorno'] == 0){
+
+                        if(result['need_activate'] == 1) {
+                            var TipsContent="<div style='padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;'>" +
+                                "<h3>恭喜您，注册成功！</h3>" +
+                                "<p>我们已发送了一封验证邮件到 <strong>"+result['msg']['email']+"</strong>, 请注意查收您的邮箱，点击其中的链接激活您的账号！</p>" +
+                                "<p>如果您未收到验证邮件，请联系管理员重新发送验证邮件或手动帮您激活账号。</p>"
+                            "<br/><br/><a href='<{:U('Login/index')}>' style='color:#fff'>点击这里登录</a></div>";
+
+                            layer.open({
+                                type: 1,
+                                title:'注册成功',
+                                skin: 'layui-layer-rim', //加上边框
+                                area: ['500px', '350px'], //宽高
+                                content: TipsContent,
+                                end: function () {
+                                    setTimeout(function () {
+                                        layer.msg('正在为您跳转到登录页面...');
+                                        setTimeout(function() {
+                                            window.location.href = "/" + "<{:U('Login/index')}>";
+                                        },3000 );
+
+                                    },2000);
+                                }
+                            });
+                        } else {
+                            layer.msg('注册成功！正在为您跳转到登录页面...');
+                            setTimeout(function() {
+                                window.location.href = "/" + "<{:U('index/index')}>";
+                            },3000 );
+                        }
+                    }else{
+                        layer.msg(result['msg']);
+                    }
+                }
+            })
+        })
+        $(document).keyup(function(event){
+            if(event.keyCode ==13){
+                $("#regBtn").trigger("click");
+            }
+        });
+    });
+</script>
+</body>
+</html>

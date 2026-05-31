@@ -1,0 +1,178 @@
+<?php
+//商户中心格式化金额 20190326 qq:572125157
+$blockedbalance= number_format("{$fans['blockedbalance']}",2,".","");   //冻结资金
+$balance= number_format("{$fans['balance']}",2,".","");  //账户余额
+?>
+<include file="Public/headerm"/>
+<div class="wrapper">
+            <div class="container-fluid">
+
+                <!-- Page title box -->
+                <div class="page-title-alt-bg"></div>
+                <div class="page-title-box">
+                    <ol class="breadcrumb float-right">
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">Greeva</a></li>
+                        <li class="breadcrumb-item active">Dashboard</li>
+                     
+                    </ol>
+                      <h4 class="page-title">仪表盘</h4> 
+                </div>
+             
+                <!-- End page title box -->
+
+                <div class="row">
+                    <div class="col-xl-4">
+                        <div class="card-box">     
+                            <h4 class="header-title">今日总入金：¥  <{$stat.today_income}></h4>
+                            <p class="text-muted">今日实付金额如下：</p>
+                            <div class="mb-3 mt-4">
+                                <div class="float-right d-none d-xl-block">
+                                    <img src="/Public/assetsqq572125157/images/cards/visa.png" alt="user-card" height="28" />
+                                    <img src="/Public/assetsqq572125157/images/cards/master.png" alt="user-card" height="28" />
+                                    <img src="/Public/assetsqq572125157/images/cards/american-express.png" alt="user-card" height="28" />
+                                </div>
+                                <h2 class="font-weight-light">¥  <{$stat.todayorderactualsum}></h2>
+                            </div>
+                            <div class="chartjs-chart dash-sales-chart">
+                                <canvas id="sales-chart"></canvas>
+                            </div>
+                        </div><!-- end card-box-->
+
+                        <div class="card-box widget-chart-one gradient-success bx-shadow-lg">
+                            <div class="float-left">
+                               <p class="text-white mb-0 mt-2">登录信息</p>
+							   <p class="text-white mb-0 mt-2">上次登录IP：<{$lastlogin.loginip}></p>
+                            </div>
+                            <div class="widget-chart-one-content text-right">
+                                
+                                <p class="text-white mb-0 mt-2">登录地点：<{$lastlogin.loginaddress}></p>
+								<p class="text-white mb-0 mt-2">登录时间：<{$lastlogin.logindatetime}></p>
+                            </div>
+                        </div> <!-- end card-box-->
+
+                    </div> <!-- end col -->
+
+                    <div class="col-xl-4">
+                        <div class="card-box">        
+                            <h4 class="header-title mb-3">账户信息</h4>
+                            <div class="row text-center">
+                                <div class="col-sm-4 mb-3">
+                                    <h3 class="font-weight-light"><?php echo $balance;?></h3>
+                                    <p class="text-muted text-overflow">账户余额</p>
+                                </div>
+                                <div class="col-sm-4 mb-3">
+                                    <h3 class="font-weight-light"><?php echo $blockedbalance;?></h3>
+                                    <p class="text-muted text-overflow">冻结资金</p>
+                                </div>
+                                <div class="col-sm-4 mb-3">
+                                    <h3 class="font-weight-light"><{$stat.complaints_deposit}></h3>
+                                    <p class="text-muted text-overflow">保证金</p>
+                                </div>
+                            </div>
+                            <div class="chartjs-chart high-performing-product">
+                                <canvas id="high-performing-product"></canvas>    
+                            </div>            
+                        </div> <!-- end card-box-->
+                    </div> <!-- end col -->
+
+                    <div class="col-xl-4">
+                        <div class="card-box">
+                            <h4 class="header-title mb-3">订单信息</h4>
+                            <div class="row text-center">
+                                <div class="col-4 mb-3">
+                                    <h3 class="font-weight-light"><{$stat.todayordercount}></h3>
+                                    <p class="text-muted text-overflow">今日订单数</p>
+                                </div>
+                                <div class="col-4 mb-3">
+                                    <h3 class="font-weight-light"><{$stat.todayorderpaidcount}></h3>
+                                    <p class="text-muted text-overflow">今日已付订单数</p>
+                                </div>
+								 <div class="col-4 mb-3">
+                                    <h3 class="font-weight-light"><{$stat.todayordernopaidcount}></h3>
+                                    <p class="text-muted text-overflow">今日未付订单</p>
+                                </div>
+                            </div>
+                            <div class="chartjs-chart conversion-chart">
+                                <canvas id="conversion-chart"></canvas>
+                            </div>
+                        </div>  <!-- end card-box-->
+                    </div> <!-- end col -->
+                </div>
+                <!-- end row -->
+
+<div class="row">
+                    <div class="col-12">
+                        <div class="card-box">
+                            <h4 class="header-title m-t-0">Help Tool</h4>
+                            <p class="text-muted m-b-25 font-13">对接资源</p>
+
+                            <div class="button-list m-t-20">
+
+                                <A href="/Uploads/api.pdf" target="_blank" type="button" class="btn btn-light" data-toggle="tooltip" data-placement="top" title="" data-original-title="点击阅读">在线阅读开发文档</A>
+
+                                <A href="/Uploads/demo.zip" target="_blank" type="button" class="btn btn-light" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="点击下载">下载开发文档DEMO</A>
+<A href="#custom-modal" class="btn btn-light" type="button" data-animation="flash" data-plugin="custommodal" data-overlaySpeed="100" data-overlayColor="#36404a">联系我们</A>
+
+
+                             
+                            </div>
+
+                        </div> <!-- end card-box -->
+                    </div> <!-- end col -->
+                </div>
+                <!-- end row -->
+
+                 <!-- Custom Modal -->
+        <div id="custom-modal" class="modal-demo">
+            <button type="button" class="close" onclick="Custombox.modal.close();">
+                <span>&times;</span><span class="sr-only">Close</span>
+            </button>
+            <h4 class="custom-modal-title"><i class="icon-emotsmile"></i>   联系我们</h4>
+            <div class="custom-modal-text">
+                <i class="mdi mdi-account-multiple-check"></i> 平台商户客服QQ:<BR><i class="mdi mdi-account-multiple-check"></i> 平台代理客服QQ:<BR><i class="mdi mdi-account-multiple-check"></i> 平台技术客服QQ:<BR><i class="mdi mdi-account-multiple-check"></i> 平台财务客服QQ:<BR><i class="mdi mdi-account-multiple-check"></i> 平台后勤客服QQ:
+             <br><br>本平台 提供多种第三方支付方式,稳定的系统支持,安心的认证系统.合作金融机构超过80家!随时随地快捷,安心支付!
+        </div>
+
+            </div> <!-- end container -->
+        </div>     </div>
+        <!-- end wrapper -->
+
+
+<include file="Public/footer"/>
+<script src="/Public/assetsqq572125157/libs/custombox/custombox.min.js"></script>
+ <script>
+    layui.use(['form','table',  'laydate', 'layer'], function () {
+        var form = layui.form
+            ,table = layui.table
+            , layer = layui.layer
+            , laydate = layui.laydate;
+    });
+
+ function m_admin_show(title,url,w,h){
+    if (title == null || title == '') {
+        title=false;
+    };
+    if (url == null || url == '') {
+        url="404.html";
+    };
+    if (w == null || w == '') {
+        w=($(window).width());
+    };
+    if (h == null || h == '') {
+        h=($(window).height());
+    };
+    layer.open({
+        type: 2,
+        area: [w+'px', h +'px'],
+        fix: true, //不固定 
+        shadeClose: true,
+        shade:0.4,
+        title: title,
+        content: url
+    });
+}
+
+  </script>
+
+    </body>
+</html>

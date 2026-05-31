@@ -1,0 +1,83 @@
+<include file="Public/header1"/>
+<div class="box-body">
+<div class="row">
+  <div class="col-sm-12">
+
+    <form class="layui-form"  id="profile">
+      <input type="hidden" name="userid" value="<{$uid}>">
+      
+        <volist name="list" id="vo" key="key1">
+          
+          <div class="layui-form-item">
+            <span>【<{$key}>】：</span>
+              
+            <volist name="vo" id="vo1" key="key1">
+            <div class="layui-input-block">
+              <input type="checkbox" name="account[<{$vo1.id}>]" title="<{$vo1.title}>" <if condition="$vo1['checked']">checked</if> value="<{$vo1.id}>">
+              <div class="layui-unselect layui-form-checkbox">
+                <span><{$vo1.title}>(<{$vo1.mch_id}>)</span>
+                <i class="layui-icon layui-icon-ok"></i>
+              </div>
+            </div>
+            </volist>
+
+          </div>
+       </volist>
+              
+        <div class="layui-form-item">
+         <span>是否开启指定：</span>
+          <div class="layui-input-block">
+            <input type="radio" name="status" lay-filter="changeRule" <if condition="$status eq 1">checked</if> value="1" title="是" checked="">
+            <input type="radio" name="status" lay-filter="changeRule" <if condition="!$status">checked</if> value="0" title="否">
+          </div>
+        </div>
+          
+      <div class="layui-form-item">
+        <div class="layui-input-block">
+          <button class="layui-btn" lay-submit="submit"  id="save"   lay-filter="save"><i class="fa fa-check-square-o"></i> 提交保存</button>
+        </div>
+      </div>
+          
+    </form>
+    </div>
+  </div>
+  <include file="Public/foot"/>
+<script>
+    var polling = "<{$polling}>";
+    var id = "<{$id}>";
+    var pid = "<{$pid}>";
+    layui.use(['layer', 'form','laydate'], function(){
+        var form = layui.form
+            ,laydate = layui.laydate
+            ,layer = layui.layer;
+
+
+     $('#save').click(function(){
+            $.ajax({
+              'url':"<{:U('Admin/User/saveChannelAccout')}>",
+              'data':$('#profile').serialize(),
+              'type':'post',
+              'success':function(res){
+                  if(res.status){
+                    layer.alert("操作成功", {icon: 6},function () {
+                          var index = parent.layer.getFrameIndex(window.name);
+                    parent.location.reload();
+					parent.layer.close(index);
+	
+                        });
+                  }else{
+                  layer.msg("操作失败!", {icon: 5},function () {
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        });
+                        return false;
+                  }
+              }
+            });
+            return false;
+           
+        });    
+    });
+</script>
+</body>
+</html>

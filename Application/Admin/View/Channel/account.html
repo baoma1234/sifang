@@ -1,0 +1,239 @@
+<include file="Public/header"/>
+  <include file="Public/top"/>
+  <include file="Public/left-nav"/>
+<!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+       子账户管理
+      </h1>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Access Channel</a></li>
+        <li class="breadcrumb-item active">Establishment</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+     
+      <div class="row">		  
+        <div class="col-lg-12 col-12">
+			<!-- Basic Forms -->
+			  <div class="box">
+				<div class="box-header with-border">
+				  <h4 class="box-title"><{$channel['title']}> 子账户管理</h4>			
+					<ul class="box-controls pull-right">
+					  <li><a class="box-btn-close" href="#"></a></li>
+					  <li><a class="box-btn-slide" href="#"></a></li>	
+					<li><a class="box-btn-fullscreen" href="#"></a></li>
+					</ul>
+				</div>
+				<!-- /.box-header -->
+                <div class="box-body">
+				  <div class="row">
+					<div class="col-12">
+                      
+                    <div class="ibox-content">
+                        <div class="box-controls pull-right" style="margin: 2px;">
+<button type="button"  href="javascript:;" id="batchAddAccount" class="btn btn-success btn-sm" style="margin: 2px;"><i class="mdi mdi-playlist-plus"></i> 批量导入</button>
+<button type="button"  href="javascript:;" id="addAccount" class="btn btn-primary btn-sm" style="margin: 2px;"><i class="mdi mdi-checkbox-marked-circle-outline"></i> 添加子账户</button>
+
+                    </div>
+                        <div class="table-responsive">
+                            <table class="layui-table">
+                                <thead>
+                                    <tr>
+
+                                        <th>编号</th>
+                                        <th>账户名称</th>
+                                        <th>账户状态</th>
+                                        <th>登录状态</th>
+                                        <th>最近登录</th>
+                                        <th>轮询权重</th>
+                                        <th>费率模式</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="accounts" id="p">
+                                    <tr>
+                                        <td><{$p.id}></td>
+                                        <td><{$p.title}></td>
+                                        <td>
+                                            <div class="layui-form">
+                                            <input type="checkbox" <if condition="$p['status']">checked</if> name="status" value="1" data-id="<{$p.id}>" data-name="<{$p.title}>" lay-skin="switch" lay-filter="switchTest" lay-text="开启|关闭">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="label <if condition="$p['cookie_status_code'] eq 1">label-success<else/>label-default</if>"><if condition="$p['cookie_status_code'] eq 1">已登录<else/>未登录</if></span>
+                                        </td>
+                                        <td><{$p.cookie_updated_text}></td>
+                                        <td><{$p.weight}></td>
+                                        <td>
+                                            <span id="custom_rate<{$p.id}>"><if condition="$p.custom_rate == 1">自定义<else/>继承通道</if></span>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button class="btn btn-warning btn-sm" onclick="admin_cookie('登录cookie','<{:U('Channel/loginCookie',array('aid'=>$p[id]))}>')">登录</button>
+                                                <button class="btn btn-info btn-sm" onclick="admin_edit('编辑通道账户','<{:U('Channel/editAccount',array('aid'=>$p[id]))}>')">编辑</button>
+                                                <button class="btn btn-info btn-sm" onclick="admin_editf('编辑风控','<{:U('Channel/editAccountControl',array('aid'=>$p[id]))}>')">风控</button>
+                                                <button class="btn btn-info btn-sm" onclick="admin_editRate('编辑费率','<{:U('Channel/editAccountRate',array('aid'=>$p[id]))}>')">费率</button>
+                                                <button class="btn btn-info btn-sm" onclick="admin_del(this,'<{:$p[id]}>')">删除</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </volist>    
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="page"><{$page}></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div> </div> </div> </div>
+<include file="Public/footer"/>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+layui.use(['layer', 'form'], function(){
+  var form = layui.form
+  ,layer = layui.layer;
+  
+  //监听指定开关
+  form.on('switch(switchTest)', function(data){
+    var aid = $(this).attr('data-id'),
+    isopen = this.checked ? 1 : 0,
+    title = $(this).attr('data-name');
+    $.ajax({
+        url:"<{:U('Channel/editAccountStatus')}>",
+        type:'post',
+        data:"aid="+aid+"&isopen="+isopen,
+        success:function(res){
+            var isopen_desc = isopen ?  '开启' : '关闭'
+            layer.tips('温馨提示：'+title+isopen_desc, data.othis);
+        }
+    });
+  });
+  
+  //监听提交
+  $('#addAccount').on('click',function(){
+    var w=454,h;
+    if (h == null || h == '') {
+        h=($(window).height() - 50);
+    };
+    layer.open({
+        type: 2,
+        fix: false, //不固定
+        maxmin: true,
+        shadeClose: true,
+        area: [w+'px', h +'px'],
+        shade:0.4,
+        title: "添加子账户",
+        content: "<{:U('Channel/addAccount', array('pid' => $channel['id']))}>"
+    });
+  });
+
+  $('#batchAddAccount').on('click',function(){
+    var w=560,h;
+    if (h == null || h == '') {
+        h=($(window).height() - 40);
+    };
+    layer.open({
+        type: 2,
+        fix: false,
+        maxmin: true,
+        shadeClose: true,
+        area: [w+'px', h +'px'],
+        shade:0.4,
+        title: "批量导入子账户",
+        content: "<{:U('Channel/batchAddAccount', array('pid' => $channel['id']))}>"
+    });
+  });
+});
+ //编辑
+ function admin_edit(title,url){
+    var w=460,h;
+    if (h == null || h == '') {
+        h=($(window).height() - 50);
+    };
+    layer.open({
+        type: 2,
+        fix: false, //不固定
+        maxmin: true,
+        shadeClose: true,
+        area: [w+'px', h +'px'],
+        shade:0.4,
+        title: title,
+        content: url
+    });
+ }
+   //编辑风控
+   function admin_editf(title,url){
+    var w=666,h;
+    if (h == null || h == '') {
+        h=($(window).height() - 50);
+    };
+    layer.open({
+        type: 2,
+        fix: false, //不固定
+        maxmin: true,
+        shadeClose: true,
+        area: [w+'px', h +'px'],
+        shade:0.4,
+        title: title,
+        content: url
+    });
+ }
+ /*删除*/
+function admin_del(obj,id){
+    layer.confirm('确认要删除吗？',function(index){
+        $.ajax({
+            url:"<{:U('Channel/delAccount')}>",
+            type:'post',
+            data:'aid='+id,
+            success:function(res){
+                if(res.status){
+                $(obj).parents("tr").remove();
+                layer.msg('已删除!',{icon:1,time:1000});
+                }
+            }
+        });
+    });
+}
+/*费率*/
+function admin_editRate(title,url){
+    var w=310,h=620;
+    if (h == null || h == '') {
+        h=($(window).height() - 50);
+    };
+    layer.open({
+        type: 2,
+        fix: false, //不固定
+        maxmin: true,
+        shadeClose: true,
+        area: [w+'px', h +'px'],
+        shade:0.4,
+        title: title,
+        content: url
+    });
+  }
+
+function admin_cookie(title,url){
+    var w=520,h=360;
+    layer.open({
+        type: 2,
+        fix: false,
+        maxmin: true,
+        shadeClose: true,
+        area: [w+'px', h +'px'],
+        shade:0.4,
+        title: title,
+        content: url
+    });
+  }
+</script>
+</body>
+</html>

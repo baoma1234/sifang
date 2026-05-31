@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>请扫码支付</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f5f7fa;
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+            color: #333;
+        }
+        .wrap {
+            width: 100%;
+            max-width: 420px;
+            margin: 0 auto;
+            padding: 20px 15px;
+            box-sizing: border-box;
+        }
+        .card {
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 8px 30px rgba(0,0,0,.08);
+            padding: 24px 18px;
+            text-align: center;
+        }
+        .title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #111;
+        }
+        .money {
+            font-size: 32px;
+            color: #e53935;
+            font-weight: bold;
+            margin: 10px 0 18px;
+        }
+        .tip {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.7;
+            margin-top: 16px;
+        }
+        .qr {
+            width: 240px;
+            height: 240px;
+            margin: 0 auto;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #fafafa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .qr img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .row {
+            margin-top: 14px;
+            font-size: 14px;
+            color: #444;
+            text-align: left;
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 12px 14px;
+            line-height: 1.8;
+        }
+        .label {
+            color: #888;
+        }
+        .expire {
+            margin-top: 12px;
+            font-size: 15px;
+            color: #ff6b00;
+            font-weight: 600;
+        }
+        .expired {
+            display: none;
+            margin-top: 16px;
+            font-size: 16px;
+            color: #d93025;
+            font-weight: 700;
+        }
+        .btn {
+            display: inline-block;
+            margin-top: 18px;
+            background: #1677ff;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 22px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .btn:hover {
+            background: #0f5fd1;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <div class="card">
+        <div class="title">请使用支付宝扫码支付</div>
+
+        <div class="money">￥<{$data.money}></div>
+
+        <div class="qr" id="qrBox">
+            <img src="<{$data.qrcode}>" alt="二维码">
+        </div>
+
+        <div class="expire" id="countdown"></div>
+        <div class="expired" id="expiredText">二维码已失效，请重新生成订单</div>
+
+        <div class="row">
+            <div><span class="label">订单号：</span><{$data.orderid}></div>
+            <div><span class="label">说明：</span><{$data.body}></div>
+            <div><span class="label">过期时间：</span><span id="expireText"><{$data.expire|date='Y-m-d H:i:s',###}></span></div>
+        </div>
+
+        <div class="tip">
+            请在有效期内完成扫码支付。<br>
+            超时后二维码会自动消失，需要重新生成订单。
+        </div>
+
+        <a class="btn" id="regenBtn" href="javascript:history.back();">返回重新生成订单</a>
+    </div>
+</div>
+
+<script>
+    (function () {
+        var expireTime = parseInt("<{$data.expire}>");
+        var countdownEl = document.getElementById('countdown');
+        var expiredText = document.getElementById('expiredText');
+        var qrBox = document.getElementById('qrBox');
+        var regenBtn = document.getElementById('regenBtn');
+
+        function tick() {
+            var now = Math.floor(Date.now() / 1000);
+            var left = expireTime - now;
+
+            if (left <= 0) {
+                countdownEl.style.display = 'none';
+                expiredText.style.display = 'block';
+                qrBox.style.display = 'none';
+                regenBtn.style.display = 'inline-block';
+                return;
+            }
+
+            countdownEl.innerHTML = '二维码有效期：' + left + ' 秒';
+            regenBtn.style.display = 'none';
+            setTimeout(tick, 1000);
+        }
+
+        tick();
+    })();
+</script>
+</body>
+</html>

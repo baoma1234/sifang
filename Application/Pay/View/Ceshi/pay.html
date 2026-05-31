@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>设备扫码出货</title>
+    <style>
+        body { background: #f5f5f5; font-family: sans-serif; padding: 20px; text-align: center; }
+        .card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .qr-img { width: 200px; height: 200px; border: 1px solid #eee; }
+        .title { font-weight: bold; color: #333; margin-top: 10px; }
+        .hint { color: #888; font-size: 14px; margin-top: 5px; }
+    </style>
+</head>
+<body>
+
+    <h3>请选择商品进行扫码</h3>
+     <volist name="data" id="vo">
+        <div class="card">
+            <img src="<{$vo.scanCode}>" class="qr-img" alt="二维码">
+            <div class="title"><{$vo.numberStr}></div>
+            <div class="hint">请使用支付宝支付</div>
+        </div>
+    </volist>
+
+
+
+    <script>
+        // 可选：添加长按保存图片或自动识别的功能逻辑
+    </script>
+</body>
+</html>

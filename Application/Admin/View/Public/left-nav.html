@@ -1,0 +1,93 @@
+<!-- Left side column. contains the logo and sidebar -->
+<nav class="navbar-default navbar-static-side" role="navigation">
+  <aside class="main-sidebar">
+    <!-- sidebar-->
+    <section class="sidebar">
+      <!-- sidebar menu-->
+      <ul class="sidebar-menu" data-widget="tree" id="side-menu">
+        
+        <li class="user-profile treeview">
+      <a href="javascript:void()">
+			<img src="Public/qq572125157/images/user_admin.png" alt="user">
+            <span> 身份：<switch name="member['groupid']">
+            <case value="1">总管理员</case>
+            <case value="2">运营管理员</case>
+			<case value="3">财务管理员</case>
+            </switch></span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-right pull-right"></i>
+            </span>
+          </a>
+<ul class="treeview-menu">
+            <li><a href="javascript:void()"><i class="fa fa-user mr-5"></i>管理ID： <{$member.username}> </a></li>
+			<li><a href="<{:U("Login/loginout")}>"><i class="fa fa-power-off mr-5"></i>安全退出</a></li>
+          </ul>
+        </li>
+<li class="header nav-small-cap">Management</li>    
+<volist name="navmenus" id="nm">
+                <li class="treeview">         
+                  <a   href="<if condition="!count($nm[$nm['id']])"><{:U($nm[menu_name])}><else/>#</if>"> <i class="<{$nm['icon']}>"></i> 
+                    <span class="nav-label"><{$nm['title']}></span><if condition="$nm[$nm['id']]"><span class="pull-right-container">
+                      <i class="fa fa-angle-right pull-right"></i></span> </if>
+                    </a>
+                    <if condition="$nm[$nm['id']]">
+                 <ul  class="treeview-menu">
+                        <volist name="nm[$nm['id']]" id="sub">
+                            <li class=""><a  href="<{:U($sub['menu_name'])}>"><i
+                                    class="<{$sub['icon']}>"></i> <{$sub['title']}></a></li>
+                        </volist>
+                    </ul>
+                    </if>                    
+                </li>
+            </volist>
+
+  <li class="header nav-small-cap">其他功能</li>
+            <li class="treeview">  
+                 <a   href="#"> <i class="fa fa-refresh"></i> 
+                    <span class="nav-label">异常订单排查</span><span class="pull-right-container">
+                      <i class="fa fa-angle-right pull-right"></i></span>                    </a>
+                    <ul  class="treeview-menu">
+ <li class=""><a href="<{:U('Admin/Order/frozenOrder')}>" class="J_menuItem">  <i class="fa fa-refresh"></i>   异常订单排查</a></li> </ul>    
+              
+               <li class="treeview">  
+                 <a   href="#"> <i class="fa fa-align-justify"></i> 
+                    <span class="nav-label">批量删除订单</span><span class="pull-right-container">
+                      <i class="fa fa-angle-right pull-right"></i></span>                    </a>
+                    <ul  class="treeview-menu">
+                      <li><a href="<{:U('Admin/Order/delAll')}>" class="J_menuItem">
+                          <i class="fa fa-fw fa-align-justify"></i>   批量删除订单</a></li></ul>    
+                 
+                    <li class="treeview">  
+                 <a   href="#"> <i class="fa fa-apple"></i> 
+                    <span class="nav-label">模板管理</span><span class="pull-right-container">
+                      <i class="fa fa-angle-right pull-right"></i></span>                    </a>
+                    <ul  class="treeview-menu">
+                        <li><a href="<{:U('Admin/Template/index')}>" class="J_menuItem">
+                          <i class="fa fa-fw fa-apple"></i> 模板管理</a></li></ul>    
+                      
+                  <li class="treeview">  
+                 <a   href="#"> <i class="fa fa-weixin"></i> 
+                    <span class="nav-label">用户分类管理</span><span class="pull-right-container">
+                      <i class="fa fa-angle-right pull-right"></i></span>                    </a>
+                    <ul  class="treeview-menu">       
+                       <li><a href="<{:U('Admin/User/agentCateList')}>" class="J_menuItem">
+                          <i class="fa fa-fw fa-weixin"></i> 用户分类管理</a></li></ul>    
+                    
+                     <li class="treeview">  
+                 <a   href="#"> <i class="fa fa-user"></i> 
+                    <span class="nav-label">谷歌验证器</span><span class="pull-right-container">
+                      <i class="fa fa-angle-right pull-right"></i></span>                    </a>
+                    <ul  class="treeview-menu">           
+            <li><a href="<{:U('Admin/Auth/google')}>"  class="J_menuItem">
+                          <i class="fa fa-user-secret"></i>谷歌验证器</a></li></ul>    
+                       
+                           <li class="treeview">  
+                 <a   href="#"> <i class="fa fa-jsfiddle"></i> 
+                    <span class="nav-label">清除缓存</span><span class="pull-right-container">
+                      <i class="fa fa-angle-right pull-right"></i></span>                    </a>
+                    <ul  class="treeview-menu">   
+                      <li>  <a href="<{:U('Admin/Index/clearCache')}>" class="J_menuItem"><i class="fa fa-fw fa-jsfiddle"></i> 清除缓存 </a></li></ul>    
+      </ul>
+</section>
+  </aside>
+  </nav>

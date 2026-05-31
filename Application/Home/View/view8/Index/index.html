@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="zxx">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><{$sitename}> - 专业支付技术服务商 - 让支付简单、专业、快捷！</title>
+    <!-- favicon -->
+    <link rel="shortcut icon" href="Public/theme/view8/assets/favicon.ico" type="image/x-icon">
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="Public/theme/view8/assets/css/bootstrap.min.css">
+    <!-- fontawesome icon  -->
+    <link rel="stylesheet" href="Public/theme/view8/assets/css/fontawesome.min.css">
+    <!-- flaticon css -->
+    <link rel="stylesheet" href="Public/theme/view8/assets/fonts/flaticon.css">
+    <!-- animate.css -->
+    <link rel="stylesheet" href="Public/theme/view8/assets/css/animate.css">
+    <!-- Owl Carousel -->
+    <link rel="stylesheet" href="Public/theme/view8/assets/css/owl.carousel.min.css">
+    <!-- magnific popup -->
+    <link rel="stylesheet" href="Public/theme/view8/assets/css/magnific-popup.css">
+    <!-- stylesheet -->
+    <link rel="stylesheet" href="Public/theme/view8/assets/css/style.css">
+    <!-- responsive -->
+    <link rel="stylesheet" href="Public/theme/view8/assets/css/responsive.css">
+<link rel="stylesheet" type="text/css" href="Public/jz/fonts.css">
+<link rel="stylesheet" type="text/css" href="Public/jz/style.css">
+<style>
+/* 必要布局样式css */    
+ .wuyou-waiter{position: fixed; right: 0px; top:50%; margin-top: -90px; width: 60px; box-shadow: 0px 0px 20px rgba(0,0,0,.3); z-index: 999;}
+.waiter-ul li{position: relative; height: 60px; line-height: 60px; border-bottom: 1px solid #fff;}
+.waiter-ul li a{ position: absolute; left: 0; top: 0; z-index: 2; color: #fff; display: block; width: 60px; height: 60px; line-height: 60px; text-align: center; -webkit-transition:all 0.6s;-ms-transition:all 0.6s;-moz-transition:all 0.6s; text-decoration: none; font-size: 24px;}
+.waiter-title{position: absolute; left: 0px; bottom: 1px; color: #fff; width: 80px; height: 40px; line-height: 40px; text-align: center;-webkit-transition:all 0.6s;-ms-transition:all 0.6s;-moz-transition:all 0.6s; background-color: #fff; box-shadow: 0px 0px 10px rgba(0,0,0,.3); z-index: 1; opacity: 0;}
+.waiter-title:before{content: ''; display: block; width: 10px; height: 10px; position: absolute; right: -5px; top: 14px; background-color:#fff; transform:rotate(45deg);}
+.waiter-ul li:hover .waiter-title{left: -88px; opacity: 1;}
+
+.waiter-ul li.wuyou-shop a{background-image: -webkit-linear-gradient(left, #f60, #ffb443);background-image: -moz-linear-gradient(left, #f60, #ffb443);background-image: -ms-linear-gradient(left, #f60, #ffb443);}
+.waiter-ul li.wuyou-shop .waiter-title{background-color:#f60; }
+.waiter-ul li.wuyou-shop .waiter-title:before{background-color:#f60; }
+
+.waiter-ul li.wuyou-contact a{background-image: -webkit-linear-gradient(left, #00b7ee, #55d8ff);background-image: -moz-linear-gradient(left, #00b7ee, #55d8ff);background-image: -ms-linear-gradient(left, #00b7ee, #55d8ff);}
+.waiter-ul li.wuyou-contact .waiter-title{background-color:#00b7ee; }
+.waiter-ul li.wuyou-contact .waiter-title:before{background-color:#00b7ee; }
+
+.waiter-ul li.wuyou-top a{background-image: -webkit-linear-gradient(left, #333, #666);background-image: -moz-linear-gradient(left, #333, #666);background-image: -ms-linear-gradient(left, #333, #666);}
+.waiter-ul li.wuyou-top .waiter-title{background-color:#333; }
+.waiter-ul li.wuyou-top .waiter-title:before{background-color:#333; }
+        .clearfix::after {
+    clear: both;
+    content: ".";
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+
+.clearfix {
+  margin: 0 auto;
+}
+.Service-box {
+    -ms-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+  margin: 0 0 10px;
+}
+
+.Service-content {
+    padding: 0;
+  width: 100%;
+}
+
+.Service-item {
+    display: block;
+    width: 176px;
+    padding: 30px 16px;
+    text-align: center;
+    float: left;
+      height: 240px;
+    margin: 0 0 10px;
+    border: 1px solid #E7E7E7;
+    box-sizing: border-box;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.Service-content .Service-item {
+    -webkit-transition: all 160ms;
+    transition: all 160ms;
+  
+}
+/* 必要布局样式css */
+.step-content {
+    padding: 80px 0;
+    box-sizing: border-box;
+    background: #fff;
+}
+
+.step-header h2 {
+    position: relative;
+    font-weight: normal;
+    text-align: center;
+    font-size: 38px;
+    color: #353535;
+    z-index: 50;
+}
+
+.step-header h3 {
+    position: relative;
+    font-weight: normal;
+    text-align: center;
+    font-size: 24px;
+    color: #888;
+    z-index: 50;
+}
+
+.step-layout {
+    width: 1200px;
+    position: relative;
+    margin: 0 auto
+}
+
+.step-layout-list {
+    text-align: center;
+    padding: 60px 0 0;
+}
+
+.step-layout-item {
+    float: left;
+    vertical-align: top;
+    width: 25%;
+    position: relative;
+}
+
+.step-layout-item img {
+    vertical-align: top;
+    display: inline-block;
+    background-color: transparent;
+}
+
+.step-layout-item h4 {
+    font-size: 24px;
+    margin: 20px 0 5px;
+    font-weight: normal;
+}
+
+.step-layout-item p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #888;
+}
+
+.step-layout .step-layout-list .step-layout-item:not(:last-child):after {
+    content: "";
+    position: absolute;
+    top: 60px;
+    right: -10px;
+    display: block;
+    width: 20px;
+    height: 28px;
+    background: url(../images/sapp-store-arror.png) no-repeat;
+}
+.item-image {
+    display: inline-block;
+    height: 100px;
+    width: 100px;
+    line-height: 100px;
+    text-align: center;
+    border: 3px solid transparent;
+    margin: 0;
+    border-radius: 100%;
+    -ms-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-transition: all 160ms;
+    transition: all 160ms;
+}
+
+.item-image img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border: none;
+}
+
+.item-title {
+    line-height: 25px;
+    font-size: 18px;
+    color: #3D3D3D;
+    padding: 22px 0 7px;
+    font-family: 'PingFangSC-Regular', "Microsoft YaHei", Tahoma, sans-serif;
+    font-weight: normal;
+}
+
+.item-text {
+    color: #9A9A9A;
+    font-size: 12px;
+    line-height: 17px;
+    height: 34px;
+    overflow: hidden;
+    font-family: 'PingFangSC-Regular', "Microsoft YaHei", Tahoma, sans-serif;
+}
+
+.item-link {
+    font-family: 'PingFangSC-SC', "Microsoft YaHei", Tahoma, sans-serif;
+    color: #FFFFFF;
+    display: none;
+    padding: 6px 20px;
+    background-color: #05A6F3;
+    margin: 17px auto;
+    font-size: 14px;
+    line-height: 25px;
+    border-radius: 5px;
+    -webkit-transition: all 160ms;
+    transition: all 160ms;
+    font-weight: normal;
+}
+
+.Service-item:hover {
+    border-color: #DEDDDD;
+    padding-top: 26px;
+    position: relative;
+    z-index: 99;
+    text-decoration: none;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    webkit-transform: translate3d(0, -3px, 0);
+    transform: translate3d(0, -3px, 0);
+}
+
+.Service-item:hover .item-image {
+    height: 60px;
+    width: 60px;
+    line-height: 60px;
+    margin: 0 auto;
+}
+
+.Service-item:hover .item-link {
+    display: block;
+}
+
+.Service-item:hover .item-title {
+    padding: 10px 0 7px;
+}
+
+.Service-item + .Service-item {
+    margin-left: 50px;
+    position: relative;
+}
+
+.item-tag {
+    width: 67px;
+    height: 67px;
+    color: #FFFFFF;
+    position: absolute;
+    transform: rotateZ(-315deg);
+    top: 9px;
+    right: 9px;
+    font-size: 12px;
+    line-height: 17px;
+}
+
+.item-background {
+    width: 67px;
+    height: 67px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+.item-background img {
+    width: 100%;
+    height: 100%;
+}
+  </style>      
+
+</head>
+
+<body> 
+    
+    <!-- preloader begin-->
+    <div class="preloader">
+        <div class="loader">
+            <hr><hr>
+        </div>
+    </div>
+    <!-- preloader end -->
+
+
+    <!-- header begin-->
+    <div class="header">
+        <div class="container">
+            <div class="row justify-content-between d-flex">
+                <div class="col-xl-2 col-lg-2 d-xl-flex d-lg-flex d-block align-items-center mobile-header">
+                    <div class="row d-flex">
+                        <div class="col-xl-12 col-lg-12 col-6 d-flex align-items-center">
+                            <div class="logo">
+                                <a href="index.html"><img src="Uploads/logo/5c888f69f1ca6.png" alt="" height="45"></a>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-6 d-xl-none d-lg-none d-block">
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
+                                aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"><i class="fas fa-bars"></i></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-8 col-lg-8 min-height-none">
+                    <div class="main-menu">
+                        <nav class="navbar navbar-expand-lg">
+                            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                                <ul class="navbar-nav nav justify-content-center">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" href="index.html">首页 <span class="sr-only">(current)</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">关于我们</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/Home_Index_document.html">开发者中心</a>
+                                    </li>
+									 <li class="nav-item">
+                                        <a class="nav-link" href="/demo"  target="_blank">DEMO体验</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/Home_Index_document.html">FAQ</a>
+                                    </li>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                                            aria-expanded="false">登录管理中心</a>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="<{$user_login}>"  target="_blank">商户登录</a>
+                                            <a class="dropdown-item" href="<{$agent_login}>"  target="_blank">代理登录</a>
+                                        </div>
+                                    </li>
+                                    <!--<li class="nav-item">
+                                        <a class="nav-link" href="contact.html">Contact</a>
+                                    </li> -->
+                                    
+                                </ul>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- header end -->
+
+
+    <!-- banner begin-->
+    <div class="banner">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-10 col-lg-10">
+                    <div class="banner-content">
+                        <h1><{$sitename}> Payment</h1>
+                        <p>专业支付技术服务商 - 让支付简单、专业、快捷！<br/>
+                        无需后端开发，一个SDK即可接入一套完整的支付系统，高速集成主流支付接口<br/>以更稳定的接口、更快的速度直达支付。</p>
+                        <a href="<{$register}>">立即加入</a>
+                        <a href="<{$user_login}>">马上登陆</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner end -->
+
+    <!-- info feature begin-->
+    <div class="info-feature">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-4 col-lg-4 col-md-6">
+                    <div class="info-single-feature">
+                        <div class="part-icon">
+                            <i class="flaticon-group"></i>
+                        </div>
+                        <div class="part-text">
+                            <h2>快速高效</h2>
+                            <h3>Fast and efficient</h3>
+                            <p>W10分钟超快速响应，1V1专业客服服务，7*24小时技术支持。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-4 col-lg-4 col-md-6">
+                    <div class="info-single-feature">
+                        <div class="part-icon">
+                            <i class="flaticon-money"></i>
+                        </div>
+                        <div class="part-text">
+                            <h2>稳定持久</h2>
+							<h3>Stable and durable</h3>
+                            <p>多机房异地容灾系统，服务器可用性99.9%，专业运维团队值守。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-4 col-lg-4 col-md-6">
+                    <div class="info-single-feature">
+                        <div class="part-icon">
+                            <i class="flaticon-hand"></i>
+                        </div>
+                        <div class="part-text">
+                            <h2>安全可靠</h2>
+                            <h3>Safe and reliable</h3>
+                            <p>金融级安全防护标准，强有力抵御外部入侵，支持高并发交易。</p>
+                        </div>
+                    </div>
+                </div>
+              
+              
+     
+              
+              
+            </div>
+</div>   
+    </div>
+    <!-- info feature end -->  
+ 
+<div class="meal-box">
+	<div class="meal-title">
+		<h2>合作伙伴 可接入支付方式</h2>
+		<p>一次接入所有主流支付接口</p>
+	</div>
+	<div class="meal-cut">
+		<ul>
+	<li>
+				<span>
+				  <img src="Public/theme/view4/picture/slider_1.png" alt="">
+				 
+				</span>
+			</li>
+			<li>
+				<span>
+				  <img src="Public/theme/view4/picture/slider_2.png" alt="">
+				 
+				</span>
+			</li>
+
+			<li>
+				<span>
+				 <img src="Public/theme/view4/picture/slider_3.png" alt="">
+				
+				</span>
+			</li>
+
+			<li>
+				<span>
+				 <img src="Public/theme/view4/picture/slider_4.png" alt="">
+				 
+				</span>
+			</li>
+
+			<li>
+				<span>
+			 <img src="Public/theme/view4/picture/slider_5.png" alt="">
+				
+				</span>
+			</li>
+
+			<li>
+				<span>
+			 <img src="Public/theme/view4/picture/slider_6.png" alt="">
+				
+				</span>
+			</li>
+
+			<li>
+				<span>
+				 <img src="Public/theme/view4/picture/slider_7.png" alt="">
+				
+				</span>
+			</li>
+
+			<li>
+				<span>
+			 <img src="Public/theme/view4/picture/slider_8.png" alt="">
+				
+				</span>
+			</li>
+
+			<li>
+				<span>
+				 <img src="Public/theme/view4/picture/slider_9.png" alt="">
+				
+				</span>
+			</li>
+
+          
+			<li>
+				<span>
+				 <img src="Public/theme/view4/picture/slider_10.png" alt="">
+				
+				</span>
+			</li>
+          
+			<li>
+				<span>
+				 <img src="Public/theme/view4/picture/slider_11.png" alt="">
+				
+				</span>
+			</li>
+          
+			<li>
+				<span>
+				 <img src="Public/theme/view4/picture/slider_12.png" alt="">
+				
+				</span>
+			</li>
+          
+			<li>
+				<span>
+				 <img src="Public/theme/view4/picture/slider_13.png" alt="">
+				
+				</span>
+			</li>
+          
+			<li>
+				<span>
+				 <img src="Public/theme/view4/picture/slider_14.png" alt="">
+				
+				</span>
+			</li>
+          
+		
+		</ul>
+	</div>
+</div>
+
+           
+    <!-- litehyip features begin-->
+    <div class="litehyip-features">
+        <div class="bg-img">
+            <img src="Public/theme/view8/assets/img/litehyip-feature-bg.png" alt="">
+        </div>
+        <center>
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-4 col-lg-4col-md-4">
+                    <div class="section-title">
+                        <h2>最 <span>专业</span> 的支付帮手</h2>
+                        <p>Payment Assistant</p>
+                    </div>
+                </div>
+            </div>
+          
+          
+           
+            <div class="row">
+                <div class="col-xl-4 col-lg-4 col-md-4">
+                    <div class="single-feature">
+                        <div class="part-icon">
+                            <i class="flaticon-brain"></i>
+                        </div>
+                        <div class="part-text">
+                            <h3>手机APP支付 手机网页支付</h3>
+                            <p>APP内实现收款 手机浏览器内实现收款</p>
+                        </div>
+                    </div>
+                </div>
+              
+                <div class="col-xl-4 col-lg-4 col-md-4">
+                    <div class="single-feature">
+                        <div class="part-icon">
+                            <i class="flaticon-patent"></i>
+                        </div>
+                        <div class="part-text">
+                            <h3>公众号支付 PC网页支付</h3>
+                            <p>微信浏览器 PC浏览器 内实现收款</p>
+                        </div>
+                    </div>
+                </div>
+              
+                <div class="col-xl-4 col-lg-4 col-md-4">
+                    <div class="single-feature">
+                        <div class="part-icon">
+                            <i class="flaticon-donation"></i>
+                        </div>
+                        <div class="part-text">
+                            <h3>线上扫码支付</h3>
+                            <p>支付宝 微信 扫描二维码实现收款</p>
+                        </div>
+                    </div>
+                </div>
+           </div>    
+         
+       
+      
+      <div class="step-content">
+            <div class="step-header">
+                <h2>接入流程</h2>
+                <h3>让实现移动商业梦想变得更容易</h3>
+            </div>
+            <div class="step-layout">
+                <div class="step-layout-list clearfix">
+                    <div class="step-layout-item step-item">
+                        <img src="Public/theme/view4/picture/app-store-step1.png" alt="">
+                        <h4>注册商户</h4>
+                        <p>急速注册商户</p>
+                    </div>
+                    <div class="step-layout-item step-item">
+                        <img src="Public/theme/view4/picture/app-store-step2.png" alt="">
+                        <h4>获取DEMO</h4>
+                        <p>多语言demo开发文档</p>
+                    </div>
+                    <div class="step-layout-item step-item">
+                        <img src="Public/theme/view4/picture/app-store-step3.png" alt="">
+                        <h4>技术调联</h4>
+                        <p>24小时技术支持</p>
+                    </div>
+                    <div class="step-layout-item step-item">
+                        <img src="Public/theme/view4/picture/app-store-step4.png" alt="">
+                        <h4>上线运营</h4>
+                        <p>稳定安全可靠</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+      
+    </div> </center>
+       </div>
+    <!-- litehyip features end -->
+ 
+    <!-- we thinking global begin-->
+    <div class="we-thinking-global">
+        <div class="container">
+            <div class="row justify-content-around d-flex">
+                <div class="col-xl-6 col-lg-6">
+                    <div class="part-img">
+                        <img src="Public/theme/view8/assets/img/we-thinking-bg.jpg" alt="">
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-4 d-flex align-items-center">
+                    <div class="part-text">
+                        <h2>产品与服务
+                        <span>财务对账</span></h2>
+                        <p>相近的订单统计企业收支一目了然</p>
+						
+							<h2>子商户系统
+							<span>分账系统</span></h2>
+						<p>添加子商户账号为交易实现分账功能</p>
+                        <a href="#">View Plan</a>
+                    </div>
+                </div>
+  
+            </div>
+        </div>
+    </div>
+    <!-- we thinking global end -->
+
+    <!-- inventor begin-->
+    <div class="inventor">
+        <div class="bg-img">
+            <img src="Public/theme/view8/assets/img/ventor-bg.png" alt="">
+        </div>
+        <div class="container">
+            <div class="row d-flex">
+                <div class="col-xl-5 col-lg-6 d-flex align-items-center">
+                    <div class="part-text">
+                        <h2>对接多家 <span>第三方支付</span> 接口</h2>
+                        <p>  对接行业内最优质的多家支付接口。全力保障业务流畅。 <br />让支付接口开发更加简单方便。</p>
+						<p>  聚合支付 为iOS/Android原生/H5 App提供全套
+支付解决方案：支持微信支付、支付宝支付、银联、手机支付、
+QQ钱包 ,京东钱包等.</p>
+<p>  一次接入所有主流支付接口，99.99% 系统可用性，满
+足你丰富的交易场景需求,为你的用户提供完美支付体验.</p>
+                    </div>
+                </div>
+                <div class="col-xl-5 col-lg-5 offset-xl-1">
+                    <div class="part-inventor">
+                        <div class="single-inventor">
+                            <img src="Public/theme/view4/picture/img_13.png" alt="">
+                        </div>
+                        <div class="single-inventor">
+                            <img src="Public/theme/view4/picture/img_14.png" alt="">
+                        </div>
+                        <div class="single-inventor">
+                            <img src="Public/theme/view4/picture/img_16.png" alt="">
+                        </div>
+                        <div class="single-inventor">
+                            <img src="Public/theme/view4/picture/img_15.png" alt="">
+                        </div>
+                        <div class="single-inventor">
+                            <img src="Public/theme/view4/picture/img_17.png" alt="">
+                        </div>
+						  <div class="single-inventor">
+                            <img src="Public/theme/view4/picture/img_18.png" alt="">
+                        </div>
+						  <div class="single-inventor">
+                            <img src="Public/theme/view4/picture/img_19.png" alt="">
+                        </div>
+						  <div class="single-inventor">
+                            <img src="Public/theme/view4/picture/img_20.png" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- inventor end -->
+
+    <!-- testimonial begin-->
+    <div class="testimonial">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-6 col-lg-6">
+                    <div class="section-title text-center">
+                        <h2>专业的 <span>全流程</span> 服务</h2>
+                        <p>支持个性化定制和私有化部署。<br />
+				全程跟进定制化业务需求，可部署企业本地服务器，数据安全可控。<br />
+				客户成功团队从接口联调、测试上线到后期系统运维、管理平台<br />使用等各方向全面提供 7*10 小时服务。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xl-12 col-lg-12">
+                    <div class="testimonial-slider">
+
+                        <div class="single-testimonial">
+                            <div class="d-flex">
+                                <div class="part-img">
+                                    <img src="Public/theme/view8/assets/img/testimonial-1.png" alt="">
+                                </div>
+                                <div class="part-info">
+                                    <h3>定制化支付解决方案</h3>
+									<h4>User say</h4>
+                                </div>
+                            </div>
+                            <div class="part-text">
+                                <p>免费在线一对一分析支付场景。</p>
+                            </div>
+                        </div>
+
+                        <div class="single-testimonial">
+                            <div class="d-flex">
+                                <div class="part-img">
+                                    <img src="Public/theme/view8/assets/img/testimonial-1.png" alt="">
+                                </div>
+                                <div class="part-info">
+                                    <h3>开启支付新时代</h3>
+                                  <h4>User say</h4>
+                                </div>
+                            </div>
+                            <div class="part-text">
+                                <p>支付技术服务商，让支付简单、专业、快捷！</p>
+                            </div>
+                        </div>
+
+                        <div class="single-testimonial">
+                            <div class="d-flex">
+                                <div class="part-img">
+                                    <img src="Public/theme/view8/assets/img/testimonial-1.png" alt="">
+                                </div>
+                                <div class="part-info">
+                                    <h3>全支付场景覆盖</h3>
+									<h4>User say</h4>
+                              
+                                </div>
+                            </div>
+                            <div class="part-text">
+                                <p>“二维码支付,专业收款工具,线上商户经营必备”</p>
+                            </div>
+                        </div>
+
+                        <div class="single-testimonial">
+                            <div class="d-flex">
+                                <div class="part-img">
+                                    <img src="Public/theme/view8/assets/img/testimonial-1.png" alt="">
+                                </div>
+                                <div class="part-info">
+                                    <h3>主流支付接口全支持</h3>
+                                    <h4>User say</h4>
+                                </div>
+                            </div>
+                            <div class="part-text">
+                                <p>“梳理企业收款需求，提出接入建议、定制支付解决方案。”</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- testimonial end -->
+
+    <!-- newsletter begin-->
+    <div class="newsletter">
+        <div class="bg-img">
+            <img src="Public/theme/view8/assets/img/newsletter-bg.png" alt="">
+        </div>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-6 col-lg-6">
+                    <div class="section-title text-center">
+                        <h2>立刻加入 <a href="javascript:openKefuLink();"><span>联系我们</span></a> </h2>
+                        <p><{$sitename}> 是国内领先的支付技术解决方案服务商，致力于帮助企业最低成本接入一套优雅、可靠的支付系统，并以可视化的数据辅助其完成商业决策。</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- newsletter end -->
+
+    <!-- footer begin-->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-5 col-lg-5 col-md-6">
+                    <div class="about-area">
+                      <img src="Uploads/logo/5c888f69f1ca6.png" height="60" alt="">
+                        <p>聚合支付,快捷支付/扫码支付/网关支付/代付款/代扣款/跨境支付,让支付更加便捷!点击我要接入马上体验!</p>
+                    </div>
+                    <div class="social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-google-plus-g"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-lg-2 col-md-6">
+                    <div class="links">
+                        <h3>Link</h3>
+                        <ul>
+                            <li>
+                                <a href="index.html">首页</a>
+                            </li>
+                            <li>
+                                <a href="#">关于我们</a>
+                            </li>
+                            <li>
+                                <a href="/demo"  target="_blank">DEMO体验</a>
+                            </li>
+                            <li>
+                                <a href="#">开发者中心</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-lg-2 col-md-6">
+                    <div class="links">
+                        <h3>About Us</h3>
+                        <ul>
+                            <li>
+                                <a href="javascript:openKefuLink();">联系我们</a>
+                            </li>
+                            <li>
+                                <a href="#">接口合作</a>
+                            </li>
+                            <li>
+                                <a href="#">流量合作</a>
+                            </li>
+                            <li>
+                                <a href="#">SDK下载</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-6">
+                    <div class="address">
+                        <h3>Contact Us</h3>
+                        <ul>
+                            <li>
+                                公司名称： <{$siteconfig.company}>
+                            </li>
+                           <li>
+                                客服Email：<{$siteconfig.email}>
+                            </li>
+                            <li>
+                                客服QQ：<{$qq}>
+                            </li>
+                            <li>
+                                客服电话：<{$siteconfig.tel}>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 text-center">
+                    <div class="copyright">
+                        <p><?php echo "Copyright © 2017-" . date("Y") . " "; ?><{$sitename}> Rights Reserved. <{$siteconfig.icp}></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>     
+      <!-- 代码 开始 -->
+	<div class="wuyou-waiter">
+		<ul class="waiter-ul">
+			<li class="wuyou-shop">
+              <a class="iconfont icon-taobao" href="https://www.huzhan.com/ishop22354" target="_blank"><font size="2">互站店铺</font></a>
+				<div class="waiter-title">互站店铺</div>
+			</li>
+			<li class="wuyou-contact">
+				<a class="iconfont icon-aliww" href="javascript:openKefuLink();" target="_blank"><font size="2">联系客服</font></a>
+				<div class="waiter-title">联系客服</div>
+			</li>
+			<li class="wuyou-top">
+			  <a class="iconfont icon-Upward" href="#"><font size="2">回到顶部</font></a>
+				<div class="waiter-title">回到顶部</div>
+			</li>
+		</ul>
+	</div>
+
+    <!-- footer end -->
+<script type="text/javascript">
+function openKefuLink()
+{
+    window.open("http://wpa.qq.com/msgrd?v=3&uin=<{$qq}>&site=qq&menu=yes",'_blank');
+}
+
+</script>
+    <script src="Public/theme/view8/assets/js/jquery.js"></script>
+	<!-- bootstrap -->
+    <script src="Public/theme/view8/assets/js/bootstrap.min.js"></script>
+    <!-- owl carousel -->
+    <script src="Public/theme/view8/assets/js/owl.carousel.js"></script>
+    <!-- magnific popup -->
+    <script src="Public/theme/view8/assets/js/jquery.magnific-popup.js"></script>
+    <!-- way poin js-->
+    <script src="Public/theme/view8/assets/js/waypoints.min.js"></script>
+    <!-- wow js-->
+    <script src="Public/theme/view8/assets/js/wow.min.js"></script>
+    <!-- main -->
+    <script src="Public/theme/view8/assets/js/main.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,71 @@
+<include file="Public/header"/>
+<div class="wrapper">
+            <div class="container-fluid">
+
+                <!-- Page title box -->
+                <div class="page-title-alt-bg"></div>
+                <div class="page-title-box">
+                    <ol class="breadcrumb float-right">
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">Aggregate Payment</a></li>
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">Authentication</a></li>
+                        <li class="breadcrumb-item active">Google</li>
+                    </ol>
+                    <h4 class="page-title">Google身份验证</h4>
+                </div>
+                <!-- End page title box -->
+ <div class="row">
+                    <div class="col-12">
+                        <div class="card-box">
+
+            <form class="fh5co-form animate-box form-horizontal" data-animate-effect="fadeInRight" id="formlogin"method="post" role="form" action="<{:U('User/Index/google')}>">
+            <div class="form-group"><h3>谷歌身份验证器二次验证</h3>  </div>
+          <div class="form-group row">
+            <label class="col-sm-1 col-form-label">谷歌安全码：</label>
+                 <div class="col-sm-2">
+                <input type="text" name="code" class="form-control" id="code" name="text" required="" aria-required="true" autocomplete="off" placeholder="谷歌安全码">
+            </div> </div>
+              
+        <div class="form-group row">
+            <label class="col-sm-1 col-form-label">图形验证码：</label>
+           <div class="col-sm-2">
+            <input type="text" class="form-control" id="verification" name="captcha_code"  placeholder="图形验证码" required=""  aria-required="true" placeholder="Password" autocomplete="off" ajaxurl="<{:U("Login/checkverify")}>">
+          </div> 
+            </div>
+              
+             <div class="form-group row">
+            <label class="col-sm-1 col-form-label"></label>
+           <div class="col-sm-2">
+        <label class="form-control"><img class="verifyimg" alt="点击刷新验证码" src="<{:U('Login/verifycode')}>?t=<{:time()}>" style="cursor:pointer;" onclick='getCode()' title="点击刷新验证码"></label>
+          </div> 
+            
+            </div>
+
+          <div class="form-group row">
+                         <div class="col-sm-3">
+               <div class="alert alert-success" role="alert">
+                              <i class="icon-social-google"></i>  提示： <i class="icon-share-alt"></i>  找不到谷歌安全码? 点击 <a href="<{:U('User/Account/unbindGoogle')}>">解绑谷歌身份验证器</a>
+                            </div> 
+            </div> 
+            </div>
+              
+                <div class="form-group row">
+            <label class="col-sm-1 col-form-label"></label>
+           <div class="col-sm-2">
+     <button class="btn btn-primary"> <i class="icon-like"></i> 立刻验证</button>
+          </div> 
+            
+            </div>
+
+            </form>
+            <!-- END Sign In Form -->
+        </div>
+    </div>
+</div>
+<include file="Public/footer"/>
+              <script type="text/javascript">
+    function getCode(){
+        $(".verifyimg").attr("src","<{:U('Login/verifycode',array(), false)}>?a=" + Math.random());
+    }
+</script>
+</body>
+</html>

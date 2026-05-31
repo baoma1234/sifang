@@ -1,0 +1,80 @@
+<include file="Public/header"/>
+<include file="Public/top"/>
+<include file="Public/left-nav"/>
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>久爱购 账号管理</h1>
+    </section>
+
+    <section class="content">
+        <div class="panel panel-default panel-intro">
+            <div class="panel-body">
+                <div class="box box-success">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">账号列表</h3>
+                    </div>
+                    <div class="box-body">
+                        <form class="form-inline" method="get" action="">
+                            <div class="form-group" style="margin-right:10px;">
+                                <label>通道筛选</label>
+                                <select name="channel_id" class="form-control" onchange="this.form.submit()">
+                                    <option value="0">全部通道</option>
+                                    <volist name="channels" id="c">
+                                        <option value="<{$c.id}>" <if condition="$channel_id eq $c['id']">selected</if>><{$c.title}></option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </form>
+
+                        <div class="table-responsive" style="margin-top:15px;">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>账号名称</th>
+                                    <th>所属通道</th>
+                                    <th>商户号</th>
+                                    <th>Cookie状态</th>
+                                    <th>更新时间</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="accounts" id="p">
+                                    <tr>
+                                        <td><{$p.id}></td>
+                                        <td><{$p.title}></td>
+                                        <td><{$p.channel_title}></td>
+                                        <td><{$p.mch_id}></td>
+                                        <td>
+                                            <span class="label <if condition="$p['cookie_status'] eq 1">label-success<else/>label-default</if>"><if condition="$p['cookie_status'] eq 1">已登录<else/>未登录</if></span>
+                                        </td>
+                                        <td><{$p.cookie_updated_text}></td>
+                                        <td>
+                                            <button class="btn btn-warning btn-sm" onclick="openCookie('<{:U('Admin/Jiaigou/loginAccount', array('aid'=>$p[id]))}>')">登录</button>
+                                            <button class="btn btn-info btn-sm" onclick="openCookie('<{:U('Admin/Jiaigou/saveCookie', array('aid'=>$p[id]))}>')">保存Cookie</button>
+                                            <button class="btn btn-default btn-sm" onclick="window.open('<{:U('Pay/JiuaigouSync/syncOrderList', array('key'=>'abc123','aid'=>$p[id]))}>')">同步订单</button>
+                                        </td>
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<include file="Public/footer"/>
+<script>
+function openCookie(url){
+    layer.open({
+        type: 2,
+        title: '账号操作',
+        area: ['520px', '420px'],
+        shadeClose: true,
+        content: url
+    });
+}
+</script>

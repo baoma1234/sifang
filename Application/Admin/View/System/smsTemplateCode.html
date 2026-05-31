@@ -1,0 +1,65 @@
+<include file="Public/header1"/>
+<div class="box-body">
+<div class="col-lg-6 col-12">
+              
+			<form class="layui-form1" action="" id="form" autocomplete="off" >
+				<input type="hidden" name="ids" value="<{$ids}>">
+				<div class="form-group row" id="auth_google">
+					<label for="example-email-input" class="col-sm-2 col-form-label">模板代码：</label>
+					<div class="col-sm-12">
+						<input type="text" name="code" autocomplete="off"
+							   placeholder="请输入模板代码" class="form-control" value="">
+					</div>
+				</div>
+			<div class="form-group row">
+			<div class="col-sm-12">
+              <button class="layui-btn" lay-submit="submit" lay-filter="save"><i class="fa fa-check-square-o"></i> 提交保存</button>
+                  <button type="reset" class="layui-btn layui-btn-primary"><i class="glyphicon glyphicon-remove"></i>  重置</button>
+				</div>
+			</div>
+              
+			</form>
+  
+  
+        </div>      
+  </div>
+
+
+<include file="Public/foot"/>
+<script>
+var issubmit=false;
+layui.use(['layer', 'form','laydate'], function(){
+  var form = layui.form
+  ,laydate = layui.laydate
+  ,layer = layui.layer;
+  //监听提交
+  form.on('submit(save)', function(data){
+      layer.confirm('确认要批量设置模板代码吗？',{
+          btn: ['确定','取消'] //按钮
+      }, function(){
+          $.ajax({
+              url:"<{:U('System/smsTemplateCode')}>",
+              type:"post",
+              data:$('#form').serialize(),
+              success:function(res){
+                  if(res.status){
+                      layer.alert(res.msg? res.msg :"设置成功！", {icon: 6},function () {
+                          parent.location.reload();
+                          var index = parent.layer.getFrameIndex(window.name);
+                          parent.layer.close(index);
+                      });
+                  }else{
+                      layer.alert(res.msg, {icon: 5},function (index) {
+                          layer.close(index)
+                      });
+                  }
+              }
+          });
+      }, function(){
+      });
+   	 return false;
+  });
+});
+</script>
+</body>
+</html>

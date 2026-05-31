@@ -1,0 +1,78 @@
+<include file="Public/header"/>
+<link href="/Public/Front/css/fileinput.min.css" rel="stylesheet">
+<link href="/Public/Front/css/theme.css" rel="stylesheet">
+<link href="/Public/Front/css/bootstrap.min.css" rel="stylesheet">
+<style> 
+a{ text-decoration:none !important;} 
+</style>
+ 
+<div class="wrapper">
+            <div class="container-fluid">
+                <!-- Page title box -->
+                <div class="page-title-alt-bg"></div>
+                <div class="page-title-box">
+                  
+                    <h4 class="page-title">认证管理</h4>
+                </div>
+                <!-- End page title box -->
+					
+					
+           <div class="row">
+                    <div class="col-12">
+                        <div class="card-box">
+                          
+            <h4 class="header-title m-t-0">Dropzone File Upload</h4>
+                              <p class="text-muted font-13 m-b-30">
+                               请上传：法人身份证正反面、企业营业执照、开户许可证。
+                            </p>
+
+                <if condition="$authorized eq 1">
+                    <div class="alert alert-success" role="alert">
+                              <i class="icon-social-google"></i>  提示： <i class="icon-share-alt"></i>  您已完成实名认证!！
+                            </div>
+                <elseif condition="$authorized eq 2"/>
+                  
+                   <div class="alert alert-success" role="alert">
+                              <i class="icon-social-google"></i>  提示： <i class="icon-share-alt"></i>  您已提交认证，等待审核！
+                            </div>
+
+                <else/>
+    <div class="fallback">
+                                  <input id="input-ke-1" name="auth[]" type="file" multiple class="file-loading" accept="image">
+                                </div>
+
+                          </if>
+                          
+   </div> 
+                      <!-- end card-box -->
+                    </div> <!-- end col-->
+                </div>
+                      
+                        
+        </div>
+    </div> 
+<include file="Public/footer"/>
+<script src="/Public/Front/js/fileinput.min.js"></script>
+<script src="/Public/Front/js/fileinput_locale_zh.js"></script>
+<script src="/Public/Front/js/theme.js"></script>
+<script>
+    layui.use([ 'layer','element'], function() {
+        var layer = layui.layer //弹层
+            ,element = layui.element; //元素操作
+    });
+    $("#input-ke-1").fileinput({
+        language: 'zh',
+        theme: "explorer",
+        uploadUrl: "<{:U('Account/upload')}>",
+        allowedFileExtensions: ['jpg', 'png', 'gif'],
+        overwriteInitial: false,
+        initialPreviewAsData: true,
+        maxFileCount: 3,
+    }).on('filebatchuploadcomplete', function(event, data) {
+        layer.confirm('现在去申请认证吗？', function (index) {
+            window.location.href='<{:U("Account/certification")}>';
+        });
+    });
+</script>
+</body>
+</html>

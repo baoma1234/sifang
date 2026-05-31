@@ -1,0 +1,244 @@
+ <include file="Public/header"/>
+  <include file="Public/top"/>
+  <include file="Public/left-nav"/>
+<!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+       提款设置
+      </h1>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="breadcrumb-item"><a href="#">System setting</a></li>
+        <li class="breadcrumb-item active">Order History</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+     
+      <div class="row">		  
+        <div class="col-lg-12 col-12">
+			<!-- Basic Forms -->
+			  <div class="box">
+				<div class="box-header with-border">
+				  <h4 class="box-title">提款信息设置</h4>			
+					<ul class="box-controls pull-right">
+					  <li><a class="box-btn-close" href="#"></a></li>
+					  <li><a class="box-btn-slide" href="#"></a></li>	
+					<li><a class="box-btn-fullscreen" href="#"></a></li>
+					</ul>
+				</div>
+				<!-- /.box-header -->
+                <div class="box-body">
+				  <div class="row">
+					<div class="col-12">
+            <!--条件查询-->           
+                <div class="layui-tab layui-tab-card">
+
+                    <ul class="layui-tab-title">
+                        <li class="layui-this">提款设置</li>
+                        <li>提款时间</li>
+                        <li>节假日设置</li>
+                        <li>自动代付设置</li>
+                    </ul>
+
+
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show">
+                            <include file="setform"/>
+                        </div>
+                        <div class="layui-tab-item">
+                            <include file="settime"/>
+                        </div>
+                        <div class="layui-tab-item">
+                            <include file="setholiday"/>
+                        </div>
+                        <div class="layui-tab-item">
+                            <include file="autodf"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</div>
+                    </section>
+    </div>
+    <include file="Public/footer"/>
+    <script>
+        layui.use(['layer', 'form', 'laydate','element'], function () {
+            var form = layui.form
+                ,$ = layui.jquery
+                , laydate = layui.laydate
+                ,element = layui.element
+                , layer = layui.layer;
+                laydate.render({
+                    elem: '#auto_df_stime'
+                    , type: 'time'
+                    ,theme: 'molv'
+                    ,format: 'HH:mm'
+                });
+                laydate.render({
+                    elem: '#auto_df_etime'
+                    , type: 'time'
+                    ,theme: 'molv'
+                    ,format: 'HH:mm'
+                });
+          
+            laydate.render({
+                    elem: '#auto_tx_stime'
+                    , type: 'time'
+                    ,theme: 'molv'
+                    ,format: 'HH:mm'
+                });
+                laydate.render({
+                    elem: '#auto_tx_etime'
+                    , type: 'time'
+                    ,theme: 'molv'
+                    ,format: 'HH:mm'
+                });
+            //监听radio
+            form.on('radio(changeRule)', function (data) {
+                //console.log(data.elem); //得到radio原始DOM对象
+                //console.log(data.value); //被点击的radio的value值
+                if (data.value == 1) {
+                    $('#changeRule').css('display', '');
+                } else if (data.value == 0) {
+                    $('#changeRule').css('display', 'none');
+                }
+            });
+            //监听radio
+            form.on('radio(autoDfSwitch)', function(data){
+                if(data.value==1){
+                    $('#settingAutoDf').css('display','');
+                }else if(data.value==0){
+                    $('#settingAutoDf').css('display','none');
+                }
+            });
+            //监听提交
+            form.on('submit(save)', function (data) {
+                $.ajax({
+                    url: "<{:U('Withdrawal/saveWithdrawal')}>",
+                    type: "post",
+                    data: $('#profile').serialize(),
+                    success: function (res) {
+                        if (res.status) {
+                            layer.alert("编辑成功", {icon: 6}, function () {
+                                location.reload();
+                                var index = parent.layer.getFrameIndex(window.name);
+                                parent.layer.close(index);
+                            });
+                        }else{
+                            layer.alert("操作失败", {icon: 5}, function () {
+                                location.reload();
+                                var index = parent.layer.getFrameIndex(window.name);
+                                parent.layer.close(index);
+                            });
+                        }
+                    }
+                });
+                return false;
+            });
+
+            //选中后的回调
+            laydate.render({
+                elem: '#setholiday'
+                ,done: function(value, date){
+                    $.ajax({
+                        url: "<{:U('Withdrawal/addHoliday')}>",
+                        type: "post",
+                        data: "datetime="+value,
+                        success: function (res) {
+                            if (res.status) {
+                                layer.msg("编辑成功", {icon: 6}, function () {
+                                    location.reload();
+                                    var index = parent.layer.getFrameIndex(window.name);
+                                    parent.layer.close(index);
+                                });
+                            }else{
+                                layer.msg(res.msg, {icon: 5}, function () {
+                                    location.reload();
+                                    var index = parent.layer.getFrameIndex(window.name);
+                                    parent.layer.close(index);
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+
+            //监听时间
+            form.on('submit(time)', function (data) {
+                $.ajax({
+                    url: "<{:U('Withdrawal/settimeEdit')}>",
+                    type: "post",
+                    data: $('#settime').serialize(),
+                    success: function (res) {
+                        if (res.status) {
+                            layer.msg("编辑成功", {icon: 6}, function () {
+                                location.reload();
+                                var index = parent.layer.getFrameIndex(window.name);
+                                parent.layer.close(index);
+                            });
+                        }else{
+                            layer.msg("操作失败", {icon: 5}, function () {
+                                location.reload();
+                                var index = parent.layer.getFrameIndex(window.name);
+                                parent.layer.close(index);
+                            });
+                        }
+                    }
+                });
+                return false;
+            });
+            //监听自动代付设置
+            form.on('submit(autodf)', function (data) {
+                $.ajax({
+                    url: "<{:U('Withdrawal/autoDfEdit')}>",
+                    type: "post",
+                    data: $('#autodf').serialize(),
+                    success: function (res) {
+                        if (res.status) {
+                            layer.msg("编辑成功", {icon: 6}, function () {
+                                location.reload();
+                                var index = parent.layer.getFrameIndex(window.name);
+                                parent.layer.close(index);
+                            });
+                        }else{
+                            layer.msg("操作失败", {icon: 5}, function () {
+                                location.reload();
+                                var index = parent.layer.getFrameIndex(window.name);
+                                parent.layer.close(index);
+                            });
+                        }
+                    }
+                });
+                return false;
+            });
+        });
+        //监听button
+        function del_btn(obj,id){
+            console.log(obj);
+            $.ajax({
+                url: "<{:U('Withdrawal/delHoliday')}>",
+                type: "post",
+                data: "id="+id,
+                success: function (res) {
+                    if (res.status) {
+                        layer.msg("删除成功", {icon: 6}, function () {
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        });
+                        $(obj).remove();
+                    }else{
+                        layer.msg(res.msg, {icon: 5}, function () {
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        });
+                    }
+                }
+            });
+        }
+    </script>
+    </body>
+    </html>

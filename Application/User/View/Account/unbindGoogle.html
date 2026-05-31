@@ -1,0 +1,99 @@
+<include file="Public/header"/>
+<div class="wrapper">
+            <div class="container-fluid">
+
+                <!-- Page title box -->
+                <div class="page-title-alt-bg"></div>
+                <div class="page-title-box">
+                    <ol class="breadcrumb float-right">
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">Aggregate Payment</a></li>
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">Authentication</a></li>
+                        <li class="breadcrumb-item active">Google</li>
+                    </ol>
+                    <h4 class="page-title">解绑谷歌身份验证器</h4>
+                </div>
+                <!-- End page title box -->
+ <div class="row">
+                    <div class="col-12">
+                        <div class="card-box">
+                <!--用户信息-->
+                <form class="layui-form" action="" autocomplete="off" id="unbindgoogle">
+                    <if condition="$sms_is_open eq 0">
+                      
+                                 <div class="form-group row">
+                         <div class="col-sm-3">
+                          <div class="alert alert-success" role="alert">
+                              <i class="icon-social-google"></i>  提示： <i class="icon-share-alt"></i> 平台未开通短信验证码功能，不能自助解绑，<br>请联系平台客服解绑！！！
+                            </div>   </div></div>
+                      
+                      
+                    <elseif condition="$user['mobile'] eq ''" />
+                            <div class="form-group row">
+                         <div class="col-sm-3">
+                          <div class="alert alert-success" role="alert">
+                              <i class="icon-social-google"></i>  提示： <i class="icon-share-alt"></i>  您未绑定手机号码不能自助解绑，<br>请先绑定手机号码或联系客服！！
+                            </div>   </div></div>
+                      
+                      
+                        <else />
+                      <div class="form-group row">
+                         <div class="col-sm-3">
+                          <div class="alert alert-success" role="alert">
+                              <i class="icon-social-google"></i>  提示： <i class="icon-share-alt"></i>  您已经绑定谷歌验证，需要输入验证短信解绑！
+                            </div>   </div></div>
+                        <include file="Public/send"/>
+                    
+                          <div class="form-group row">
+                   <label class="col-sm-1 col-form-label">&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                             <div class="col-sm-2">
+                                <button class="btn btn-primary" lay-submit="" lay-filter="unbindgoogle"><i class="icon-like"></i>  立即提交</button>
+                            </div>  </div>
+                    </if>
+
+                </form>
+                <!--用户信息-->
+            </div>
+        </div>
+    </div>
+</div></div>
+<include file="Public/footer"/>
+<script>
+    //短信验证是否开启
+    var sms_is_open = "<{$sms_is_open}>";
+    layui.use(['laydate', 'laypage', 'layer', 'form', 'element'], function() {
+        var laydate = layui.laydate //日期
+            ,layer = layui.layer //弹层
+            ,form = layui.form //弹层
+            , element = layui.element; //元素操作
+        //日期
+        laydate.render({
+            elem: '#date'
+        });
+
+        $('#mobile').on('blur',function(){
+            var mobile = $(this).val();
+            $('#sendBtn').attr('data-mobile', mobile);
+        });
+
+        //监听提交
+        form.on('submit(unbindgoogle)', function(data){
+            $.ajax({
+            url:"<{:U('Account/unbindGoogle')}>",
+            type:"post",
+            data:$('#unbindgoogle').serialize(),
+            success:function(res){
+                if(res.status){
+                    layer.alert(res.msg, {icon: 6},function () {
+                        window.location.href="<{:U('Account/google')}>";
+                    });
+                }else{
+                    layer.alert(res.msg ? res.msg :"操作失败", {icon: 5});
+                }
+            }
+         });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

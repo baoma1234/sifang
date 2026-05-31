@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>登录中心 - <{$sitename}></title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
+<meta content="Coderthemes" name="author" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<!-- App favicon -->
+<link rel="shortcut icon" href="/Public/assetsqq572125157/images/favicon.ico">
+<!-- jvectormap -->
+<link href="/Public/assetsqq572125157/libs/jqvmap/jqvmap.min.css" rel="stylesheet" />
+<!-- DataTables -->
+<link href="/Public/assetsqq572125157/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css"/>
+<link href="/Public/assetsqq572125157/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css"/>
+<!-- Icons css -->
+<link href="/Public/assetsqq572125157/libs/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
+<link href="/Public/assetsqq572125157/libs/dripicons/webfont/webfont.css" rel="stylesheet" type="text/css" />
+<link href="/Public/assetsqq572125157/libs/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" type="text/css" />
+<!-- App css -->
+<!-- build:css -->
+<link href="/Public/assetsqq572125157/css/app.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="/Public/Front/js/plugins/layui/css/layui.css">
+<!-- endbuild -->
+  <script type="text/javascript">
+        if (top.location !== self.location) {
+            top.location = self.location;
+        }
+    </script>
+
+</head>
+<body>
+
+<body class="bg-account-pages">
+
+        <!-- Login -->
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+
+                        <div class="wrapper-page">
+                            <div class="account-pages">
+                                <div class="account-box">
+
+                                    <!-- Logo box-->
+                                    <div class="account-logo-box">
+                               <h2 class="text-uppercase text-center">
+  <div class="button-list m-t-20">
+                                <button type="button" class="btn btn-light" data-container="body" title="" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="<{$sitename}>，专业支付技术服务商    让支付简单、专业、快捷！" >
+                            登录中心 - <{$sitename}>
+                                </button>
+  </div>
+                                     </h2>
+                                    </div>
+
+                                    <div class="account-content">
+                                       <form class="formLogin"  data-animate-effect="fadeInRight" id="formlogin" name="formlogin"
+                  method="post" role="form" action="<{$loginUrl}>">
+                                            <div class="form-group mb-3">
+                                               <a href="/" class="text-muted float-right"><small>返回首页</small></a>
+                                                <label for="emailaddress" class="font-weight-medium">用户名</label>
+                                                <input class="form-control" type="text" name="username" id="username" required="" placeholder="Enter your ID">
+                                            </div>
+
+                                            <div class="form-group mb-3">
+                                                <a href="<{:U('Login/forgetpwd')}>" class="text-muted float-right"><small>忘记密码?</small></a>
+                                                <label for="password" class="font-weight-medium">密码</label>
+                                                <input class="form-control" type="password" required=""name="password" id="password" placeholder="Enter your password">
+                                            </div>
+                                         
+                                     <div class="input-group">
+                                          <input type="text"  class="form-control col-lg-6"  name="captcha" id="captcha" value="" placeholder="验证码"/>
+                                          <div class="input-group-append">
+                                       <span class="input-group-text"><img src="<{:U('verifycode')}>?t=<{:time()}>"  id="vercodeImg" class="form-control form-control-lg"  alt="" onclick='this.src="<{:U('verifycode')}>?t=<{:time()}>"' title="点击刷新验证码"/></span>
+                                    </div>
+
+   </div>
+                                         <div class="form-group">
+                                               <div class="album">
+</div></div>
+
+                                            <div class="form-group mb-3">
+                                                <div class="checkbox checkbox-info">
+                                                    <input id="remember" type="checkbox" checked>
+                                                    <label for="remember">
+                                                       记住密码
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row text-center">
+                                                <div class="col-12">
+                                                    <button class="btn btn-block btn-success waves-effect waves-light"  id="loginBtn"  type="button"><i class="mdi mdi-home mr-1"></i> 登录</button>
+                                                </div>
+                                            </div>
+                                        </form> <!-- end form -->
+
+                                        <div class="row mt-3">
+                                            <div class="col-12 text-center">
+                                                <p class="text-muted">还没有账号? <a href="<{:U('Login/register')}>" class="text-dark m-l-5"><b>我要注册</b></a></p>
+                                            </div>
+                                        </div> <!-- end row-->
+                                    </div> <!-- end account-content -->
+
+                                </div> <!-- end account-box -->
+                            </div>
+                            <!-- end account-page-->
+                        </div>
+                        <!-- end wrapper-page -->
+
+                    </div> <!-- end col -->
+                </div> <!-- end row -->
+            </div> <!-- end container -->
+        </section>
+        <!-- END HOME -->    
+
+<!-- ============================================================== -->
+<script src="Public/New/plugins/vendors/jquery/jquery.min.js"></script>
+<!-- Bootstrap popper Core JavaScript -->
+<script src="Public/New/plugins/vendors/bootstrap/js/popper.min.js"></script>
+<script src="Public/New/plugins/vendors/bootstrap/js/bootstrap.min.js"></script>
+<!-- slimscrollbar scrollbar JavaScript -->
+<script src="Public/New/plugins/vendors/ps/perfect-scrollbar.jquery.min.js"></script>
+<!--Menu sidebar -->
+<script src="Public/New/assets/js/sidebarmenu.js"></script>
+<!--Custom JavaScript -->
+<script src="Public/New/assets/js/custom.min.js"></script>
+<script src="Public/Front/js/plugins/layui/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['laydate', 'form', 'layer', 'table', 'element'], function() {
+      layer = layui.layer; //弹层
+
+        $("#loginBtn").click(function () {
+
+            var username = $("#username").val();
+            var password = $("#password").val();
+            var varification = $("#captcha").val();
+
+
+            username = $.trim(username);
+            password = $.trim(password);
+            varification = $.trim(varification);
+
+            if (username.length < 1) {
+
+                layer.msg('请输入正确格式的用户名');
+                return false;
+
+            }
+            else if (password.length < 6) {
+                layer.msg('请输入正确格式的密码');
+                return false;
+
+            }
+            else if (varification == '') {
+                layer.msg('请输入正确格式的验证码');
+                return false;
+
+            }
+
+            $.ajax({
+                type:'post',
+                url:'user_Login_checklogin.html',
+                data: { username: username, password: password, varification:varification},
+                dataType:'json',
+                success:function(result){
+                    if(result['status'] == 0){
+                        layer.msg(result['info']);
+                        if(result['info'] == '验证码输入有误！') {
+                            $('#captcha').val('');
+                            $('#captcha').focus();
+                        }
+                    } else {
+                        layer.msg('登录成功，正在跳转到管理中心');
+                        setTimeout(function() {
+                            window.location.href = "" + "<{:U('index/index')}>";
+                        },3000 );
+
+
+                    }
+                }
+            })
+        })
+        $(document).keyup(function(event){
+            if(event.keyCode ==13){
+                $("#loginBtn").trigger("click");
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

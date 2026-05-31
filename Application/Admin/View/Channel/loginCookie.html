@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><{:C("WEB_TITLE")}></title>
+<link rel="stylesheet" href="/Public/Front/js/plugins/layui/css/layui.css">
+<link href="/Public/Front/css/bootstrap.min.css" rel="stylesheet">
+<style>
+body { padding: 20px; }
+.layui-form-label { width: 90px; }
+</style>
+</head>
+<body>
+<div class="layui-form">
+    <input type="hidden" name="aid" value="<{$aid}>">
+    <div class="layui-form-item">
+        <label class="layui-form-label">账户</label>
+        <div class="layui-input-block" style="line-height: 38px;">
+            <{$account.title}>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">当前状态</label>
+        <div class="layui-input-block" style="line-height: 38px;">
+            <if condition="$account['cookie_status'] eq 1">已登录<else/>未登录</if>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">Cookie</label>
+        <div class="layui-input-block">
+            <textarea class="layui-textarea" id="cookie" placeholder="粘贴登录后 cookie"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" id="saveCookie">保存Cookie</button>
+        </div>
+    </div>
+</div>
+<script src="/Public/Front/js/jquery.min.js"></script>
+<script src="/Public/Front/js/plugins/layui/layui.js" charset="utf-8"></script>
+<script>
+layui.use(['layer'], function(){
+  var layer = layui.layer;
+  $('#saveCookie').on('click', function(){
+      $.ajax({
+          url: "<{:U('Channel/saveCookie')}>",
+          type: 'post',
+          data: {
+              aid: $('input[name=aid]').val(),
+              cookie: $('#cookie').val()
+          },
+          success: function(res){
+              if(res.status){
+                  layer.msg(res.msg || '保存成功', {icon:1,time:1000}, function(){
+                      parent.location.reload();
+                      var index = parent.layer.getFrameIndex(window.name);
+                      parent.layer.close(index);
+                  });
+              } else {
+                  layer.msg(res.msg || '保存失败', {icon:2});
+              }
+          }
+      });
+      return false;
+  });
+});
+</script>
+</body>
+</html>

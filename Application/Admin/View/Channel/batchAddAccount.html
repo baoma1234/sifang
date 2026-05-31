@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><{:C("WEB_TITLE")}></title>
+<link rel="stylesheet" href="/Public/Front/js/plugins/layui/css/layui.css">
+<link href="/Public/Front/css/bootstrap.min.css" rel="stylesheet">
+<style>
+body { padding: 20px; }
+.layui-form-label { width: 110px; }
+</style>
+</head>
+<body>
+<div class="layui-form">
+    <input type="hidden" name="pid" value="<{$pid}>">
+    <div class="layui-form-item">
+        <label class="layui-form-label">通道</label>
+        <div class="layui-input-block">
+            <select name="channel_id" lay-search>
+                <volist name="channels" id="c">
+                    <option value="<{$c.id}>" <if condition="$pid eq $c['id']">selected</if>><{$c.title}> (<{$c.code}>)</option>
+                </volist>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">批量数据</label>
+        <div class="layui-input-block">
+            <textarea class="layui-textarea" id="accounts" style="height:220px;" placeholder="每行一条，格式：名称|商户号|商户密码"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" id="saveBatch">导入</button>
+        </div>
+    </div>
+</div>
+<script src="/Public/Front/js/jquery.min.js"></script>
+<script src="/Public/Front/js/plugins/layui/layui.js" charset="utf-8"></script>
+<script>
+layui.use(['layer'], function(){
+  var layer = layui.layer;
+  $('#saveBatch').on('click', function(){
+      $.ajax({
+          url: "<{:U('Channel/saveBatchAccount')}>",
+          type: 'post',
+          data: {
+              pid: $('input[name=pid]').val(),
+              channel_id: $('select[name=channel_id]').val(),
+              accounts: $('#accounts').val()
+          },
+          success: function(res){
+              if(res.status){
+                  layer.msg(res.msg + '，成功 ' + (res.count || 0) + ' 条', {icon:1,time:1200}, function(){
+                      parent.location.reload();
+                      var index = parent.layer.getFrameIndex(window.name);
+                      parent.layer.close(index);
+                  });
+              } else {
+                  layer.msg(res.msg || '导入失败', {icon:2});
+              }
+          }
+      });
+      return false;
+  });
+});
+</script>
+</body>
+</html>

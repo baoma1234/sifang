@@ -1,0 +1,355 @@
+/** 首页 产品页 安全中心 通用样式 **/
+.card{
+    padding: 20px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.card-img-box{
+    height: 140px;
+    width: auto;
+    text-align: center;
+    padding: 10px 0;
+    vertical-align: middle;
+}
+
+.card-img-box img{
+    width: auto;
+    height: 100%;
+}
+
+.card-title{
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.card-content{
+    margin: 15px auto;
+    max-width: 400px;
+    color: #6E6E6E;
+}
+
+.card-sm-img-box{
+    height: 120px;
+    min-height: 120px;
+}
+
+.card-img-box img{
+    width: auto;
+    height: 100%;
+}
+
+.icon-list{
+    margin-top: 30px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.icon-box{
+    width: 80px;
+    height: 80px;
+    margin-left: 30px;
+    margin-bottom: 15px;
+    padding: 15px 10px;
+    float: left;
+    text-align: center;
+    font-size: 14px;
+    background-color: #fff;
+    border-radius: 15px;
+}
+
+.icon-img-box{
+    min-width: 35px;
+    height: 30px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.icon-img-shopping{
+    margin:10px auto;
+}
+
+.icon-img-box img{
+    vertical-align: middle;
+    width: auto;
+    height: 100%;
+}
+
+.icon-box-title{
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-size: 12px;
+}
+
+.step-row{
+    margin-bottom: 30px;
+}
+
+.step-box{
+    margin-top: 60px;
+    position: relative;
+    min-height: 180px;
+    padding: 0 25px;
+}
+
+.step-title{
+    font-size: 16px;
+    margin-top: 15px;
+}
+
+.step-content{
+    font-size: 12px;
+    margin-top: 15px;
+    color: #666666;
+}
+
+.step-number{
+    position: absolute;
+    top: 0;
+    right: 20%;
+    width: 90px;
+    height: 150px;
+    background-image: url("../images/1.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    z-index: -1;
+}
+
+.step-number-1{
+    width: 70px;
+    height: 150px;
+    background-image: url("../images/1.png");
+}
+
+.step-number-2{
+    background-image: url("../images/2.png");
+}
+.step-number-3{
+    background-image: url("../images/3.png");
+}
+.step-number-4{
+    background-image: url("../images/4.png");
+}
+.step-number-5{
+    background-image: url("../images/5.png");
+}
+.step-number-6{
+    background-image: url("../images/6.png");
+}
+.step-number-7{
+    background-image: url("../images/7.png");
+}
+
+.process{
+    margin-bottom: 80px;
+    overflow: hidden;
+}
+
+.process-box{
+    padding: 15px;
+}
+
+.process-img-box{
+    min-width: 100px;
+    margin: 0 auto;
+    height: 60px;
+    text-align: center;
+}
+
+.process-img-single img{
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+.process-img-box img{
+    width: auto;
+    height: 100%;
+}
+
+.process-title{
+    max-width: 140px;
+    margin: 15px auto;
+    text-align: center;
+    font-size: 14px;
+}
+
+.process-content{
+    max-width: 200px;
+    margin: 0 auto;
+    text-align: left;
+    font-size: 14px;
+}
+
+.process-line{
+    position: absolute;
+    top: 30px;
+    left: 0;
+    transform: translate(-50%,0);
+    width: 80px;
+    height: 5px;
+    border-radius: 5px;
+    background-color: #E6EAED;
+}
+
+.process-tip{
+    margin-top: 30px;
+    vertical-align: middle;
+    line-height: 14px;
+    font-weight: bold;
+}
+
+.process-tip img{
+    width: 14px;
+    height: 14px;
+}
+
+.section-row{
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.section-subtitle{
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+@media screen and (max-width: 992px) {
+    .card{
+        min-height: 280px;
+    }
+
+    .card-content{
+        max-width: 300px;
+        font-size: 12px;
+    }
+
+    .step-box{
+        margin-top: 30px;
+        position: relative;
+        min-height: 180px;
+    }
+
+    .process{
+        margin-bottom: 0;
+        overflow: hidden;
+    }
+
+    .process-box{
+        padding: 15px;
+        margin-bottom: 80px;
+    }
+
+    .process-img-box{
+        width: 100px;
+        margin: 0 auto;
+        height: 50px;
+        min-height: 0;
+        text-align: center;
+    }
+
+    .process-img-box img{
+        width: auto;
+        height: 100%;
+    }
+
+    .process-img-single img{
+        height: 45px;
+        margin-bottom: 5px;
+    }
+
+    .process-content{
+        font-size: 14px;
+    }
+
+    .process-line{
+        position: absolute;
+        top: -10px;
+        left: 50%;
+        transform: translate(0,-100%);
+        width: 5px;
+        height: 60px;
+        border-radius: 5px;
+        background-color: #E6EAED;
+    }
+
+    .process-box-last{
+        margin-bottom: 15px;
+    }
+
+    .process-tip{
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+}
+
+@media screen and (max-width: 750px) {
+
+    .card{
+        min-height: 180px;
+    }
+
+    .card-img-box{
+        width: 100%;
+        text-align: center;
+        padding: 10px 0;
+        vertical-align: middle;
+    }
+
+    .icon-box{
+        position: relative;
+        width: 20%;
+        height: 60px;
+        margin-left: 5%;
+        margin-bottom: 15px;
+        padding: 0 5px;
+        float: left;
+        text-align: center;
+        font-size: 12px;
+        background-color: #fff;
+        border-radius: 15px;
+    }
+
+    .icon-img-box{
+        height: 25px;
+        min-height: 0;
+        margin: 10px auto 0 auto;
+    }
+
+    .icon-img-shopping{
+        margin:25px auto;
+    }
+
+    .icon-img-box img{
+        width: auto;
+        height: 100%;
+        vertical-align: middle;
+    }
+
+    .icon-box-title{
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        display: block;
+        margin-top: 0;
+        margin-bottom: 0;
+        font-size: 20px;
+        white-space: nowrap;
+        text-align: center;
+        transform: translate(-50%,0) scale(0.5);
+    }
+
+    .process-box-last{
+        margin-bottom: 15px;
+    }
+
+    .process-tip{
+        margin-bottom: 50px;
+        text-align: center;
+    }
+
+}

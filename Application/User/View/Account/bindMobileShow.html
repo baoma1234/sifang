@@ -1,0 +1,74 @@
+<include file="Public/head"/>
+<div class="row">
+<div class="col-12">
+<div class="card-box">
+
+                <!--用户信息-->
+                <form class="layui-form" action="" autocomplete="off" id="bindmobile">
+                   <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">绑定手机：</label>
+                               <div class="col-sm-6">
+                                <input type="text" name="mobile" lay-verify="phone" autocomplete="off"
+                                       class="form-control" value="" id="mobile">
+                            </div>
+                           
+                        </div>
+                   <include file="Public/send"/>
+                    <div class="form-group row"><label class="col-sm-3 col-form-label">&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                       <div class="col-sm-6">
+                            <button class="btn btn-primary" lay-submit="" lay-filter="bindmobile"><i class="icon-like"></i> 立即提交</button>
+                        </div>
+                    </div>
+                </form>
+                <!--用户信息-->
+  
+            </div>
+        </div>
+    </div>
+<include file="Public/foot"/>
+<script>
+    //短信验证是否开启
+    var sms_is_open = "<{$sms_is_open}>";
+    layui.use(['laydate', 'laypage', 'layer', 'form', 'element'], function() {
+        var laydate = layui.laydate //日期
+            ,layer = layui.layer //弹层
+            ,form = layui.form //弹层
+            , element = layui.element; //元素操作
+        //日期
+        laydate.render({
+            elem: '#date'
+        });
+
+        $('#mobile').on('blur',function(){
+            var mobile = $(this).val();
+            $('#sendBtn').attr('data-mobile', mobile);
+        });
+
+        //监听提交
+        form.on('submit(bindmobile)', function(data){
+            $.ajax({
+            url:"<{:U('Account/bindMobileShow')}>",
+            type:"post",
+            data:$('#bindmobile').serialize(),
+            success:function(res){
+                if(res.status){
+                    layer.alert("绑定成功", {icon: 6},function () {
+                        parent.location.reload();
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                    });
+                }else{
+                    layer.alert(res.msg ? res.msg :"绑定失败", {icon: 5},function () {
+                        parent.location.reload();
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                    });
+                }
+            }
+        });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

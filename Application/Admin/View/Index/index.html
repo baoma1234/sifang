@@ -1,0 +1,58 @@
+<include file="Public/header"/>
+<link rel="stylesheet" href="/Public/qq572125157/assets/vendor_components/bootstrap/dist/css/bootstrap.min.css">	
+<!-- Bootstrap extend-->
+<link rel="stylesheet" href="/Public/qq572125157/css/bootstrap-extend.css">
+<!-- Theme style -->
+<link rel="stylesheet" href="/Public/qq572125157/css/master_style.css">
+<!-- Fab Admin skins -->
+<link rel="stylesheet" href="/Public/qq572125157/css/skins/_all-skins.css">
+<section class="bg-img h-p100" style="background-image: url(/Public/qq572125157/images/photo1.jpg);">
+		<div class="container h-p100">
+		  <div class="row h-p100 align-items-center justify-content-center">
+			<div class="col-lg-8 col-11">		  
+			  <div class="error-page bg-white rounded">
+				<div class="error-content">
+					<div class="row h-p100 align-items-center bg-bubbles-dark bg-danger">
+						<div class="col-lg-6 col-md-12 bg-white text-dark">
+							<div class="p-30">							
+								<h1 class="text-danger font-size-80 font-weight-700">请稍等</h1>
+								<h2>登录成功</h2>
+								<h5>资源加载中!</h5>
+								<p>正在转跳 平台管理中心 </p>
+								<div class="mb-15">
+								  <a id="href" href="<{:U('Admin/Index/main')}>" class="btn btn-info btn-block margin-top-10">不想等待点这里</a>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-6 col-md-12">
+						 	<div class="error-content-inner text-center p-15">
+							  <h1 class="margin-top-0 headline"><i class="fa fa-warning text-white"></i></h1>
+							  <h2> 账号验证成功!</h2>
+								 <h4 class="mb-15">等待时间： <b id="wait">3</b> 秒</h4>
+                              <h6> 安全监测即将完毕!</h6>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /.error-content -->
+			  </div>
+			  <!-- /.error-page -->
+			</div>
+		  </div>
+		</div>
+	</section>
+<script type="text/javascript">
+    (function(){
+        var wait = document.getElementById('wait'),href = document.getElementById('href').href;
+        var interval = setInterval(function(){
+            var time = --wait.innerHTML;
+            if(time <= 0) {
+                location.href = href;
+                clearInterval(interval);
+            };
+        }, 1000);
+    })();
+</script>
+
+</body>
+</html>

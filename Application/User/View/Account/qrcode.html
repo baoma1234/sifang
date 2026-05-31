@@ -1,0 +1,144 @@
+<include file="Public/header"/>
+<div class="wrapper">
+            <div class="container-fluid">
+
+                <!-- Page title box -->
+                <div class="page-title-alt-bg"></div>
+                <div class="page-title-box">
+                    <ol class="breadcrumb float-right">
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">Aggregate Payment</a></li>
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">Business</a></li>
+                        <li class="breadcrumb-item active">Information</li>
+                    </ol>
+                    <h4 class="page-title">收款信息管理</h4>
+                </div>
+                <!-- End page title box -->
+              
+
+    <div class="row">
+      
+      
+                   <div class="col-sm-4">
+                        <div class="card-box">
+                          
+                            <div class="ibox-title"><h5>收款人设置</h5></div>
+        <form class="layui-form1" action="<{:U('User/Account/saveReceiver')}>" autocomplete="off" id="profile">
+            <input type="hidden" name="id" value="<{$p.id}>">     
+              <div class="form-group row">
+                       <label class="col-sm-3 col-form-label">收款人名称：</label>
+             <div class="col-sm-6">
+                <input type="text" id="test1" name="p[receiver]" lay-verify="title" placeholder="" autocomplete="off" class="layui-input" value="<{$p.receiver}>">
+              </div>   
+            </div>
+
+          
+         <div class="form-group row">
+                       <label class="col-sm-3 col-form-label"></label>
+              <div class="col-sm-6">
+                    <button class="btn btn-primary" lay-submit="" lay-filter="profile"><i class="icon-like"></i> 立即提交</button>        
+                </div>
+              </div>
+      <div class="layui-form-item"><span style="color: red; margin-left: 10px;">提交后请更新浏览器缓存，或Ctrl+F5</span></div>
+        </form>
+                          
+    </div> 
+   </div>
+     
+              
+   <div class="col-sm-4">
+         <div class="card-box">  
+      <div class="ibox-title"><h5>二维码背景设置</h5></div>          
+      <div class="ibox-content">
+     <div class="layui-upload">
+           <div class="layui-form-item"><span style="color: red; margin-left: 10px;">二维码背景只能使用640*811大小的图片</span></div>
+                       <label class="col-sm-3 col-form-label"></label>
+          <button type="button" class="layui-btn" id="upload"> <i class="mdi mdi-arrow-collapse-up"></i>  上传背景图片</button>
+          <div class="layui-upload-list">
+            <img class="layui-upload-img" id="demo1" style="max-width: 300px;">
+            <p id="demoText"></p>
+          </div>
+       
+             </div>
+   </div>   </div>
+        
+        
+        </div>  
+
+           
+
+
+     <div class="col-sm-4">
+         <div class="card-box">
+    <div class="ibox float-e-margins">
+
+        <div style="width:100%; text-align: center; padding: 20px 0">
+                  <h5>商户收款二维码</h5>
+            <img src="<{$imageurl}>" width="300" style="width: 70%; margin:0 auto;"/>
+            <br> <br><a href="<{:U('Account/downQrcode')}>" class="layui-btn"  style="text-decoration:none;"> <i class="mdi mdi-format-align-bottom"></i>  保存二维码</a>
+
+      </div>
+      
+         </div> 
+           
+    </div>
+       
+  </div>
+    
+         
+                      
+    </div>
+                        </div>
+
+    </div>
+  
+
+<include file="Public/footer"/>
+<script>
+    layui.use(['laydate', 'form', 'layer', 'table', 'element', 'upload'], function(){
+        var laydate = layui.laydate //日期
+            ,form = layui.form //分页
+            ,layer = layui.layer //弹层
+            ,table = layui.table //表格
+            ,element = layui.element //元素操作
+            ,upload = layui.upload; //上传
+        form.on('switch(switchTest)', function(data){
+                layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis)
+                $('#test1:text').val();
+              });
+
+        //普通图片上传
+        var uploadInst = upload.render({
+          elem: '#upload'
+          ,url: '<{:U("Account/uploadQrcode")}>'
+          ,before: function(obj){
+            //预读本地文件示例，不支持ie8
+            obj.preview(function(index, file, result){
+              $('#demo1').attr('src', result); //图片链接（base64）
+            });
+          }
+          ,done: function(res){
+            //如果上传失败
+            if(res.code > 0){
+              return layer.msg('上传失败，检查组件是否开启');
+            }
+            layer.alert('上传成功',{icon: 6}, function(){
+              location.href = location.href;
+            });
+            //上传成功
+          }
+          ,error: function(){
+            //演示失败状态，并实现重传
+            var demoText = $('#demoText');
+            demoText.html('<span style="color: #FF5722;">上传失败，检查组件是否开启</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+            demoText.find('.demo-reload').on('click', function(){
+              uploadInst.upload();
+            });
+          }
+        });
+
+    });
+
+
+</script>
+</body>
+</html>

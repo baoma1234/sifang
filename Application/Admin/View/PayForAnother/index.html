@@ -1,0 +1,245 @@
+ <include file="Public/header"/>
+  <include file="Public/top"/>
+  <include file="Public/left-nav"/>
+<!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+       代付渠道设置
+      </h1>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Access Channel</a></li>
+        <li class="breadcrumb-item active">Establishment</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+     
+      <div class="row">		  
+        <div class="col-lg-12 col-12">
+			<!-- Basic Forms -->
+			  <div class="box">
+				<div class="box-header with-border">
+				  <h4 class="box-title">代付供应商管理</h4>			
+					<ul class="box-controls pull-right">
+					  <li><a class="box-btn-close" href="#"></a></li>
+					  <li><a class="box-btn-slide" href="#"></a></li>	
+					<li><a class="box-btn-fullscreen" href="#"></a></li>
+					</ul>
+				</div>
+				<!-- /.box-header -->
+                <div class="box-body">
+				  <div class="row">
+					<div class="col-12">
+                    <div class="ibox-content">
+                        <div class="box-controls pull-right" style="margin: 2px;">
+<button type="button"  href="javascript:;" id="addSupplier" class="btn btn-primary btn-sm" style="margin: 2px;"><i class="mdi mdi-checkbox-marked-circle-outline"></i> 添加代付渠道</button>	</div>
+                        <div class="table-responsive">
+                            <table class="layui-table">
+                                <thead>
+                                    <tr>
+
+                                        <th>编号</th>
+                                        <th>代付接口名称</th>
+                                        <th>代付接口代码</th>
+                                        <th>更改或添加时间</th>
+                                        <th>代付接口状态</th>  
+                                        <th>默认代付接口</th>  
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+								<volist name="lists" id="v">
+                                    <tr>
+                                        <td><{$v.id}></td>
+                                        <td><{$v.title}></td>
+                                        <td><{$v.code}></td>
+                                        <td><{$v.updatetime}></td>
+                                        <td>
+											<div class="layui-form">
+											<input type="checkbox" <if condition="$v['status']">checked</if> name="status" value="1" data-id="<{$v.id}>" data-name="<{$v.title}>" lay-skin="switch" lay-filter="switchTest" lay-text="开|关">
+											</div>
+										</td>
+										<td>
+											<div class="layui-form">
+											<input type="checkbox" <if condition="$v['is_default']">checked</if> name="status" value="1" data-id="<{$v.id}>" data-name="<{$v.title}>" lay-skin="switch" lay-filter="switchDefault" lay-text="开|关">
+										</div>
+										</td>
+                                        <td >
+											<div class="btn-group">
+                                              <a href="javascript:;" class="btn btn-info btn-sm" onclick="checkMoney('<{:U("Payment/". $v['code'] ."/queryBalance")}>',<{$v['id']}>)">查询余额</a>
+                                              
+                                            <button class="btn btn-info btn-sm" onclick="admin_editf('扩展字段','<{:U('PayForAnother/extendFields', array('id' => $v[id]))}>')">扩展字段</button>
+
+											  <button class="btn btn-info btn-sm" onclick="admin_edit('编辑供应商接口','<{:U('PayForAnother/operationSupplier',array('id'=>$v[id]))}>')">编辑</button>
+											  
+											  <button class="btn btn-info btn-sm" onclick="admin_del(this,'<{:$v[id]}>')">删除</button>
+											</div>
+                                        </td>
+                                    </tr>
+                                </volist>    
+                                </tbody>
+                            </table>
+                        </div>
+						<div class="page"><{$page}></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>    </div>
+    </div>    </div>    </div>
+
+ <include file="Public/footer"/>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+layui.use(['layer', 'form'], function(){
+  var form = layui.form
+  ,layer = layui.layer;
+  
+  //监听指定开关
+  form.on('switch(switchTest)', function(data){
+	var pid = $(this).attr('data-id'),
+	isopen = this.checked ? 1 : 0,
+	title = $(this).attr('data-name');
+	$.ajax({
+		url:"<{:U('PayForAnother/editStatus')}>",
+		type:'post',
+		data:"id="+pid+"&isopen="+isopen,
+		success:function(res){
+			if(res.status){
+				layer.tips('温馨提示：'+title+'开启', data.othis);
+			}else{
+				layer.tips('温馨提示：'+title+'关闭', data.othis);
+			}
+		}
+	});
+  });
+  
+  //监听指定开关
+  form.on('switch(switchDefault)', function(data){
+	var pid = $(this).attr('data-id'),
+	isopen = this.checked ? 1 : 0,
+	title = $(this).attr('data-name');
+	$.ajax({
+		url:"<{:U('PayForAnother/editDefault')}>",
+		type:'post',
+		data:"id="+pid+"&isopen="+isopen,
+		success:function(res){
+			if(res.status){
+				layer.tips('温馨提示：'+title+'开启', data.othis);
+				location.replace(location.href);
+			}else{
+				layer.tips('温馨提示：'+title+'关闭', data.othis);
+
+			}
+		}
+	});
+  });
+
+  //监听提交
+  $('#addSupplier').on('click',function(){
+	var w=466,h=600;
+if (h == null || h == '') {
+		h=($(window).height() - 50);
+	};
+	layer.open({
+		type: 2,
+		fix: false, //不固定
+		maxmin: true,
+		shadeClose: true,
+		area: [w+'px', h +'px'],
+		shade:0.4,
+		title: "添加代付供应商",
+		content: "<{:U('PayForAnother/operationSupplier')}>"
+	});
+  });
+});
+ //编辑
+ function admin_edit(title,url){
+	var w=466,h=600;
+if (h == null || h == '') {
+		h=($(window).height() - 50);
+	};
+	layer.open({
+		type: 2,
+		fix: false, //不固定
+		maxmin: true,
+		shadeClose: true,
+		area: [w+'px', h +'px'],
+		shade:0.4,
+		title: title,
+		content: url
+	});
+ }
+  
+   //编辑字段
+ function admin_editf(title,url){
+	var w=1000,h=600;
+if (h == null || h == '') {
+		h=($(window).height() - 50);
+	};
+	layer.open({
+		type: 2,
+		fix: false, //不固定
+		maxmin: true,
+		shadeClose: true,
+		area: [w+'px', h +'px'],
+		shade:0.4,
+		title: title,
+		content: url
+	});
+ }
+ /*删除*/
+function admin_del(obj,id){
+	layer.confirm('确认要删除吗？',function(index){
+		$.ajax({
+			url:"<{:U('PayForAnother/delSupplier')}>",
+			type:'post',
+			data:'id='+id,
+			success:function(res){
+				if(res.status){
+				$(obj).parents("tr").remove();
+				layer.msg('已删除!',{icon:1,time:1000});
+				}
+			}
+		});
+	});
+}
+function checkMoney(url,id){
+    $.ajax({
+        'type':'post',
+        'url':url,
+        'data':'id='+id,
+        success:function(res){
+
+            if(res['status'] == 1){
+                layer.open({
+                  type: 1 ,
+                  icon: 1,
+                  closeBtn: 1,
+                  title: '代付余额查询',
+                  btn: ['知道了'],
+                  area: ['300px', '200px'],
+                  shade: 0.6, 
+                  maxmin: false,
+                  anim: 1,
+                  skin: 'yourclass',
+                  content: res['data']
+                });
+                return;
+            }
+
+
+        },
+        'error':function(){
+            layer.msg('此代付无查询余额接口！', {icon: 5});
+        }
+    });
+}
+</script>
+
+</body>
+</html>

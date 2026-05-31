@@ -1,0 +1,140 @@
+div.notice-model .notice-modal-body {
+    overflow: auto!important;
+}
+
+
+.notice-model{
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1050;
+    outline: none;
+}
+
+.notice-model .notice-modal-dialog .notice-modal-content {
+    width: 500px;
+    height: 390px;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,.3);
+    border-radius: 8px
+}
+
+@media screen and (max-width: 992px) {
+    .notice-model .notice-modal-dialog .notice-modal-content {
+        width: 300px;
+        height: 390px;
+        background: #fff;
+        box-shadow: 0 1px 3px rgba(0,0,0,.3);
+        border-radius: 8px
+    }
+}
+
+.notice-model span {
+    display: inline;
+}
+
+div.notice-model .notice-modal-body {
+    height: 240px;
+    padding: 0px 20px 5px 26px;
+    overflow: scroll;
+    overflow-x: hidden;
+    font-size: 16px;
+    line-height: 32px;
+    word-break: break-all;
+    margin-bottom: 3px;
+}
+div.notice-model .notice-modal-footer {
+    padding: 5px 20px 18px 26px;
+    text-align: right;
+    border-top: 0px solid #e5e5e5 !important;
+}
+
+div.notice-model .notice-modal-header {
+    padding: 15px 20px 5px 26px;
+    border-bottom: 0px solid #e5e5e5;
+}
+div.notice-model .notice-modal-header .notice-modal-title {
+    letter-spacing: 2px;
+}
+
+div.notice-model .notice-button:disabled{
+    width: 125px;
+    color: #FFF;
+    background-color: #d9d9d9;
+    border-color: #d9d9d9;
+}
+
+.notice-button{
+    color: #FFF;
+    text-shadow: none;
+    background-color: #409EFF;
+    border-color: #409EFF;
+    box-shadow: none;
+    outline: none;
+}
+
+.notice-button:hover{
+    color: #FFF;
+    background-color: #66b1ff;
+    border-color: #66b1ff;
+}
+.notice-button:active {
+    color: #FFF!important;
+    background-color: #66b1ff!important;
+    border-color: #66b1ff!important;
+    background-image: none!important;
+}
+
+.notice-button:visited{
+    color: #FFF;
+    background-color: #66b1ff;
+    border-color: #66b1ff;
+    background-image: none;
+}
+
+div.notice-model .btn-default {
+    background-image: none;
+}
+
+::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    border: 5px solid transparent;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2) inset;
+}
+
+::-webkit-scrollbar-thumb {
+    min-height: 20px;
+    background-clip: content-box;
+    box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.2) inset;
+}
+
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+div.notice-model .notice-modal-tip {
+    height: 24px;
+    line-height: 24px;
+    margin-left: 20px;
+    color: #5586e2;
+    font-size: 14px;
+}
+
+div.notice-model .h4, h4 {
+    font-size: 22px;
+}

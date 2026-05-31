@@ -1,0 +1,26 @@
+<include file="Public/header1"/>
+<div class="box-body">
+<div class="row">
+    <div class="col-md-12">
+        <div class="ibox-content">
+          <div class="col-md-12 col-lg-4">
+            <div class="box box-solid box-primary">
+              <div class="box-header">
+                <h4 class="box-title"><{$a.title}></h4>
+                  <div class="box-controls pull-right">
+                  <a class="btn btn-xs btn-primary btn-flat" href="#"><{$a['updatetime']|time_format}></a>
+                </div> 
+              </div>
+
+              <div class="box-body">
+                <p><{$a[content]}></p>
+              </div>
+            </div>
+          </div>
+           
+        </div>
+    </div>
+</div></div>
+<include file="Public/foot"/>
+</body>
+</html>

@@ -1,0 +1,344 @@
+<include file="Public/header"/>
+<div class="wrapper">
+            <div class="container-fluid">
+
+                <!-- Page title box -->
+                <div class="page-title-alt-bg"></div>
+                <div class="page-title-box">
+                    <ol class="breadcrumb float-right">
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">Aggregate Payment</a></li>
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">Business</a></li>
+                        <li class="breadcrumb-item active">Information</li>
+                    </ol>
+                    <h4 class="page-title">商户信息</h4>
+                </div>
+                <!-- End page title box -->
+ <div class="row">
+                    <div class="col-12">
+                        <div class="card-box">
+                            <h4 class="header-title m-t-0">商户基本资料</h4>
+                            <if condition="$fans['status'] ==1"> <else/><p class="text-muted font-13"><small>激活状态：<code class="text-danger">未激活</code> 请联系平台客服激活后使用</small></p></if>
+                <!--用户信息-->
+           <form class="layui-form" action="" autocomplete="off" id="profile">
+                    <input type="hidden" name="id" value="<{$p.id}>">
+                    <div class="form-group row">
+                       <label class="col-sm-2 col-form-label">上级代理ID：</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="p[parentid]" lay-verify="title" autocomplete="off"  placeholder="无上级代理" class="form-control"   disabled autocomplete="off"  value="<{$p.parentid|htmlentities}>">
+                    <code style="color: red;">*ID为0表示无上级代理,如需修改上级代理请联系平台客服</code>
+                        </div>
+                    </div>
+                 
+                     <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">姓名：</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="p[realname]" lay-verify="title" autocomplete="off"
+                                   placeholder="姓名" class="form-control" value="<{$p.realname|htmlentities}>">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">身份证号码：</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="p[sfznumber]" lay-verify="identity" placeholder="身份证号码" autocomplete="off" class="form-control" value="<{$p.sfznumber|htmlentities}>">
+                        </div>
+                    </div>
+
+                   <div class="form-group row">
+                            <if condition="$sms_is_open">
+                                 <label class="col-sm-2 col-form-label">手机：<if condition="$p['mobile']">
+                                      <a href="javascript:;" class="btn btn-success btn-sm"  data-toggle="tooltip" data-placement="top" title="" data-original-title="点击修改手机号码" onclick="m_admin_show('修改手机号码','<{:U('Account/editMobileShow')}>?id=<{$p.id}>',300,300)">修改手机号码</a>            
+                                    <else/>
+                                      <a href="javascript:;" class="btn btn-success btn-sm"  data-toggle="tooltip" data-placement="top" title="" data-original-title="点击绑定手机号码" onclick="m_admin_show('绑定手机号码','<{:U('Account/bindMobileShow')}>?id=<{$p.id}>'300,300)">绑定手机号码</a>
+                                    </if>   </label>
+                                 <div class="col-sm-6">
+                                    <input type="text"  lay-verify="phone" disabled autocomplete="off"
+                                           class="form-control" value="<{$p.mobile|htmlentities}>">
+                                </div>
+                            <else/>
+                                <label class="col-sm-2 col-form-label">手机：</label>
+                              <div class="col-sm-6">
+                                    <input type="text"  lay-verify="phone" name="p['mobile']" autocomplete="off"
+                                           class="form-control" value="<{$p.mobile|htmlentities}>">
+                                </div>
+                            </if>
+                        </div>
+                     
+
+                 <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">QQ：</label>
+                           <div class="col-sm-6">
+                                <input type="text" name="p[qq]" lay-verify="" autocomplete="off"
+                                       class="form-control" value="<{$p.qq|htmlentities}>">
+                            </div>
+                         </div> 
+                  
+                     <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">生日：</label>
+                            <div class="col-sm-6">
+                                <input type="text" name="p[birthday]" id="date" lay-verify="date" placeholder="YYYY-MM-dd" autocomplete="off" class="form-control" value="<{$p.birthday|date='Y-m-d',###}>">
+                            </div>
+                        </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">性别：</label>
+                        <div class="col-sm-6">
+                         <input class="custom-control-input" type="radio" <if condition="$p['sex'] eq 1">checked</if> name="p['sex']" value="1"
+                            title="男" checked="">
+                            <input class="custom-control-input" type="radio" <if condition="$p['sex'] eq 0">checked</if> name="p['sex']" value="0"
+                            title="女">
+                        </div>
+                    </div>
+   
+                     <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">联系地址：</label>
+                         <div class="col-sm-6">
+                            <input type="text" name="p[address]" lay-verify="title" autocomplete="off"
+                                   placeholder="联系地址" class="form-control" value="<{$p.address|htmlentities}>">
+                        </div>
+                    </div>
+
+                   <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">登录IP：</label>
+                        <div class="col-sm-6">
+                            <textarea name="p['login_ip']" placeholder="如：127.0.0.1，多个IP请换行，一行一个IP"  class="form-control" rows="3"><{$p['login_ip']}></textarea>
+                            <code style="color: red;">*输入多个IP请换行，如果不输入默认所有IP可登录</code>
+                        </div>
+                    </div>
+                    
+                    <eq name="df_api" value="1">
+                <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">代付API接口状态：</label>
+                        <div class="col-sm-6">
+                            <input type="radio" name="p[df_api]" lay-filter="df_api" value="1" title="开启" <if
+                                condition="$p['df_api'] eq 1">checked
+                        </if>>
+                            <input type="radio" name="p[df_api]" lay-filter="df_api" value="0" title="关闭" <if
+                                condition="$p['df_api'] eq 0">checked
+                        </if>>
+                        </div>
+                    </div>
+          
+                        <div class="form-group row" id="df_auto_check" <if  condition="$p['df_api'] eq 0">style="display: none;"</if>>
+                           <label class="col-sm-2 col-form-label">代付API自动审核：</label>
+                           <div class="col-sm-6">
+                                <input type="radio" name="p[df_auto_check]" lay-filter="df_auto_check" value="1" title="开启" <if
+                                    condition="$p['df_auto_check'] eq 1">checked
+                            </if>>
+                                <input type="radio" name="p[df_auto_check]" lay-filter="df_auto_check" value="0" title="关闭" <if
+                                    condition="$p['df_auto_check'] eq 0">checked
+                            </if>>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group row" id="df_domain" <if  condition="$p['df_api'] eq 0">style="display: none;"</if>>
+                           <label class="col-sm-2 col-form-label">代付域名报备：</label>
+                             <div class="col-sm-6">
+                                <textarea name="p['df_domain']" placeholder="如：www.baidu.com，多个域名请换行，一行一个域名" class="form-control" rows="3"><{$p['df_domain']}></textarea>
+                      <code style="color: red;">注意：无需填写http://或https://，也不需要填写具体路径，结尾不加 /，一行一个域名。只允许从这些域名发起代付请求！</code>
+                        </div></div>
+
+                        <div class="form-group row" id="df_ip" <if  condition="$p['df_api'] eq 0">style="display: none;"</if>>
+                           <label class="col-sm-2 col-form-label">代付IP报备：</label>
+                           <div class="col-sm-6">
+                                <textarea name="p['df_ip']" placeholder="如：127.0.0.1，多个IP请换行，一行一个IP" class="form-control"><{$p['df_ip']}></textarea>
+                            <code style="color: red;">注意：请填写发起代付请求的服务器公网IP一行一个IP地址。</code>
+                        </div></div>
+                    </eq>
+              
+
+                      
+ <if condition="$verifyGoogle and $verifysms">
+                <div class="form-group row"  id="auth_type">
+              <label class="col-sm-2 col-form-label">验证方式：</label>
+                    <div class="col-sm-8">
+                      <input type="radio" name="auth_type" lay-filter="auth_type" id="radio_22" value="1" title="谷歌安全码" checked>
+                       <input type="radio" name="auth_type" lay-filter="auth_type" id="radio_21" value="0" title="短信验证码" checked>
+                        
+                       
+                    </div>
+                </div>
+                
+              <else />
+                <input type="hidden" name="auth_type" value="<{$auth_type}>">
+            </if>
+  <eq name="verifysms" value="1">          
+              <div class="form-group row"  id="auth_sms">
+<label for="example-week-input" class="col-sm-2 col-form-label">短信验证码：</label>
+                <div class="col-sm-2">
+        <div class="input-group">
+                  <input type="text" name="code"  autocomplete="off" placeholder="请输入短信验证码"  class="form-control" value="">
+          <div class="input-group-append">
+                                                <button href="javascript:;"   id="sendBtn" data-mobile="<{$fans['mobile']}>" data-bind="<{$fans['mobile']}>"  class="btn btn-danger waves-effect waves-light" type="button"  data-toggle="tooltip" data-placement="top" title="" data-original-title="点击发送短信验证码"><i class="icon-call-end"></i> 发送验证码</button>
+                                            </div>
+                </div>
+				</div></div>
+</eq>
+            <eq name="verifyGoogle" value="1">
+                    <div class="form-group row"  id="auth_google" <if condition="$verifyGoogle and $verifysms">style="display: none"</if>>
+						  <label for="example-week-input" class="col-sm-2 col-form-label">谷歌安全码：</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="google_code" autocomplete="off"
+                               placeholder="请输入谷歌安全码" class="form-control"   value="">
+                    </div>
+                </div>
+            </eq>
+
+          
+
+   
+                 <div class="form-group row">
+                   <label class="col-sm-2 col-form-label">&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                        <div class="col-sm-6">
+                            <button class="btn btn-primary" lay-submit="" lay-filter="profile"><i class="icon-like"></i> 立即提交</button>
+                        </div>
+                    </div>
+                </form>
+                <!--用户信息-->
+            </div>
+        </div>
+    </div>   
+</div>   
+</div> 
+
+
+  
+<!-- Main File-->
+<include file="Public/footer"/>
+<script>
+     /*订单-查看*/
+ function order_view(title,url,w,h){
+        x_admin_show(title,url,w,h);
+    }
+layui.use(['laydate', 'laypage', 'layer', 'form', 'element'], function() {
+    var laydate = layui.laydate //日期
+        ,layer = layui.layer //弹层
+        ,form = layui.form //弹层
+        , element = layui.element; //元素操作
+    //日期
+    laydate.render({
+        elem: '#date'
+    });
+    //监听提交
+    form.on('submit(profile)', function(data){
+        $.ajax({
+            url:"<{:U('Account/saveProfile')}>",
+            type:"post",
+            data:$('#profile').serialize(),
+            success:function(res){
+                if(res.status){
+                    layer.alert(res.msg, {icon: 6},function () {
+                        location.reload();
+                    });
+                }else{
+                    layer.alert(res.msg, {icon: 5});
+                }
+            }
+        });
+        return false;
+    });
+  
+
+ form.on('radio(auth_type)',function(data){
+            if(data.value == 1) {
+                $('#auth_google').show();
+                $('#auth_sms').hide();
+            } else {
+                $('#auth_google').hide();
+                $('#auth_sms').show();
+            }
+        });
+  
+  
+form.on('radio(df_api)',function(data){
+        if(data.value == 1) {
+            $('#df_auto_check').show();
+            $('#df_domain').show();
+            $('#df_ip').show();
+        } else {
+            $('#df_auto_check').hide();
+            $('#df_domain').hide();
+            $('#df_ip').hide();
+        }
+    });
+});
+
+function m_admin_show(title,url,w,h){
+    if (title == null || title == '') {
+        title=false;
+    };
+    if (url == null || url == '') {
+        url="404.html";
+    };
+    if (w == null || w == '') {
+        w=($(window).width());
+    };
+    if (h == null || h == '') {
+        h=($(window).height());
+    };
+    layer.open({
+        offset: 'auto',
+        type: 2,
+        fix: true, //不固定 
+      shadeClose: true,
+     scrollbar: false,
+        title: title,
+        content: [url,'no']
+    });
+}
+</script>
+<script>
+    layui.use(['form','table',  'laydate', 'layer'], function () {
+        var form = layui.form
+            ,table = layui.table
+            , layer = layui.layer
+            , laydate = layui.laydate;
+    });
+ function m_admin_show(title,url,w,h){
+    if (title == null || title == '') {
+        title=false;
+    };
+    if (url == null || url == '') {
+        url="404.html";
+    };
+    if (w == null || w == '') {
+        w=($(window).width());
+    };
+    if (h == null || h == '') {
+        h=($(window).height());
+    };
+    layer.open({
+        type: 2,
+        area: [w+'px', h +'px'],
+        fix: true, //不固定 
+        shadeClose: true,
+        shade:0.4,
+        title: title,
+        content: url
+    });
+}
+
+  </script>
+<script>
+    $(function (){
+        // 手机验证码发送
+        $('#sendBtn').click(function(){
+            var mobile = $(this).attr('data-mobile');
+            var first_bind = $(this).data('bind');
+            var sendUrl = "<{$sendUrl}>";
+            if(!mobile){
+                //判断用户是否准备绑定手机号
+                if(!first_bind){
+                    layer.alert('请先填写手机号码',{icon: 5}, function() {
+                        location.href = "<{:U('Account/profile')}>";
+                    });
+                }else{
+                    layer.alert('请先填写手机号码',{icon: 5});
+                }
+                return;
+            }
+            sendSms(this, mobile, sendUrl);
+        });
+    })
+</script>
+</body>
+</html>

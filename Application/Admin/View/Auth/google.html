@@ -1,0 +1,138 @@
+ <include file="Public/header"/>
+  <include file="Public/top"/>
+  <include file="Public/left-nav"/>
+<!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+      谷歌身份验证</h1>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Template</a></li>
+        <li class="breadcrumb-item active">identity verification</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+     
+      <div class="row">		  
+        <div class="col-lg-12 col-12">
+			<!-- Basic Forms -->
+			  <div class="box">
+				<div class="box-header with-border">
+				  <h4 class="box-title">身份验证码</h4>			
+					<ul class="box-controls pull-right">
+					  <li><a class="box-btn-close" href="#"></a></li>
+					  <li><a class="box-btn-slide" href="#"></a></li>	
+					<li><a class="box-btn-fullscreen" href="#"></a></li>
+					</ul>
+				</div>
+				<!-- /.box-header -->
+                <div class="box-body">
+				  <div class="row">
+					<div class="col-12">
+            <div class="ibox-content">
+                <!--用户信息-->
+                <form class="layui-form" action="" autocomplete="off" id="bindgoogle">
+              <input name="action_type" type="hidden" value="<{$action_type}>">
+                    <neq name="google_token" value="">
+                      
+                      <div class="input-group">
+                         <div class="callout callout-info">
+                           <div class="layui-input-inline">
+                                    <h4>您已绑定谷歌身份验证器 请输入谷歌安全码验证！</h4>
+                           <span class="b-1 d-inline-block d-inline-block text-center rounded p-300 w-200"><a href="<{:U('Admin/Auth/unbindGoogle')}>" style="color:#fff;text-decoration:none;">如需解绑谷歌验证器，点这里</a></span>
+                               </div></div></div>
+                        
+                       
+                      <include file="Public/send"/>
+                      
+                        <div class="layui-form-item">
+                            <div class="input-group">
+<span class="input-group-addon">谷歌安全码：</span>
+  
+                                <input type="text" name="code" id="code"  lay-verify="required" autocomplete="off" class="form-control col-sm-2" title="请输入6位验证码" placeholder="打开身份验证器获取安全码">
+ 
+                        </div> </div>
+    
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                              <div class="submit">
+                                <button class="layui-btn" lay-submit="" lay-filter="bindmobile"><i class="fa fa-check-square-o"></i>  立即验证</button>
+                            </div>
+                              <div class="submit2"></div>
+                               </div>
+                        </div>
+
+                      <else />
+                    <div class="input-group">
+           <div class="layui-input-inline" style="text-align: center;">
+             <p style="text-align: center;padding-bottom: 10px;">您还未绑定谷歌验证器 请按下面提示快速绑定</p>
+                                    <p style="text-align: center;padding-bottom: 10px;">手机打开Google Authenticator<br>(谷歌身份验证器)，扫描二维码</p>
+                                    <img src="<{$qrCodeUrl}>" width="200px;padding-top: 10px;">
+                                    <p style="text-align: center;">不能扫码？点击 <a href="javascript:layer.alert('<{$secret}>')" style="color:#ef4300;text-decoration:none;">查看密钥</a> 手动添加</p>
+                                </div>
+                            </div> 
+                      
+<include file="Public/send"/>                   
+<div class="layui-form-item">
+<div class="input-group">
+<span class="input-group-addon">谷歌安全码：</span>
+<input type="text" name="code" id="code"  lay-verify="required" autocomplete="off" class="form-control col-sm-1" title="请输入6位验证码"  placeholder="输入谷歌验证码">
+</div></div>
+                        
+                      <div class="layui-form-item">
+                          <button class="layui-btn" lay-submit="" lay-filter="bindmobile"><i class="fa fa-check-square-o"></i>  立即绑定</button>
+                        </div>
+        
+                    </neq>
+                </form>
+                <!--用户信息-->
+            </div>
+        </div>
+    </div></div></div>
+</div></div></div>
+
+<include file="Public/footer"/>
+<script>
+    //短信验证是否开启
+    var sms_is_open = "<{$sms_is_open}>";
+    layui.use(['laydate', 'laypage', 'layer', 'form', 'element'], function() {
+        var laydate = layui.laydate //日期
+            ,layer = layui.layer //弹层
+            ,form = layui.form //弹层
+            , element = layui.element; //元素操作
+        //日期
+        laydate.render({
+            elem: '#date'
+        });
+
+        $('#mobile').on('blur',function(){
+            var mobile = $(this).val();
+            $('#sendBtn').attr('data-mobile', mobile);
+        });
+
+    //监听提交
+        form.on('submit(bindmobile)', function(data){
+            $.ajax({
+            url:"<{:U('Admin/Auth/google')}>",
+            type:"post",
+            data:$('#bindgoogle').serialize(),
+            success:function(res){
+                if(res.status){
+                    layer.alert(res.msg ? res.msg :"操作成功", {icon: 6},function () {
+                        window.location.reload();
+                    });
+                }else{
+                    layer.alert(res.msg ? res.msg :"操作失败：验证码输入错误", {icon: 5});
+                }
+            }
+        });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

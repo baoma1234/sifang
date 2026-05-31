@@ -1,0 +1,85 @@
+      <!-- Footer -->
+        <footer class="footer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <?php echo "Copyright © 2017-" . date("Y") . " "; ?> <{$sitename}> Rights Reserved.
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- End Footer -->
+          <div class="right-bar">
+          
+            <div class="rightbar-title">
+                <a href="javascript:void(0);" class="right-bar-toggle float-right">
+                    <i class="dripicons-cross noti-icon"></i>
+                </a>
+                <h5 class="m-0">商户信息</h5>
+            </div>
+          
+            <div class="slimscroll-menu">
+                <!-- User box -->
+                <div class="user-box">
+                    <div class="user-img">
+                        <img src="/Public/assetsqq572125157/images/users/avatar-1.jpg" alt="user-img" title="Mat Helme" class="rounded-circle img-fluid">
+                        <a href="<{:U("Account/profile")}>" class="user-edit"><i class="mdi mdi-pencil"></i></a>
+                    </div>
+                    
+                    <h5><a href="#">商户ID：<{$fans.memberid}></a> </h5>
+                    <p class="text-muted mb-0"><small>商户名称：<{$fans.username}></small></p>
+                       <p class="text-muted mb-0"><small>认证状态：<if condition="$fans['authorized'] ==1"><code class="text-success">已认证</code><else/><code class="text-danger">未认证</code></if></small></p>
+                       <p class="text-muted mb-0"><small>激活状态：<if condition="$fans['status'] ==1"><code class="text-success">已激活</code><else/><code class="text-danger">未激活</code></if></small></p>
+                    
+                </div>
+
+                <!-- Settings -->
+                <hr class="mt-0" />
+                <h5 class="pl-3">版权所有：<{$sitename}> 版本：<{:C('SOFT_VERSION')}></h5>
+                <hr class="mb-0" />
+
+                
+
+
+               
+            </div>
+        </div>
+        <!-- /Right-bar -->
+<script src="/Public/Front/js/plugins/layui/layui.js" charset="utf-8"></script>
+<script src="/Public/Front/js/x-layui.js" charset="utf-8"></script>
+<script src="/Public/Front/js/Util.js" charset="utf-8"></script>
+<script src="/Public/Front/js/jquery.min.js"></script>
+<script src="/Public/Front/js/bootstrap.min.js"></script>
+<script src="/Public/Front/js/plugins/peity/jquery.peity.min.js"></script>
+<script src="/Public/Front/js/content.js"></script>
+<!-- jQuery  -->
+        <script src="/Public/assetsqq572125157/libs/jquery/jquery.min.js"></script>
+        <script src="/Public/assetsqq572125157/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="/Public/assetsqq572125157/libs/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+        <!-- KNOB JS -->
+        <script src="/Public/assetsqq572125157/libs/jquery-knob/jquery.knob.min.js"></script>
+        <!-- Chart JS -->
+        <script src="/Public/assetsqq572125157/libs/chart.js/Chart.bundle.min.js"></script>
+        <!-- Jvector map -->
+        <script src="/Public/assetsqq572125157/libs/jqvmap/jquery.vmap.min.js"></script>
+        <script src="/Public/assetsqq572125157/libs/jqvmap/maps/jquery.vmap.usa.js"></script>
+        <!-- Datatable js -->
+        <script src="/Public/assetsqq572125157/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+        <script src="/Public/assetsqq572125157/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+        <script src="/Public/assetsqq572125157/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+        <script src="/Public/assetsqq572125157/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+        <!-- Dashboard Init JS -->
+        <script src="/Public/assetsqq572125157/js/jquery.dashboard.js"></script>
+        <!-- App js -->
+        <script src="/Public/assetsqq572125157/js/jquery.core.js"></script>
+        <script src="/Public/assetsqq572125157/js/jquery.app.js"></script>
+        <script>
+            $(document).ready(function() {
+                // Default Datatable
+                $('#datatable').DataTable({
+                    "pageLength": 5,
+                    "searching": false,
+                    "lengthChange": false
+                });
+            } );
+        </script>

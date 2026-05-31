@@ -1,0 +1,131 @@
+<include file="Public/header1"/>
+   <div class="box-body">
+				  <div class="row">
+					<div class="col-12">
+                      
+			<form class="layui-form" action="" id="form" autocomplete="off" >
+				<input type="hidden" name="orderid" value="<{$order.id}>">
+			  <div class="layui-form-item">
+				<div class="input-group">
+            <span class="input-group-addon">订单号：</span>
+					<input type="text" class="form-control" value="<{$order.pay_orderid}>" readonly>
+				</div>
+			  </div>
+				<div class="layui-form-item">
+				<div class="input-group">
+            <span class="input-group-addon">金额：</span>
+						<input type="text" class="form-control" value="<{$order.pay_amount}>" readonly>
+					</div>
+				</div>
+				<if condition="$verifyGoogle and $verifysms">
+                  <div class="layui-form-item">
+				<div class="form-group row" id="df_auto_check">
+					<label class="col-sm-1 col-form-label">验证方式：</label>
+<div class="col-sm-2">
+						<input type="radio" name="auth_type" lay-filter="auth_type" value="1" title="谷歌安全码" checked>
+						<input type="radio" name="auth_type" lay-filter="auth_type" value="0" title="短信验证码">
+	
+				</div></div>
+					<else />
+					<input type="hidden" name="auth_type" value="<{$auth_type}>">
+				</if>
+				<eq name="verifyGoogle" value="1">
+                  <div class="layui-form-item">
+				<div class="input-group" id="auth_google">
+				<span class="input-group-addon">谷歌安全码：</span>
+
+						<input type="text" name="google_code" autocomplete="off"
+							   placeholder="请输入谷歌安全码" class="form-control" value="">
+				</div></div>
+				</eq>
+              
+				<eq name="verifysms" value="1">
+                  <div class="layui-form-item">
+					<div class="input-group" id="auth_sms" <if condition="$verifyGoogle and $verifysms">style="display: none"</if>>
+               <div class="input-group-prepend">
+                  <button href="javascript:;" type="button"   id="sendBtn" data-mobile="<{$mobile}>" class="btn btn-danger">发送验证码</button>
+                  <input type="text" name="code"  autocomplete="off"
+							   placeholder="请输入短信验证码" class="form-control" value="">
+                </div>
+                </div>
+            </div>
+				</eq>
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+				  	<button class="layui-btn" lay-submit="submit" lay-filter="save"><i class="fa fa-check-square-o"></i> 确定提交</button>
+				</div>
+			</div>
+			</form>
+            </div>
+        </div></div>
+<include file="Public/foot"/>
+<script>
+var issubmit=false;
+layui.use(['layer', 'form','laydate'], function(){
+  var form = layui.form
+  ,laydate = layui.laydate
+  ,layer = layui.layer;
+
+    //常规用法
+    laydate.render({
+        elem: '#createtime',
+		type: 'datetime',
+        theme: 'molv',
+        range: '|'
+    });
+  //监听提交
+  form.on('submit(save)', function(data){
+      layer.confirm('确认要将该订单设置为已支付吗？<br>订单号：【<{$order.pay_orderid}>】<br>该操作不可恢复，请谨慎操作！',{
+          btn: ['确定','取消'] //按钮
+      }, function(){
+          $.ajax({
+              url:"<{:U('Order/setOrderPaid')}>",
+              type:"post",
+              data:$('#form').serialize(),
+              success:function(res){
+                  if(res.status){
+                      layer.alert(res.msg? res.msg :"设置成功！", {icon: 6},function () {
+                          parent.location.reload();
+                          var index = parent.layer.getFrameIndex(window.name);
+                          parent.layer.close(index);
+                      });
+                  }else{
+                      layer.alert(res.msg, {icon: 5},function (index) {
+                          layer.close(index)
+                      });
+                  }
+              }
+          });
+      }, function(){
+      });
+   	 return false;
+  });
+    form.on('radio(auth_type)',function(data){
+        if(data.value == 1) {
+            $('#auth_google').show();
+            $('#auth_sms').hide();
+        } else {
+            $('#auth_google').hide();
+            $('#auth_sms').show();
+        }
+    });
+});
+</script>
+<script>
+    $(function (){
+        var sendUrl = "<{:U('Order/setOrderPaidSend')}>";
+        // 手机验证码发送
+        $('#sendBtn').click(function(){
+            var mobile = $(this).data('mobile');
+            if(mobile == '') {
+                layer.alert('请先绑定手机号码',{icon: 5}, function() {
+                    location.href = "<{:U('System/bindMobileShow')}>";
+                });
+                return;
+			}
+            sendSms(this, mobile, sendUrl);
+        });
+    })
+</script>
+</body>
+</html>

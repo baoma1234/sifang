@@ -1,0 +1,17 @@
+# 1. 屏蔽 ThinkPHP 系统核心运行缓存和日志（必须屏蔽，文件极多且天天变）
+/runtime/
+/data/runtime/
+
+# 2. 屏蔽本地或线上的配置文件（防止数据库密码、支付密钥本地和线上冲突）
+/application/database.php
+/application/config.php
+/.env
+
+# 3. 屏蔽用户上传的媒体文件（除非你想把本地测试的假图片也推到服务器）
+/public/uploads/
+
+# 4. 屏蔽各种编辑器的缓存和日志
+/.idea/
+/.vscode/
+*.log
+.DS_Store

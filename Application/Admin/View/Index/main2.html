@@ -1,0 +1,222 @@
+<include file="Public/header"/>
+  <include file="Public/top"/>
+  <include file="Public/left-nav"/>
+<!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Dashboard
+        <small><{$sitename}></small><small><script>
+　　　　var now = new Date;
+　　　　var bir = new Date(2025,11,14,08,08,08);  //在这里按照这个格式输入系统开始运行时间：年月日时分秒
+　　　　console.log(bir.getTime() + '<br>');
+　　　　console.log(now.getTime() + '<br>');
+　　　　var cha = now - bir;
+　　　　console.log(cha + '<br>')
+　　　　var date = cha / 86400000;
+　　　　document.write('系统已经稳定运行' + parseInt(date) + '天零');
+　　　　var hours1 = (cha % 86400000) / 3600000;
+　　　　document.write(parseInt(hours1) + '小时零');
+　　　　var minutes1 = (cha % 86400000 % 3600000) / 60000;
+　　　　document.write(parseInt(minutes1) + '分钟零');
+　　　　var second1 = (cha % 86400000 % 3600000 % 60000)/ 1000;
+　　　　document.write(parseInt(second1) + '秒');
+　　</script></small>
+      </h1>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="breadcrumb-item active">Dashboard</li>
+      </ol>
+    </section>
+
+   
+    <!-- Main content -->
+    <section class="content">  
+	  
+        
+        
+        
+        
+        
+        
+        
+        
+       
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <!-- /.col -->
+       
+		<!--  	  	
+		 <div class="row">
+        <div class="col-xl-3 col-md-6 col">
+          <div class="info-box">
+            <span class="info-box-icon bg-info rounded"><i class="ion ion-stats-bars"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-number"><{$stat.todaymemberprofit}><small>$</small></span>
+              <span class="info-box-text">今日代理总分成</span>
+            </div>
+           
+          </div>
+        
+        </div>
+        <div class="col-xl-3 col-md-6 col">
+          <div class="info-box">
+            <span class="info-box-icon bg-success rounded-circle"><i class="ion ion-thumbsup"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-number">$<{$stat.todayplatformincome}></span>
+              <span class="info-box-text">今日平台总分成</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="clearfix visible-sm-block"></div>
+
+        <div class="col-xl-3 col-md-6 col">
+          <div class="info-box">
+            <span class="info-box-icon bg-primary rounded-left"><i class="ion ion-bag"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-number"><{$ddata.num}></span>
+              <span class="info-box-text">今日订单数</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-md-6 col">
+          <div class="info-box">
+            <span class="info-box-icon bg-danger rounded-right"><i class="ion ion-person-stalker"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-number"><{$wdata.rate|default=0}></span>
+              <span class="info-box-text">本周总分成</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+		  ---->
+
+
+ <!-- Add the sidebar's background. This div must be placed immediately after the control sidebar -->
+    <include file="Public/footer"/>
+<!-- ./wrapper -->
+  <!-- /.content-wrapper -->
+<script>      
+      // AREA CHART
+    var area = new Morris.Area({
+      element: 'chart_1',
+      resize: true,
+      data: [
+        { y: '7日交易金额', a: <{$wdata.amount|default=0}>,},
+		{ y: '7日收入金额', a: <{$wdata.rate|default=0}>,},
+		{ y: '7日支出金额', a: <{$wdata.total|default=0}>,},
+      ],
+		xkey: 'y',
+		ykeys: ['a'],
+		labels: ['金额','line'],
+		fillOpacity: 1,
+		lineWidth:0,
+		lineColors: ['#1e88e5', '#fc4b6c'],
+		hideHover: 'auto'
+    });
+
+	
+	
+//BAR CHART
+    var bar = new Morris.Bar({
+      element: 'bar-chart',
+      resize: true,
+      data: [
+        {y: '今日交易金额', a:<{$ddata.amount|default=0}>,},
+        {y: '今日收入金额', a:<{$ddata.rate|default=0}>,},
+        {y: '今日支出金额', a:<{$ddata.total|default=0}>,},
+      ],
+		barColors: ['#7460ee', '#ffb22b'],
+		barSizeRatio: 0.5,
+		barGap:5,
+		xkey: 'y',
+		ykeys: ['a'],
+		labels: ['金额','line'],
+		hideHover: 'auto'
+    });
+	
+/*****E-Charts function start*****/
+		
+	if( $('#e_chart_3').length > 0 ){
+		var eChart_3 = echarts.init(document.getElementById('e_chart_3'));
+		var data = [{
+			value: 5713,
+			name: ''
+		}, {
+			value: 8458,
+			name: ''
+		}, {
+			value: 1254,
+			name: ''
+		}, {
+			value: 2589,
+			name: ''
+		}, {
+			value: 7458,
+			name: ''
+		}, {
+			value: 6325,
+			name: ''
+		}, {
+			value: 8452,
+			name: ''
+		}, {
+			value: 9563,
+			name: ''
+		}, {
+			value: 1125,
+			name: ''
+		}, {
+			value: 8546,
+			name: ''
+		}];
+		var option3 = {
+			tooltip: {
+				show: true,
+				trigger: 'item',
+				backgroundColor: 'rgba(33,33,33,1)',
+				borderRadius:0,
+				padding:10,
+				formatter: "{b}: {c} ({d}%)",
+				textStyle: {
+					color: '#fff',
+					fontStyle: 'normal',
+					fontWeight: 'normal',
+					fontFamily: "'Open Sans', sans-serif",
+					fontSize: 12
+				}	
+			},
+			series: [{
+				type: 'pie',
+				selectedMode: 'single',
+				radius: ['100%', '30%'],
+				color: ['#7460ee', '#e4e7ea', '#26c6da', '#1e88e5', '#ffb22b', '#fc4b6c', '#7c277d', '#FC3468', '#fcc525', '#8d6658'],
+				labelLine: {
+					normal: {
+						show: false
+					}
+				},
+				data: data
+			}]
+		};
+		eChart_3.setOption(option3);
+		eChart_3.resize();
+	}
+      </script>
+      
+</body>
+</html>

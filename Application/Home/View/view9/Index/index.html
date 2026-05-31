@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title><{$sitename}> 第四方支付 |专业支付平台</title>
+	<meta name="description" content="<{$sitename}> 第四方支付，提供微信支付宝支付服务商管理系统，支付财务对账，第四方支付，统一支付管理，一站式对账。" />
+	<meta name="keywords" content="<{$sitename}>，第四方支付，代付系统，分账系统，多级商户系统，财务对账系统，支付解决方案，支付通道集成。" />
+	<meta name="author" content="APIAPP"/>
+	<!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="Public/theme/view9/favicon.ico" />
+	<!-- Bootstrap & Plugins CSS -->
+	<link href="Public/theme/view9/static/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="Public/theme/view9/static/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<!-- Custom CSS -->
+	<link href="Public/theme/view9/static/css/style.css" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+
+
+<!-- ***** Header Area Start ***** -->
+<header class="header-area">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<nav class="main-nav">
+					<!-- ***** Logo Start ***** -->
+					<a href="/" class="logo">
+						<img src="Public/theme/view9/static/picture/dark.png" height="40" class="light-logo" alt="<{$sitename}>"/>
+						<img src="Public/theme/view9/static/picture/white.png" height="40" class="dark-logo" alt="<{$sitename}>"/>
+					</a>
+					<!-- ***** Logo End ***** -->
+
+					<!-- ***** Menu Start ***** -->
+					<ul class="nav">
+						<li><a href="/">聚合支付</a></li>
+						<li><a href="agent_Login.html"  target="_blank">商户登录</a></li>
+						<li><a href="agent_Login_register.html"  target="_blank">商户注册</a></li>
+						<li><a href="/Uploads/api.pdf"  target="_blank">开发文档</a></li>
+                      	<li><a href="/demo"  target="_blank">Demo测试</a></li>
+						<li><a href="#api3">关于我们</a></li>
+						<li><a href="#api2">联系我们</a></li> </ul>
+						<a class='menu-trigger'>
+							<span>菜单</span>
+						</a>
+						<!-- ***** Menu End ***** -->
+				</nav>
+			</div>
+		</div>
+	</div>
+</header>
+<!-- ***** Header Area End ***** -->
+	<!-- ***** Wellcome Area Start ***** -->
+	<section class="welcome-area">
+		<!-- ***** Wellcome Area Background Start ***** -->
+		<div class="welcome-bg" data-bg="Public/theme/view9/static/images/welcome.jpg">
+			<img src="Public/theme/view9/static/picture/bg-bottom.svg" alt="">
+		</div>
+		<!-- ***** Wellcome Area Background End ***** -->
+
+		<!-- ***** Wellcome Area Content Start ***** -->
+		<div class="welcome-content">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 align-self-center">
+						<h1><{$sitename}> 专业 安全 可靠的 金融科技解决方案提供商</h1>
+						<p> 聚合支付 为企业及金融机构提供专业的金融产品及技术服务，提供现金管理、聚合支付、电商存管、供应链金融等一站式金融科技解决方案。</p>
+						<a class="btn-white-line" href="http://wpa.qq.com/msgrd?v=3&uin=572125157&site=qq&menu=yes" target="_blank">联系我们</a>
+					</div>
+					<div class="offset-lg-1 col-lg-5 col-md-12 col-sm-12 col-xs-12 align-self-center">
+						<div class="apps">
+							<div class="container-fluid">
+								<div class="row">
+									<div class="col-lg-3 col-md-3 col-sm-3 col-3">
+										<a href="#" class="app-item">
+											<div class="icon">
+												<img src="Public/theme/view9/static/picture/1.png" class="img-fluid" alt="">
+											</div>
+										</a>
+									</div>
+									<div class="col-lg-3 col-md-3 col-sm-3 col-3">
+										<a href="#" class="app-item">
+											<div class="icon">
+												<img src="Public/theme/view9/static/picture/2.png" class="img-fluid" alt="">
+											</div>
+										</a>
+									</div>
+									<div class="col-lg-3 col-md-3 col-sm-3 col-3">
+										<a href="#" class="app-item">
+											<div class="icon">
+												<img src="Public/theme/view9/static/picture/3.png" class="img-fluid" alt="">
+											</div>
+										</a>
+									</div>
+									<div class="col-lg-3 col-md-3 col-sm-3 col-3">
+										<a href="#" class="app-item">
+											<div class="icon">
+												<img src="Public/theme/view9/static/picture/4.png" class="img-fluid" alt="">
+											</div>
+										</a>
+									</div>
+									<div class="col-lg-3 col-md-3 col-sm-3 col-3">
+										<a href="#" class="app-item">
+											<div class="icon">
+												<img src="Public/theme/view9/static/picture/5.png" class="img-fluid" alt="">
+											</div>
+										</a>
+									</div>
+									<div class="col-lg-3 col-md-3 col-sm-3 col-3">
+										<a href="#" class="app-item">
+											<div class="icon">
+												<img src="Public/theme/view9/static/picture/6.png" class="img-fluid" alt="">
+											</div>
+										</a>
+									</div>
+									<div class="col-lg-3 col-md-3 col-sm-3 col-3">
+										<a href="#" class="app-item">
+											<div class="icon">
+												<img src="Public/theme/view9/static/picture/7.png" class="img-fluid" alt="">
+											</div>
+										</a>
+									</div>
+									<div class="col-lg-3 col-md-3 col-sm-3 col-3">
+										<a href="#" class="app-item">
+											<div class="icon">
+												<img src="Public/theme/view9/static/picture/8.png" class="img-fluid" alt="">
+											</div>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- ***** Wellcome Area Content End ***** -->
+	</section>
+	<!-- ***** Wellcome Area End ***** -->
+
+
+	<!-- ***** Home About - Services Start ***** -->
+	<section class="section services-section pbottom-70"  id="api">
+		<div class="container">
+			<div class="row">
+				<!-- ***** Home About Start ***** -->
+				<div class="col-lg-5 col-md-12 col-sm-12 align-self-bottom">
+					<div class="left-heading">
+						<h2 class="section-title"><{$sitename}>，链接一切。</h2>
+					</div>
+					<div class="left-text">
+						<p class="dark">聚合支付 帮助企业快速高效的搭建自己的支付系统，是每一家企业内部的虚拟支付团队。无论企业是否已经对接支付渠道，都可以使用聚合支付的产品和服务。 </p>
+						<p> 作为支付技术服务商，聚合支付提供标准化支付产品及全面的支付渠道接入，聚合支付负责信息处理，安全风控，财务报表生成，对账以及其它。</p>
+					</div>
+
+				</div>
+				<!-- ***** Home About End ***** -->
+
+				<!-- ***** Home Services Start ***** -->
+				<div class="offset-lg-1 col-lg-6 col-md-12 col-sm-12 align-self-bottom">
+					<div class="row">
+						<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+							<a href="#" class="home-services-item mtop-70" data-scroll-reveal="enter bottom move 30px over 0.6s after 0.2s">
+								<i class="fa fa-clone"></i>
+								<h5 class="services-title">强大的技术能力</h5>
+								<p>行业一流的团队以大数据、云计算、风控、人工智能、区块链技术为核心，提供便捷、稳定和安全的技术服务</p>
+							</a>
+							<a href="#" class="home-services-item" data-scroll-reveal="enter bottom move 30px over 0.6s after 0.2s">
+								<i class="fa fa-connectdevelop"></i>
+								<h5 class="services-title">专业的对接流程</h5>
+								<p>为客户提从支付对接、测试、上线到后期系统运维、管理平台使用等全方位专业服务</p>
+							</a>
+						</div>
+						<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+							<a href="#" class="home-services-item active" data-scroll-reveal="enter bottom move 30px over 0.6s after 0.3s">
+								<i class="fa fa-object-ungroup"></i>
+								<h5 class="services-title">完善的风险管控</h5>
+								<p> 可以根据企业要求，接入身份认证，短信接口，人脸识别，银行卡三要素认证等风控安全接口，减少企业支付损失。</p>
+							</a>
+							<a href="services-single.html" class="home-services-item" data-scroll-reveal="enter bottom move 30px over 0.6s after 0.3s">
+								<i class="fa fa-line-chart"></i>
+								<h5 class="services-title">完善的API接口</h5>
+								<p>更好的满足客户对数据安全、监管合规、内部业务系统集成的需求，做到无感对接。</p>
+							</a>
+						</div>
+					</div>
+				</div>
+				<!-- ***** Home Services End ***** -->
+			</div>			
+		</div>
+	</section>
+	<!-- ***** Home About - Services Start ***** -->
+
+
+	<!-- ***** Features Start ***** -->
+	<section class="section background" id="api3">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-5 col-md-12 col-sm-12 col-xs-12 align-self-center">
+					<img src="Public/theme/view9/static/picture/home-mockup.png" class="img-fluid d-block mx-auto" alt="">
+				</div>
+				<div class="col-lg-7 col-md-12 col-sm-12 col-xs-12 align-self-center">
+					<ul class="features">
+						<li data-scroll-reveal="enter bottom move 30px over 0.6s after 0.2s">
+							<div class="count">
+								<span>1</span>
+							</div>
+							<div class="text">
+								<h5 class="title">多样支付场景</h5>
+								<p> 将App支付、手机网页 支付等常用场景进行定制封装  操作更顺畅</p>
+							</div>
+						</li>
+						<li data-scroll-reveal="enter bottom move 30px over 0.6s after 0.3s">
+							<div class="count">
+								<span>2</span>
+							</div>
+							<div class="text">
+								<h5 class="title">高效交易管理</h5>
+								<p> 提供高效便捷的交易管理服务，轻松应对各种交易场景情况</p>
+							</div>
+						</li>
+						<li data-scroll-reveal="enter bottom move 30px over 0.6s after 0.4s">
+							<div class="count">
+								<span>3</span>
+							</div>
+							<div class="text">
+								<h5 class="title">多维度数据分析</h5>
+								<p> 订单，交易数据，支付率等多样化报表智能生成，专业精准的数据分析服务</p>
+							</div>
+						</li>
+						<li data-scroll-reveal="enter bottom move 30px over 0.6s after 0.5s">
+							<div class="count">
+								<span>4</span>
+							</div>
+							<div class="text">
+								<h5 class="title">灵活接入系统</h5>
+								<p> 全系统API接口支持，无缝对接添加到企业自有系统，不影响现有业务逻辑</p>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- ***** Features End ***** -->
+
+
+	<!-- ***** Our Team Start ***** -->
+	<section class="section pbottom-70">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="center-heading">
+						<h2 class="section-title">服务行业</h2>
+					</div>
+				</div>
+				<div class="offset-lg-3 col-lg-6">
+					<div class="center-text">
+						<p>致力于帮助企业快速构建支付能力，让企业专注于其核心业务发展。</p>
+					</div>					
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+					<div class="team-item">
+						<div class="header">
+							<div class="img">
+								<img src="Public/theme/view9/static/picture/1.jpg" alt="">
+							</div>
+							<div class="info">
+								<strong>硬件厂商</strong>
+								<span>支付分流以及对账。</span>
+							</div>
+						</div>
+						<div class="body">
+							<br>自动售货机，抓娃娃机等多硬件设备的支付API接口，统一支付，分设备统计报表
+						</div>
+						<ul class="social">
+							<li><a href="http://wpa.qq.com/msgrd?v=3&uin=<{$siteconfig.qq}>&site=qq&menu=yes" target="_blank">获取方案</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+					<div class="team-item">
+						<div class="header">
+							<div class="img">
+								<img src="Public/theme/view9/static/picture/2.jpg" alt="">
+							</div>
+							<div class="info">
+								<strong>SaaS软件厂商</strong>
+								<span>多支付渠道一次接入</span>
+							</div>
+						</div>
+						<div class="body">
+                                 多个支付接口一次对接，多种支付渠道一键切换，为系统支付赋能。
+						</div>
+						<ul class="social">
+							<li><a href="http://wpa.qq.com/msgrd?v=3&uin=<{$siteconfig.qq}>&site=qq&menu=yes" target="_blank">获取方案</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+					<div class="team-item">
+						<div class="header">
+							<div class="img">
+								<img src="Public/theme/view9/static/picture/3.jpg" alt="">
+							</div>
+							<div class="info">
+								<strong>金融机构</strong>
+								<span>数据服务,安全风控 </span>
+							</div>
+						</div>
+						<div class="body">
+						<br>
+							提供技术服务，提供现金管理、数据服务、聚合支付、电商存管、等功能
+						</div>
+						<ul class="social">
+							<li><a href="http://wpa.qq.com/msgrd?v=3&uin=<{$siteconfig.qq}>&site=qq&menu=yes" target="_blank">获取方案</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+					<div class="team-item">
+						<div class="header">
+							<div class="img">
+								<img src="Public/theme/view9/static/picture/4.jpg" alt="">
+							</div>
+							<div class="info">
+								<strong>电商平台</strong>
+								<span>银行资金存管,分账 </span>
+							</div>
+						</div>
+						<div class="body">
+							<br>多种卖货场景下的支付模块解决方案，以及资金存管方案，助力企业合规化。
+						</div>
+						<ul class="social">
+							<li><a href="http://wpa.qq.com/msgrd?v=3&uin=<{$siteconfig.qq}>&site=qq&menu=yes" target="_blank">获取方案</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- ***** Our Team End ***** -->
+	<!-- ***** Footer Start ***** -->
+	<footer>
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-5 col-md-12 col-sm-12">
+					<img src="Public/theme/view9/static/picture/white.png" class="logo" height="70" alt="<{$sitename}>">
+					<div class="text">
+					为企业及金融机构提供专业的金融产品及技术服务，提供安全风控、数据服务、聚合支付、电商存管、一站式金融科技解决方案。
+
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-8 col-sm-12 col-12">
+					<h5>产品服务</h5>
+					<ul class="footer-nav">
+						<li><a href="#"><i class="fa fa-angle-right"></i><span>统一支付</span></a></li>
+						<li><a href="#"><i class="fa fa-angle-right"></i><span>子账户系统</span></a></li>
+						<li><a href="#"><i class="fa fa-angle-right"></i><span>多级代理系统</span></a></li>
+						<li><a href="#"><i class="fa fa-angle-right"></i><span>财务对账</span></a></li>
+						<li><a href="#"><i class="fa fa-angle-right"></i><span>多通道轮询</span></a></li>
+						<li><a href="#"><i class="fa fa-angle-right"></i><span>代付API</span></a></li>
+					</ul>
+				</div>
+
+				<div class="col-lg-3 col-md-4 col-sm-12" id="api2">
+					<h5>联系我们</h5>
+					<div class="address">
+						<p><{$siteconfig.company}></p>
+						<p>QQ：<a href="http://wpa.qq.com/msgrd?v=3&uin=<{$siteconfig.qq}>&site=qq&menu=yes" target="_blank"><{$siteconfig.qq}></a></p>
+						<p><span>E-Mail:</span><a href="#"><{$siteconfig.email}></a></p>
+
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<p class="copyright"><?php echo "Copyright © 2017-" . date("Y") . " "; ?><{$sitename}> Rights Reserved. <{$siteconfig.icp}></p>
+				</div>
+			</div>
+		</div>
+	</footer>
+	<!-- ***** Footer Start ***** -->
+
+<!-- 代码 开始 -->
+<div id="service">
+	<a href="http://wpa.qq.com/msgrd?v=3&uin=<{$siteconfig.qq}>&site=qq&menu=yes" class="srvLog" title="索取演示" target="_blank">购买咨询</a>
+	<a class="srvCns" href="http://wpa.qq.com/msgrd?v=3&uin=<{$siteconfig.qq}>&site=qq&menu=yes" title="购买咨询" target="_blank">在线咨询</a>
+	<a href="http://wpa.qq.com/msgrd?v=3&uin=<{$siteconfig.qq}>&site=qq&menu=yes" class="srvDj"  title="合作咨询" target="_blank">售后咨询</a>
+	<a class="goTop" id="goTop" title="返回顶部" style="display:none">返回顶部</a>
+</div>
+<script src="Public/theme/view9/static/js/jquery.min.js"></script>
+<script>
+(function() {
+    // 返回顶部按钮自动隐藏
+    $(window).scroll(function(){
+        if ($(window).scrollTop()>200){
+            $('#goTop').fadeIn();
+        }else if($(window).scrollTop()<200){
+            $('#goTop').fadeOut();
+        }
+    });
+
+    // 返回顶部按钮
+    $('#goTop').click(function() {
+        $("html, body").animate({scrollTop:0}, 200);
+    });
+
+    // 语音开关
+    var music = document.getElementById("bgMusic");
+
+    $("#audioBtn").click(function(){
+
+        if(music.paused){
+            music.play();
+            $("#audioBtn").removeClass("pause").addClass("play");
+        }else{
+            music.pause();
+            $("#audioBtn").removeClass("play").addClass("pause");
+        }
+    });
+})();
+</script>
+<!-- 代码 结束 -->
+
+	<!-- jQuery -->
+	<script src="Public/theme/view9/static/js/jquery-2.1.0.min.js"></script>
+
+	<!-- Bootstrap -->
+	<script src="Public/theme/view9/static/js/popper.js"></script>
+	<script src="Public/theme/view9/static/js/bootstrap.min.js"></script>
+
+	<!-- Plugins -->
+	<script src="Public/theme/view9/static/js/scrollreveal.min.js"></script>
+	<script src="Public/theme/view9/static/js/parallax.min.js"></script>
+	<script src="Public/theme/view9/static/js/waypoints.min.js"></script>
+	<script src="Public/theme/view9/static/js/jquery.counterup.min.js"></script>
+	<script src="Public/theme/view9/static/js/imgfix.min.js"></script>	
+
+	<!-- Global Init -->
+	<script src="Public/theme/view9/static/js/custom.js"></script>
+
+</body>
+</html>

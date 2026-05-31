@@ -1,0 +1,144 @@
+<include file="Public/header1"/>
+<div class="box-body">
+  <div class="row">
+  <div class="col-md-12">
+    
+    <form class="layui-form" id="groupForm" method="post" autocomplete="off" action="">
+<div class="form-group row">
+<label class="col-sm-2">管理员类型：</label>
+<div class="col-sm-2">
+          <select name="groupid" lay-verify="required"   required="required" lay-search="" class="form-control select2">
+            <volist name="groups" id="g">
+              <option <if condition="$u['groupid'] eq $g['id']">selected</if>
+              value="<{$g.id}>"><{$g.title}></option>
+            </volist>
+          </select>
+</div>
+      </div>
+      
+      <div class="layui-form-item">
+       <div class="input-group">
+          <span class="input-group-addon">管理员账号：</span>
+          <input type="text" name="username" lay-verify="required" placeholder="请输入用户名" autocomplete="off"  id="username" class="form-control"  readonly onfocus="this.removeAttribute('readonly');">
+        </div>
+      </div>
+      <div class="layui-form-item">
+       <div class="input-group">
+                    <span class="input-group-addon">密码：</span>
+
+          <input type="password" name="password" lay-verify="required" placeholder="请输入密码" autocomplete="off"  id="passw" class="form-control"  readonly onfocus="this.removeAttribute('readonly');">
+        </div>
+      </div>
+      
+      <div class="layui-form-item">
+        <div class="input-group">
+                    <span class="input-group-addon">重复密码：</span>
+
+          <input type="password" name="reppassword" lay-verify="required" placeholder="确认密码" autocomplete="off" class="form-control"  readonly onfocus="this.removeAttribute('readonly');">
+        </div>
+      </div>
+
+  <if condition="$verifyGoogle and $verifysms">
+                  <div class="layui-form-item">
+				<div class="form-group row" id="df_auto_check">
+					<label class="col-sm-1 col-form-label">验证方式：</label>
+<div class="col-sm-2">
+						<input type="radio" name="auth_type" lay-filter="auth_type" value="1" title="谷歌安全码" checked>
+						<input type="radio" name="auth_type" lay-filter="auth_type" value="0" title="短信验证码">
+	
+				</div></div>
+					<else />
+					<input type="hidden" name="auth_type" value="<{$auth_type}>">
+				</if>
+				<eq name="verifyGoogle" value="1">
+                  <div class="layui-form-item">
+				<div class="input-group" id="auth_google">
+				<span class="input-group-addon">谷歌安全码：</span>
+
+						<input type="text" name="google_code" autocomplete="off"
+							   placeholder="请输入谷歌安全码" class="form-control" value="">
+				</div></div>
+				</eq>
+              
+				<eq name="verifysms" value="1">
+					<div class="input-group row" id="auth_sms" <if condition="$verifyGoogle and $verifysms">style="display: none"</if>>
+            <div class="input-group-prepend col-sm-3">
+                  <input type="text" name="code"  autocomplete="off" placeholder="输入短信验证码" class="form-control" value="">
+                <button href="javascript:;" type="button"  id="sendBtn" data-mobile="<{$mobile}>"   class="btn btn-xs btn-danger" title="点击获取短信验证码"><i class="glyphicon glyphicon-stats"></i> 获取短信验证码</button>
+                </div>
+                </div>
+            </div>
+				</eq>
+<div class="input-group">
+   <label class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-2">
+                  <button class="btn btn-success btn-sm" lay-submit="" lay-filter="user"><i class="fa fa-check-square-o"></i> 提交保存</button>
+                  <button type="reset" class="btn btn-secondary btn-sm"><i class="glyphicon glyphicon-remove"></i>  重置</button>
+  </div>
+      </div>
+    </form>
+  </div>
+</div></div>
+<include file="Public/foot"/>
+<script>
+  layui.use(['layer', 'form'], function(){
+      var $ = layui.jquery
+          ,form = layui.form
+          ,layer = layui.layer;
+
+      //监听提交
+      form.on('submit(user)', function(data){
+
+          $.ajax({
+              url:"<{:U('Admin/addAdmin')}>",
+              type:"post",
+              data:$('#groupForm').serialize(),
+              success:function(res){
+                  if(res.status){
+                      layer.alert(res.msg ? res.msg : "操作成功", {icon: 6},function () {
+                          parent.location.reload();
+                          var index = parent.layer.getFrameIndex(window.name);
+                          parent.layer.close(index);
+                      });
+                  }else{
+
+                      layer.msg(res.msg ? res.msg : "操作失败!", {icon: 5},function () {
+                          var index = parent.layer.getFrameIndex(window.name);
+                          parent.layer.close(index);
+                      });
+                      return false;
+                  }
+              }
+          });
+          return false;
+      });
+      //验证方式检测
+        form.on('radio(auth_type)',function(data){
+        if(data.value == 1) {
+            $('#auth_google').show();
+            $('#auth_sms').hide();
+        } else {
+            $('#auth_google').hide();
+            $('#auth_sms').show();
+        }
+    });
+  });
+</script>
+<script>
+    $(function (){
+        var sendUrl = "<{:U('System/sysconfigSend')}>";
+        // 手机验证码发送
+        $('#sendBtn').click(function(){
+            var mobile = $(this).data('mobile');
+            if(mobile == '') {
+                layer.alert('请先绑定手机号码',{icon: 5}, function() {
+                    location.href = "<{:U('System/bindMobileShow')}>";
+                });
+                return;
+			}
+            sendSms(this, mobile, sendUrl);
+        });
+    })
+</script>
+</body>
+</html>

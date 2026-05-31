@@ -1,0 +1,122 @@
+<include file="Public/header"/>
+<include file="Public/top"/>
+<include file="Public/left-nav"/>
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>久爱购订单管理</h1>
+    </section>
+
+    <section class="content">
+        <div class="box">
+            <div class="box-header with-border">
+                <h4 class="box-title">同步订单列表</h4>
+            </div>
+            <div class="box-body">
+                <form method="get" class="form-inline" style="margin-bottom:15px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+                    <input type="hidden" name="m" value="Admin">
+                    <input type="hidden" name="c" value="JiuaigouOrder">
+                    <input type="hidden" name="a" value="index">
+                    <input type="text" name="order_no" class="form-control" style="width:180px;" placeholder="订单号" value="<{$order_no}>">
+                    <input type="text" name="tran_no" class="form-control" style="width:180px;" placeholder="微信/支付宝/银行订单号" value="<{$tran_no}>">
+                    <input type="text" name="customer_phone" class="form-control" style="width:160px;" placeholder="客户手机号" value="<{$customer_phone}>">
+                    <input type="text" name="device_sn" class="form-control" style="width:180px;" placeholder="设备编号" value="<{$device_sn}>">
+                    <select name="status" class="form-control" style="width:140px;">
+                        <option value="">全部订单状态</option>
+                        <volist name="statusOptions" id="so" key="sk">
+                            <option value="<{$key}>" <if condition="$status eq $key">selected</if>><{$so}></option>
+                        </volist>
+                    </select>
+                    <select name="pay_status" class="form-control" style="width:140px;">
+                        <option value="">全部支付状态</option>
+                        <volist name="payStatusOptions" id="po" key="pk">
+                            <option value="<{$key}>" <if condition="$pay_status eq $key">selected</if>><{$po}></option>
+                        </volist>
+                    </select>
+                    <button type="submit" class="btn btn-primary">搜索</button>
+                </form>
+
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>订单号</th>
+                        <th>微信/支付宝/银行订单号</th>
+                        <th>客户手机号</th>
+                        <th>设备编号</th>
+                        <th>订单金额</th>
+                        <th>支付金额</th>
+                        <th>手续费</th>
+                        <th>商品数</th>
+                        <th>支付方式</th>
+                        <th>支付时间</th>
+                        <th>支付状态</th>
+                        <th>订单状态</th>
+                        <th>商品信息</th>
+                        <th>下单时间</th>
+                        <th>完成时间</th>
+                        <th>备注</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <volist name="list" id="vo">
+                        <tr>
+                            <td><a href="javascript:;" class="copy-text" data-text="<{$vo.remote_order_no}>"><{$vo.remote_order_no}></a></td>
+                            <td><a href="javascript:;" class="copy-text" data-text="<{$vo.tran_no}>"><{$vo.tran_no}></a></td>
+                            <td><{$vo.customer_phone}></td>
+                            <td><{$vo.device_sn}></td>
+                            <td><{$vo.amount}></td>
+                            <td><{$vo.pay_amount}></td>
+                            <td><{$vo.fee_amt}></td>
+                            <td><{$vo.num}></td>
+                            <td><?php echo !empty($vo['pay_type_text']) ? $vo['pay_type_text'] : '-'; ?></td>
+                            <td><?php echo !empty($vo['pay_time']) ? (is_numeric($vo['pay_time']) ? date('Y-m-d H:i:s', intval($vo['pay_time'])) : date('Y-m-d H:i:s', strtotime($vo['pay_time']))) : '-'; ?></td>
+                            <td><?php
+                                $payStatusColor = '#fa8c16';
+                                if (isset($vo['pay_status']) && $vo['pay_status'] === 'success') {
+                                    $payStatusColor = '#52c41a';
+                                } elseif (isset($vo['pay_status']) && $vo['pay_status'] === 'fail') {
+                                    $payStatusColor = '#ff4d4f';
+                                } elseif (isset($vo['pay_status']) && $vo['pay_status'] === 'timeoutClose') {
+                                    $payStatusColor = '#999999';
+                                }
+                                ?>
+                                <span style="color:<?php echo $payStatusColor; ?>;"><?php echo !empty($vo['pay_status_text']) ? $vo['pay_status_text'] : '-'; ?></span>
+                            </td>
+                            <td><?php
+                                $orderStatusColor = '#1890ff';
+                                if (isset($vo['status']) && $vo['status'] === 'success') {
+                                    $orderStatusColor = '#52c41a';
+                                } elseif (isset($vo['status']) && $vo['status'] === 'fail') {
+                                    $orderStatusColor = '#ff4d4f';
+                                } elseif (isset($vo['status']) && $vo['status'] === 'timeoutClose') {
+                                    $orderStatusColor = '#999999';
+                                }
+                                ?>
+                                <span style="color:<?php echo $orderStatusColor; ?>;"><?php echo !empty($vo['status_text']) ? $vo['status_text'] : '-'; ?></span>
+                            </td>
+                            <td style="white-space:normal;word-break:break-all;max-width:420px;line-height:1.6;"><?php echo !empty($vo['items_text']) ? $vo['items_text'] : '-'; ?></td>
+                            <td><?php echo !empty($vo['create_time']) ? (is_numeric($vo['create_time']) ? date('Y-m-d H:i:s', intval($vo['create_time'])) : date('Y-m-d H:i:s', strtotime($vo['create_time']))) : '-'; ?></td>
+                            <td><?php echo !empty($vo['success_time']) ? (is_numeric($vo['success_time']) ? date('Y-m-d H:i:s', intval($vo['success_time'])) : date('Y-m-d H:i:s', strtotime($vo['success_time']))) : '-'; ?></td>
+                            <td><?php echo !empty($vo['remark']) ? $vo['remark'] : '-'; ?></td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+
+                <div class="page"><{$page}></div>
+            </div>
+        </div>
+    </section>
+</div>
+<include file="Public/footer"/>
+<script>
+$(document).on('click', '.copy-text', function () {
+    var text = $(this).data('text');
+    if (!text) return;
+    var tempInput = $('<input>');
+    $('body').append(tempInput);
+    tempInput.val(text).select();
+    document.execCommand('copy');
+    tempInput.remove();
+    layer.msg('已复制: ' + text);
+});
+</script>

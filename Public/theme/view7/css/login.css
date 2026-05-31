@@ -1,0 +1,38 @@
+/* 登录 */
+.login-bg{ width:100%; height:100%; position:fixed; background:url(/Public/theme/view7/images/login_bg.png) no-repeat;background-size: 100%; }
+.panel{background:#fff;box-shadow: 0px 20px 30px 0px rgba(14,25,29,0.32);}
+form .form-group:last-child{padding-bottom:0;}
+.passcode{position:absolute;right:0;bottom:0;height:32px;margin:1px;border-left:solid 1px #ddd;text-align:center;line-height:32px;border-radius:0 4px 4px 0;}
+ul,li{ list-style-type:none;}
+
+.login .field-icon-right .icon{ bottom:0px; top:auto}
+.login .loginbox { background:#fff;border-radius:4px;font-size:12px;position:relative;}
+.login-logo{position:fixed;top:40px;left:40px;}
+.login .forget-password{float:right;}
+.login .register-btn{color:#0081FF;}
+.login .register-now{text-align:center;}
+.login .form-group{padding-bottom:16px;}
+.login .input-big, .form-big .input, .form-big .button{font-size:14px;cursor:pointer;text-align:center;}
+.login .copy{text-align:center;font-size: 11px;color: #fff;margin:30px auto;}
+.login .copy img{margin-bottom:12px;}
+.login .return{position:absolute;left:20px;top:20px;}
+.login .layui-form-checked, .layui-form-checked:hover{color:#0081FF;border-color:#0081FF;}
+.login .layui-form-checked i, .layui-form-checked:hover i{color:#0081FF;}
+
+.register .form-group{padding-bottom:25px;}
+.register .cancel{
+    width:126px;
+    height:38px;
+    border-color:#0081FF;
+    border-radius: 4px ;
+    color:#0081FF;
+}
+.register .sure{
+    width:126px;
+    height:38px;
+    background:rgba(0,129,255,1);
+    border-radius: 4px ;
+    color:#fff;
+    float:right;
+}
+

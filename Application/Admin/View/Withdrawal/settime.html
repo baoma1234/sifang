@@ -1,0 +1,24 @@
+<form class="layui-form" action="" id="settime">
+	<input type="hidden" name="id" value="<{$configs['id']}>">	
+	<div class="layui-form-item">
+   <div class="form-group row">
+                                     <label for="example-text-input" class="col-sm-1 col-form-label">提款时间：</label>
+      <div class="layui-input-inline">
+        
+        <input type="text" class="layui-input" name="u[allowstart]" id="auto_tx_stime"
+					   placeholder="提现开始时间" value="<{$configs.allowstart}>" lay-verify="required" >
+  
+    </div>
+      <div class="layui-form-mid">-</div>
+      <div class="layui-input-inline">
+     <input type="text" class="layui-input" name="u[allowend]" id="auto_tx_etime"
+					   placeholder="提现结束时间" value="<{$configs.allowend}>" lay-verify="required" >
+    </div>
+    </div>
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-input-block">
+			<button class="layui-btn" lay-submit="submit" lay-filter="time"><i class="fa fa-check-square-o"></i> 提交保存</button>
+		</div>
+	</div>
+</form>

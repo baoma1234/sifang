@@ -1,0 +1,78 @@
+<header class="main-header">
+    <!-- Logo -->
+    <a href="index.html" class="logo">
+      <!-- mini logo -->
+	  <b class="logo-mini">
+		  <span class="light-logo"><img src="Public/qq572125157/images/logo-light.png" alt="logo"></span>
+		  <span class="dark-logo"><img src="Public/qq572125157/images/logo-dark.png" alt="logo"></span>
+	  </b>
+      <!-- logo-->
+      <span class="logo-lg">
+		  <img src="Public/qq572125157/images/logo-light-text.png" alt="logo" class="light-logo">
+	  	  <img src="Public/qq572125157/images/logo-dark-text.png" alt="logo" class="dark-logo">
+	  </span>
+    </a>
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-static-top">
+      <!-- Sidebar toggle button-->
+	  <div>
+		  <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+			<span class="sr-only">Toggle navigation</span>
+		  </a>
+        </div>
+ <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+		  <!-- User Account-->
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+             <span class="glyphicon glyphicon-user"></span>
+            </a>
+            <ul class="dropdown-menu scale-up">
+              <!-- User image -->
+              <li class="user-header">
+                <img src="Public/qq572125157/images/user_admin.png" class="float-left rounded-circle" alt="User Image">
+
+                <p style="font-size: 14px;">
+                  <small class="mb-2"></small>
+                    <small class="mb-2"></small>
+                 <small class="mb-10">ID:<{$member.username}></small>
+                       <small class="mb-10"><switch name="member['groupid']">
+            <case value="1">总管理员</case>
+            <case value="2">运营管理员</case>
+			<case value="3">财务管理员</case>
+            </switch></small>
+      </p>
+              </li>
+              <!-- Menu Body -->
+              <li class="user-body">
+                <div class="row no-gutters">
+                  <div class="col-12 text-left">
+                    <a href="<{:U("admin/Menu/index")}>"><i class="ion ion-person"></i> 权限配置</a>
+                  </div>
+                  <div class="col-12 text-left">
+                    <a href="<{:U("admin/System/editPassword")}>"><i class="ion ion-email-unread"></i> 修改密码</a>
+                  </div>
+                  <div class="col-12 text-left">
+                    <a href="<{:U("admin/System/base")}>"><i class="ion ion-settings"></i> 系统设置</a>
+                  </div>
+				<div role="separator" class="divider col-12"></div>
+				  <div class="col-12 text-left">
+                    <a href="<{:U("admin/System/mobile")}>"><i class="ti-settings"></i> 绑定手机</a>
+                  </div>
+				<div role="separator" class="divider col-12"></div>
+				  <div class="col-12 text-left">
+                    <a href="<{:U("Login/loginout")}>"> <i class="fa fa-power-off"></i> 安全退出</a>
+                  </div>				
+                </div>
+                <!-- /.row -->
+              </li>
+            </ul>
+          </li>
+          <!-- Control Sidebar Toggle Button -->
+          <li>
+            <a href="#" data-toggle="control-sidebar"><i class="fa fa-cog fa-spin"></i></a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>

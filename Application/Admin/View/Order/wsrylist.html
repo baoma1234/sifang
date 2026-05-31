@@ -1,0 +1,290 @@
+<include file="Public/header"/>
+  <include file="Public/top"/>
+  <include file="Public/left-nav"/>
+<!-- Content Wrapper. Contains page content -->
+<!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+       订单管理
+      </h1>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="breadcrumb-item"><a href="#">System setting</a></li>
+        <li class="breadcrumb-item active">Order History</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+     
+      <div class="row">		  
+        <div class="col-lg-12 col-12">
+			<!-- Basic Forms -->
+			  <div class="box">
+				<div class="box-header with-border">
+				  <h4 class="box-title">订单流水管理</h4>			
+					<ul class="box-controls pull-right">
+					  <li><a class="box-btn-close" href="#"></a></li>
+					  <li><a class="box-btn-slide" href="#"></a></li>	
+					<li><a class="box-btn-fullscreen" href="#"></a></li>
+                       <h4 class="box-title"><a href="/Home_Index_wsry.html" class="btn btn-info btn-xs" target="_blank">添加虚拟订单</a></h4>
+					</ul>
+				</div>
+				<!-- /.box-header -->
+                <div class="box-body">
+				  <div class="row">
+					<div class="col-12">
+                      
+      <div class="ibox-content">
+  
+        <div class="list item">
+          <!--交易列表-->
+          <table class="layui-table" lay-data="{width:'100%',limit:<{$rows}>,id:'userData'}">
+             <colgroup>
+        <col width="150">
+        <col width="200">
+        <col>
+      </colgroup>
+            <thead>
+            <tr>
+            <th lay-data="{field:'pay_orderid', width:250,style:'color:#060;'}">平台订单号 OR 商户订单号</th>
+              <th lay-data="{field:'shid', width:90}">商户编号</th>
+              <th lay-data="{field:'money', width:120,style:'color:#060;'}">交易金额</th>
+              <th lay-data="{field:'sxf', width:90}">手续费</th>
+              <th lay-data="{field:'sjmoney', width:120,style:'color:#C00;'}">实际金额</th>
+              <th lay-data="{field:'gettime', width:180}">提交时间  OR 成功时间</th>
+               <!--<th lay-data="{field:'time', width:140}">成功时间</th>-->
+              <th lay-data="{field:'paytype', width:160}">支付通道</th>
+              <!--<th lay-data="{field:'memberid', width:160}">通道商户号</th>-->
+              <th lay-data="{field:'bankname', width:120}">支付类别</th>
+              <!--<th lay-data="{field:'tjurl', width:100}">来源地址</th> -->
+              <th lay-data="{field:'body', width:100}">订单描述</th>
+              <th lay-data="{field:'status', width:110}">状态</th>
+              <th lay-data="{field:'op',width:220}">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <volist name="list" id="vo">
+              <tr>
+                <!--<td><{$vo.id}></td>
+               <td>
+                  <switch name="vo[ddlx]">
+                    <case value="1">充值</case>
+                    <default/>收款
+                  </switch>
+                </td>-->
+                <td style="text-align:center; color:#090;"><{$vo[orderno]}><br><{$vo[ordernotwo]}>
+                </td>
+
+                <td style="text-align:center;"><{$vo.shid}></td>
+                <td style="text-align:center; color:#060"><{$vo.money}></td>
+                <td style="text-align:center; color:#666"><{$vo.sxf}></td>
+                <td style="text-align:center; color:#C00"><{$vo.sjmoney}></td>
+                <td style="text-align:center;"> <{:date('Y-m-d H:i:s',strtotime($vo['gettime']))}><br>	 <if condition="$vo['status']==1">
+                            <{:date('Y-m-d H:i:s',strtotime($vo['time']))}>
+                         <else/>
+                            未支付
+                        </if></td>
+                <td style="text-align:center;"><{$vo.paytype}></td>
+                <td style="text-align:center;"><{$vo.paytype}></td>
+                <!--<td style="text-align:center;"><{$vo.pay_bankname}></td>-->
+                <!--<td style="text-align:center;"><a href="<{$vo.pay_tjurl}>" target="_blank" title="<{$vo.pay_tjurl}>">
+                  来源地址</a></td> -->
+                <td style="text-align:center;">收款订单</td>
+                <td style="text-align:center; color:#369">
+                	
+                        <if condition="$vo['status']==1">
+                   <font  class='layui-badge-rim layui-btn-sm layui-bg-green text-align:center;' onclick="forzenOrder(this,'<{$vo.id}>',0)">成功,已通知</font>
+                        </if>
+                       <if condition="$vo['status']==0">
+                       <font  class='layui-badge-rim layui-btn-sm layui-bg-gray text-align:center;'  onclick="forzenOrder(this,'<{$vo.id}>',1)">未付,未处理</font>
+                        </if>
+                </td>
+                <td>
+                   <if condition="$vo['status']==1">
+             <button class="btn btn-info btn-xs" onclick="order_view('系统订单号:<{$vo.orderno}>','<{:U('Admin/Order/wsryshow',['oid'=>$vo[id]])}>',380,520)">订单详情</button>       
+                    <button class="btn btn-success btn-xs" onclick="forzenOrder(this,'94')">冻结订单</button>                      
+                        </if>
+                  
+                 
+                 <if condition="$vo['status']==0">
+                       <button class="btn btn-info btn-xs" onclick="order_view('系统订单号:<{$vo.orderno}>','<{:U('Admin/Order/wsryshow',['oid'=>$vo[id]])}>',380,520)">订单详情</button>
+                    <button  class="btn btn-danger btn-xs" onclick="forzenOrder(this,'<{$vo.id}>',1)">设置为已支付</button>     
+                        </if>
+                </td>
+              </tr>
+            </volist>
+            </tbody>
+          </table>
+          <!--交易列表-->
+          <div class="page">
+              <form class="layui-form" action="" method="get" id="pageForm"  autocomplete="off">
+                <{$page}>
+                  <select name="rows" style="height: 29px;" id="pageList" lay-ignore >
+                      <option value="">显示条数</option>
+                     <option <if condition="$rows neq '' && $rows eq 30">selected</if> value="30">30条</option>
+                    <option <if condition="$rows eq 40">selected</if> value="40">40条</option>
+                      <option <if condition="$rows eq 50">selected</if> value="50">50条</option>
+                      <option <if condition="$rows eq 80">selected</if> value="80">80条</option>
+                      <option <if condition="$rows eq 100">selected</if> value="100">100条</option>
+                  </select>
+              </form>
+</div>
+          
+      </div>
+    </div> </div>
+
+</div></div> </div></div></div></div>
+<include file="Public/footer"/>
+<script src="/Public/Front/js/echarts.common.min.js"></script>
+<script>
+      $('#pageList').change(function(){
+        $('#pageForm').submit();
+    });
+    layui.use(['laydate', 'laypage', 'layer', 'table', 'form'], function() {
+        var laydate = layui.laydate //日期
+            , laypage = layui.laypage //分页
+            ,layer = layui.layer //弹层
+            ,form = layui.form //表单
+            , table = layui.table; //表格
+        //日期时间范围
+        laydate.render({
+            elem: '#createtime'
+            , type: 'datetime'
+            ,theme: 'molv'
+            , range: '|'
+        });
+        //日期时间范围
+        laydate.render({
+            elem: '#successtime'
+            , type: 'datetime'
+            ,theme: 'molv'
+            , range: '|'
+        });
+    });
+    /*订单-查看*/
+    function order_view(title,url,w,h){
+        x_admin_show(title,url,w,h);
+    }
+    /*订单-批量删除*/
+    function delAllOrder(title, url, w, h) {
+        x_admin_show(title, url, w, h);
+    }
+    /*订单-设置订单状态为已支付*/
+      function setOrderPaid(title, url, w, h) {
+          x_admin_show(title, url, w, h);
+      }
+    $('#export').on('click',function(){
+        window.location.href
+            ="<{:U('Admin/Order/exportorder')}>?memberid=<{$_GET[memberid]}>&orderid=<{$_GET[orderid]}>&pay_orderid=<{$_GET[pay_orderid]}>&createtime=<{$_GET[createtime]}>&successtime=<{$_GET[successtime]}>&tongdao=<{$_GET[tongdao]}>&bank=<{$_GET[bank]}>&status=<{$_GET[status]}>&ddlx=<{$_GET[ddlx]}>";
+    });
+      function forzenOrder(obj, id,status) {
+          layer.confirm('确认要修改状态吗？', function (index) {
+              $.ajax({
+                  url:"./admin_Order_doForzenWsry.html",
+                  type:'post',
+                  data:'id='+id+'&status='+status,
+                  success:function(res){
+                      if(res.status=="1"){
+                          layer.alert('修改成功！',function () {
+                              location.replace(location.href);
+                          });
+                      }else{
+                          layer.alert('修改失败!!');
+                      }
+                  }
+              });
+          });
+      }
+
+    function chooseOrder_del() {
+        var createtime=$("#createtime").val();
+        if(createtime==""){
+            layer.alert('请选择删除无效订单创建时间段');
+            return;
+        }
+        layer.confirm('删除操作为真实删除，确定要删除时间段从'+createtime.replace('|','到')+'的无效订单吗？',function(index){
+            $.ajax({
+                url:"<{:U('Order/delOrder')}>",
+                type:'post',
+                data:{'createtime':createtime},
+                success:function(res){
+                    if(res.status){
+                        layer.alert('删除成功！',function () {
+                            location.replace(location.href);
+                        });
+                    }else{
+                        layer.alert('删除失败！');
+                    }
+                }
+            });
+        });
+    }
+    
+    var myChart = echarts.init(document.getElementById('dmonth'));
+    myChart.setOption({
+        tooltip : {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                label: {
+                    backgroundColor: '#6a7985'
+                }
+            }
+        },
+        legend: {
+            data:['交易金额','收入金额','支出金额']
+        },
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis : [
+            {
+                type : 'category',
+                boundaryGap : false,
+                data : [<{$mdata.mdate|implode=","}>]
+            }
+        ],
+        yAxis : [
+            {
+                type : 'value'
+            }
+        ],
+        series : [
+            {
+                name:'交易金额',
+                type:'line',
+                stack: '总量',
+                areaStyle: {normal: {}},
+                data:[<{$mdata.amount|implode=","}>]
+            },
+            {
+                name:'收入金额',
+                type:'line',
+                stack: '总量',
+                areaStyle: {normal: {}},
+                data:[<{$mdata.rate|implode=","}>]
+            },
+            {
+                name:'支出金额',
+                type:'line',
+                stack: '总量',
+                areaStyle: {normal: {}},
+                data:[<{$mdata.total|implode=","}>]
+            },
+        ]
+    });
+
+</script>
+</body>
+</html>

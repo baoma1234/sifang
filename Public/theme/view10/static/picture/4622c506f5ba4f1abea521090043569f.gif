@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>汇聚支付 - 致力于成为世界一流的科技企业</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=11 chrome=1">
+    <meta name="keywords" content="汇聚支付,聚合支付,第三方支付,第三方支付平台,第三方支付公司,第三方支付接口,垫资支付,余额支付,跨境支付">
+    <meta name="description" content="汇聚支付是广州市正佳科技集团旗下的开展第三方支付业务的全资子公司，提供互联网支付和跨境人民币支付服务，利用信息化平台为客户打造专业、高效、安全的现金流管理解决方案。">
+    <meta property="og:image" content="./images/index/sm-logo.png"/>
+    <meta name="baidu-site-verification" content="kWXmf1a6xH" />
+    <link rel="shortcut icon" type="image/x-icon" href="./images/favicon.ico" media="screen" />
+    <link href="./assets/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="./assets/bootstrap-3.3.7/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
+    <link href="./css/rewriteModal.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="./assets/normalize.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="./css/global/common.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="./css/global/proCommon.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="./css/index.css" rel="stylesheet" type="text/css" media="all" />
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?7e007e5f112c1c9bff8cf7b3e9ba6abc";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+</head>
+<body>
+<header class="index-header">
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <header class="index-header-box header">
+            <div class="container">
+                <div class="header-icon col-lg-2 col-md-3">
+                    <a href="./index.html"><img src="./images/index/iconblack.png" /></a>
+                </div>
+                <nav class="header-nav col-lg-7 col-md-6">
+                    <ul class="nav-ul">
+                        <li class="nav-li"><a class="nav-active-a" href="./index.html">首页</a></li>
+                        <li class="nav-li">
+                            <a href="./pages/product.html">产品中心</a>
+                            <div class="nav-list header-pro-list">
+                                <span><a href="./pages/netSilverPay.html">网银支付</a></span>
+                                <span style="display: none"><a href="./pages/noCardPay.html">无卡支付</a></span>
+                                <span><a href="./pages/aggregatePay.html">聚合支付</a></span>
+                                <span><a href="./pages/quickPay.html">快捷支付</a></span>
+                                <span><a href="./pages/crossBorderPay.html">跨境产品</a></span>
+                                <span><a href="./pages/alternativePay.html">代付业务</a></span>
+                                <!-- FIXME: 隐藏 -->
+                                <span style="display: none"><a href="./pages/beePay.html">蜂收APP</a></span>
+                            </div>
+                        </li>
+                        <li class="nav-li nav-open-platform">开放平台</li>
+                        <li class="nav-li"><a href="./pages/safeCenter.html">安全中心</a></li>
+                        <li class="nav-li"><a href="./pages/customerCenter.html">客服中心</a></li>
+                        <li class="nav-li">
+                            <a class="header-aboutus" href="javascript:;">关于我们</a>
+                            <div class="nav-list header-aboutus-list">
+                                <span><a href="./pages/companyProfile.html">企业简介</a></span>
+                                <span><a href="./pages/newsCenter.html">新闻中心</a></span>
+                                <span><a href="./pages/companyQualification.html">企业资质</a></span>
+                                <span><a href="https://www.lagou.com/gongsi/113687.html">企业招聘</a></span>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="header-btn-groups col-lg-3 col-md-3">
+                    <a href="javascript:void(0)" onclick="$.getRegister('/login')"><button class="nav-btn">登录</button></a>
+                    <span class="nav-btn-line"> | </span>
+                    <a href="javascript:void(0)" onclick="$.getRegister('/RegChoose')"><button class="nav-btn">注册</button></a>
+                </div>
+            </div>
+        </header>
+        <header class="header-sm">
+            <div class="header-sm-icon col-sm-8 col-xs-8">
+                <a href="./index.html"><img src="./images/index/LOGO横（白）.png" /></a>
+            </div>
+            <nav class="header-sm-nav col-sm-4 col-xs-4">
+                <ul class="nav-sm-ul">
+                    <li class="nav-sm-li">
+                        <span><img src="./images/index/smnav.png" class="nav-sm-btn" /></span>
+                    </li>
+                </ul>
+            </nav>
+            <div class="nav-sm-list nav-sm-list-off">
+                <span><span><a href="./index.html">首页</a></span></span>
+                <span>
+            <span class="header-pro-toggle">产品中心<b class="header-pro-arrow"></b></span>
+            <div class="header-sm-list header-sm-pro-list">
+                <span><a href="./pages/netSilverPay.html">网银支付</a></span>
+                <span style="display: none"><a href="./pages/noCardPay.html">无卡支付</a></span>
+                <span><a href="./pages/aggregatePay.html">聚合支付</a></span>
+                <span><a href="./pages/quickPay.html">快捷支付</a></span>
+                <span><a href="./pages/crossBorderPay.html">跨境产品</a></span>
+                <span><a href="./pages/alternativePay.html">代付业务</a></span>
+                <!-- FIXME: 隐藏 -->
+                <span style="display: none"><a href="./pages/beePay.html">蜂收APP</a></span>
+            </div>
+        </span>
+                <span><span><a href="./pages/safeCenter.html">安全中心</a></span></span>
+                <span><span><a href="./pages/customerCenter.html">客服中心</a></span></span>
+                <span>
+            <span class="header-aboutus-toggle"><a>关于我们<b class="header-aboutus-arrow"></b></a> </span>
+            <div class="header-sm-list  header-sm-aboutus-list">
+                <span><a href="./pages/companyProfile.html">企业简介</a></span>
+                <span><a href="./pages/newsCenter.html">新闻中心</a></span>
+                <span><a href="./pages/companyQualification.html">企业资质</a></span>
+                <span><a href="https://www.lagou.com/gongsi/113687.html">企业招聘</a></span>
+            </div>
+        </span>
+            </div>
+        </header>
+        <!-- 轮播（Carousel）指标 -->
+        <ol class="carousel-indicators">
+            <li class="index-slide-li active" data-target="#myCarousel" data-slide-to="0"></li>
+            <li class="index-slide-li" data-target="#myCarousel" data-slide-to="1"></li>
+            <li class="index-slide-li" data-target="#myCarousel" data-slide-to="2"></li>
+        </ol>
+        <!-- 轮播（Carousel）项目 -->
+        <div class="carousel-inner">
+            <div class="index-banner-item item active">
+                <a>
+                    <img class="index-banner-1 index-banner-img" src="./images/index/banner1.jpg" />
+                </a>
+            </div>
+            <div class="index-banner-item item">
+                <a href="https://www.joinpay.com/pages/newsDetail.html?id=107">
+                    <img class="index-banner-2 index-banner-img" src="./images/index/banner2.jpg" />
+                </a>
+            </div>
+            <div class="index-banner-item item">
+                <a href="https://www.joinpay.com/pages/newsDetail.html?id=114">
+                    <img class="index-banner-3 index-banner-img" src="./images/index/banner3.jpg" />
+                </a>
+            </div>
+        </div>
+        <div class="sm-banner-title">
+            <img src="./images/index/sm-banner-title.png" />
+        </div>
+        <!-- 左侧标签栏 -->
+        <div class="banner-aside">
+            <!-- <div class="banner-icon-box banner-icon-box1">
+                <div class="banner-icon">
+                    <a href="javascript:;">
+                        <img src="./images/icon/客服-3.png" />
+                    </a>
+                </div>
+            </div>
+            <div class="banner-icon-box">
+                <div class="banner-icon banner-icon2">
+                    <img src="./images/icon/电话.png" />
+                </div>
+                <div class="banner-icon-msg msg-tel">电话客服 400-830-1015 转 "0"</div>
+            </div>
+            <div class="banner-icon-box">
+                <div class="banner-icon banner-icon-email-box banner-icon3">
+                    <img src="./images/icon/邮箱%20邮件.png" />
+                </div>
+                <div class="banner-icon-msg msg-mail">客服邮箱：help@joinpay.com</div>
+            </div> -->
+            <div class="banner-icon-box banner-icon-weixin">
+                <div class="msg-weixin">
+                    <img src="./images/index/ro-twocode.png" />
+                </div>
+                <div class="banner-icon">
+                    <img src="./images/icon/微信-2.png" />
+                </div>
+            </div>
+            <div class="banner-icon-box">
+                <div class="banner-icon banner-icon-back-top" onclick="backTop()">
+                    <img src="./images/icon/返回顶部.jpg" />
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Button trigger modal -->
+<!--    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal"  data-target="#myModal">
+        Launch demo modal
+    </button>-->
+
+<!-- Modal -->
+<!-- FIXME: col-xs-10 col-xs-offset-1 -->
+<div class="notice-model" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none">
+    <div class="notice-modal-dialog" role="document">
+        <div class="notice-modal-content">
+            <div class="notice-modal-header">
+                <h4 class="notice-modal-title" id="myModalLabel">汇聚公告</h4>
+            </div>
+            <div class="notice-modal-body" id="panelBody" v-html="">
+                welcome
+            </div>
+            <div class="notice-modal-tip" >
+                <p id="modal-tip" ><img src="./images/index/gantanhao.png" style="margin-bottom: 2px" width="16px" height="16px">请滑动到底部确认</p>
+            </div>
+            <div class="notice-modal-footer">
+                <button type="button" class="notice-button btn btn-default" disabled="disabled" data-dismiss="modal" id="modal-btn">我已阅读并确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <section class="section1 col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
+        <span class="section-title">业务范围</span>
+        <p class="section-text col-lg-12 col-md-12">汇聚支付积极布局电商、酒店、共享经济、智慧零售、在线教育、国际贸易等行业。针对中小型企业面临的数字化转型、系统化运营等需求，汇聚支付以“技术”为核心，以“风控、服务、智库、产品”为驱动，形成四轮同向发力，将科技创新“触角”伸向各个行业，为企业客户打造专业、高效、安全的行业解决方案，助力企业在业务运营中有效优化信息流和资金流效率，提升客户行业竞争力。</p>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <a href="./pages/product.html">
+                <div class="col-lg-6 col-md-6 col-md-offset-0 col-sm-8 col-sm-offset-2 col-xs-12 section1-card section1-card-left">
+                    <div class="section1-img-box">
+                        <img class="section1-img" src="./images/index/indexbigcard1.png" />
+                    </div>
+                    <span class="section1-card-text">互联网支付</span>
+                </div>
+            </a>
+            <a href="./pages/crossBorderPay.html">
+                <div class="col-lg-6 col-md-6 col-md-offset-0 col-sm-8 col-sm-offset-2 col-xs-12 section1-card section1-card-right">
+                    <div class="section1-img-box">
+                        <img class="section1-img" src="./images/index/indexbigcard2.png" />
+                    </div>
+                    <span class="section1-card-text">跨境人民币支付</span>
+                </div>
+            </a>
+        </div>
+    </section>
+    <section class="section2 col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
+        <span class="section-title index-section-title">核心优势</span>
+        <div class="card index-card col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="card-img-box">
+                <img class="card-img" src="./images/index/indexcard1.png"/>
+            </div>
+            <span class="card-title">质量监控</span>
+            <p class="card-content">专业运营后台<br />
+                应急咨询及问题处理</p>
+        </div>
+        <div class="card index-card col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="card-img-box">
+                <img class="card-img" src="./images/index/indexcard2.png"/>
+            </div>
+            <span class="card-title">贴心客服</span>
+            <p class="card-content">实时为您解决问题<br/>
+                VIP服务全年无休<br/>
+        </div>
+        <div class="card index-card col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="card-img-box">
+                <img class="card-img" src="./images/index/indexcard3.png"/>
+            </div>
+            <span class="card-title">技术支持</span>
+            <p class="card-content">
+<!--                技术支持<br/>-->
+                专业的综合服务团队<br/>
+                实时维护解决问题<br/>
+        </div>
+        <div class="card index-card col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="card-img-box">
+                <img class="card-img" src="./images/index/indexcard4.png"/>
+            </div>
+            <span class="card-title">强大的商户后台</span>
+            <p class="card-content">实时交易明细查询<br/>
+                实时账务变动查询<br/>
+        </div>
+        <div class="card index-card col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="card-img-box">
+                <img class="card-img" src="./images/index/indexcard5.png"/>
+            </div>
+            <span class="card-title">快速接入方式</span>
+            <p class="card-content">接口简单、安全<br/>
+                专人协助快速接入<br/>
+        </div>
+        <div class="card index-card col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="card-img-box">
+                <img class="card-img" src="./images/index/indexcard6.png"/>
+            </div>
+            <span class="card-title">全方位安全保护</span>
+            <p class="card-content">交易数据全加密<br/>
+                专业的风控团队<br/>
+        </div>
+    </section>
+</div>
+<section class="section3">
+    <div class="container">
+        <div class="section3-content col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-lg-offset-2 col-xs-10 col-xs-offset-1">
+            <span class="section3-text">汇聚支付资质</span>
+            <a href="./pages/companyQualification.html"><span class="section3-todetail">了解汇聚支付资质详情<img class="index-small-arrow" src="./images/index/small-arrow.png" /></span></a>
+        </div>
+    </div>
+</section>
+<div class="container">
+    <section class="section4 col-xs-12 col-sm-12 col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1">
+        <div class="index-news-img-box col-lg-6 col-md-6 col-md-offset-0 col-sm-8 col-xs-8 col-sm-offset-2 col-xs-offset-2">
+            <a class="index-img-a" href="javascript:;"><img src="" class="index-news-img"/></a>
+        </div>
+        <div class="index-news col-lg-6 col-md-6 col-sm-8 col-xs-8 col-md-offset-0 col-sm-offset-2 col-xs-offset-2">
+            <div class="index-news-text"></div>
+            <ul class="index-news-list"></ul>
+        </div>
+    </section>
+</div>
+<section class="section5 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="container">
+        <div class="section5-partner-box col-xs-12 col-sm-12 col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1">
+            <span class="section-title">部分合作机构</span>
+            <img class="partner-img partner-bank" src="./images/index/bank.png" />
+            <span class="section-title">部分合作品牌</span>
+            <img class="partner-img partner-brand" src="./images/index/partner-new.png" />
+        </div>
+    </div>
+</section>
+<footer class="footer col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="container">
+        <div class="footer-container col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <ul class="footer-ul col-xs-12 col-sm-7 col-md-7">
+                <li>
+                    <span class="footer-li-title footer-li-content">关于我们</span>
+                    <span class="footer-li-content"><a href="./pages/companyProfile.html">企业简介</a></span>
+                    <span class="footer-li-content"><a href="./pages/newsCenter.html">新闻中心</a></span>
+                    <span class="footer-li-content"><a href="./pages/customerCenter.html">客服中心</a></span>
+                    <span class="footer-li-content"><a href="./pages/companyQualification.html">企业资质</a></span>
+                </li>
+                <li>
+                    <span class="footer-li-title footer-li-content">产品介绍</span>
+                    <span class="footer-li-content"><a href="./pages/netSilverPay.html">网银支付</a></span>
+                    <span class="footer-li-content" style="display: none"><a href="./pages/noCardPay.html">无卡支付</a></span>
+                    <span class="footer-li-content"><a href="./pages/aggregatePay.html">聚合支付</a></span>
+                    <span class="footer-li-content"><a href="./pages/quickPay.html">快捷支付</a></span>
+                    <span class="footer-li-content"><a href="./pages/crossBorderPay.html">跨境支付</a></span>
+                    <span class="footer-li-content"><a href="./pages/alternativePay.html">代付业务</a></span>
+                    <!-- FIXME: 隐藏 -->
+                    <span class="footer-li-content" style="display: none"><a href="./pages/beePay.html">蜂收APP</a></span>
+                </li>
+                <li>
+                    <span class="footer-li-title footer-li-content">其他</span>
+                    <span class="footer-li-content"><a href="./pages/customerPoints.html?type=3">服务条款</a></span>
+                    <span class="footer-li-content"><a href="./pages/customerPoints.html?type=2">行业资讯</a></span>
+                    <span class="footer-li-content"><a href="./pages/feePublicity.html">收费公示</a></span>
+                </li>
+                <li>
+                    <span class="footer-li-title footer-li-content">联系我们</span>
+                    <span class="footer-li-content footer-li-email"><a href="javascript:;">邮箱：help@joinpay.com</a></span>
+                    <span class="footer-li-content footer-li-tel"><a href="javascript:;">客服：400-830-1015 转“0”</a></span>
+                </li>
+            </ul>
+            <div class="footer-icon col-xs-12 col-md-2 col-sm-6">
+                <div class="footer-weixin-box">
+                    <img class="footer-icon-img footer-icon-weixin" src="./images/index/weixin.png" alt="">
+                    <div class="footer-icon-twocode">
+                        <img src="./images/index/twocode.png" />
+                    </div>
+                </div>
+                <a href="https://weibo.com/u/6336880690?refer_flag=1001030101_&is_hot=1"><img class="footer-icon-img" src="./images/index/xinlang.png" alt=""></a>
+            </div>
+            <div class="footer-tel-box col-xs-12 col-md-3 col-sm-6">
+                <div class="footer-tel-title">服务热线</div>
+                <span class="footer-tel">400-830-1015</span>
+                <span class="footer-tel-time">周一到周五 09:00-18:00</span>
+            </div>
+            <div class="footer-bottom">
+                <p class="icpBox">
+                    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44010602002022">
+                        <img src="./images/index/beianbgs.png" class="footer-bottom-beianbg">
+                        <span>粤公网安备44010602002022号</span>
+                    </a>
+                    &nbsp;|&nbsp;
+a                        <span>粤ICP备15050752号</span>
+                    </a>
+                    &nbsp;|&nbsp;
+                    <span>Copyright © 2008 - 2021  汇聚支付 版权所有</span>
+                    <span>本站已支持IPV6</span>
+                    <a href="http://www.cyberpolice.cn/wfjb/"><img src="./images/index/jinghui.png" class="footer-bottom-jinghui" alt="beian" /></a>
+                    <a href="http://www.315online.com.cn/"><img src="./images/index/safe.png" class="footer-bottom-safe" alt="beian" /></a>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="./assets/jquery/jquery-3.3.1.min.js"></script>
+<script src="./assets/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+<script src="./assets/Clamp.js-master/clamp.min.js"></script>
+<script src="./js/util.js"></script>
+
+<script>
+    (function(a,h,c,b,f,g){a["UdeskApiObject"]=f;a[f]=a[f]||function(){(a[f].d=a[f].d||[]).push(arguments)};g=h.createElement(c);g.async=1;g.charset="utf-8";g.src=b;c=h.getElementsByTagName(c)[0];c.parentNode.insertBefore(g,c)})(window,document,"script","https://assets-cli.udesk.cn/im_client/js/udeskApi.js","ud");
+    ud({
+        "code": "1fg07dk0",
+        "link": "https://joinpay.udesk.cn/im_client/?web_plugin_id=24348"
+    });
+</script>
+<script>
+    $(document).ready(function(){
+        // var bannerHtml = "";
+        // var indicatorHtml = "";
+        var firstListHtml = "";
+        var newsListHtml = "";
+
+        // 获取文件域名，存在locaStorage
+        $.ajax({
+            type: 'GET',
+            url: $.apiPath.host + $.apiPath.filePath,
+            dataType: 'json',
+            crossDomain: true == !(document.all),
+            success: function(response) {
+                if(response.msg === "success") {
+                    localStorage.setItem('fileUrl',JSON.stringify(response.data));
+                }
+                getBannerMsg();
+            },
+            error: function(e) {
+                getBannerMsg();
+                console.error(e);
+            }
+        });
+
+        function getBannerMsg() {
+            // 获取banner图
+            // 加载数据
+            bannerHtml = `<div class=\"index-banner-item item active\">\n
+        <img class=\"index-banner-1 index-banner-img\" src=\"./images/index/banner1.jpg\">\n
+        </div>`;
+
+            $(".carousel-inner").empty();
+            $(".carousel-inner").append(bannerHtml);
+
+            var bannerNum = 1;
+            var bannerNumPerPage = 10;
+            var bannerPath = $.apiPath.bannerPath + '?pageNum=' + bannerNum + '&numPerPage=' + bannerNumPerPage ;
+            $.getBannerMsg(bannerPath, '.carousel-inner' , function(response) {
+                var data = response.data;
+                if( data.recordList && data.recordList.length !== 0){
+                    bannerHtml = "";
+                    indicatorHtml = "";
+                    for (var i = 0; i < data.recordList.length; i++) {
+                        if (i === 0) {
+                            bannerHtml += "<div class=\"index-banner-item item active\">\n" +
+                                "<a href=\"" + $.addHttp(data.recordList[i].url) + "\"><img class='index-banner-" + i + " index-banner-img' src=\"" + $.addDomain(data.recordList[i].image) + "\" alt=\"\">\n" +
+                                "</a></div>";
+                            indicatorHtml += "<li class=\"index\-slide\-li active\" data-target=\"#myCarousel\" data-slide-to=\"" + i + "\" class=\"active\"></li>";
+                        } else {
+                            bannerHtml += "<div class=\"index-banner-item item\">\n" +
+                                "<a href=\"" + $.addHttp(data.recordList[i].url) + "\"><img class='index-banner-" + i + " index-banner-img' src=\"" + $.addDomain(data.recordList[i].image) + "\" alt=\"\">\n" +
+                                "</a></div>";
+                            indicatorHtml += "<li class=\"index\-slide\-li\" data-target=\"#myCarousel\" data-slide-to=\"" + i + "\"></li>";
+                        }
+                    }
+                }
+                $(".carousel-inner").empty();
+                $(".carousel-inner").append(bannerHtml);
+                $(".carousel-indicators").empty();
+                $(".carousel-indicators").append(indicatorHtml);
+
+                //  鼠标浮动循环,节流
+                var now = Date.now();
+                $(".carousel-indicators li").mouseenter(function() {
+                    var thisTime = Date.now();
+                    // console.log(thisTime,now);
+
+                    if( thisTime - now > 300){
+                        $(this).trigger("click");
+                        $('#myCarousel').carousel("pause");
+                    }
+                    now = thisTime;
+                });
+                $(".carousel-indicators li").mouseout(function() {
+                    $('#myCarousel').carousel("cycle");
+                });
+                $('#myCarousel').mouseover(function() {
+                    $('#myCarousel').carousel("pause");
+                });
+                $('#myCarousel').mouseout(function() {
+                    $('#myCarousel').carousel("cycle");
+                });
+
+                $('#myCarousel').carousel({
+                    interval: 3000,
+                    pause: "hover"
+                });
+            });
+        }
+
+        $('#myCarousel').carousel({
+            interval: 5000,
+            pause: "hover"
+        });
+        if($(document).width() <= 750){
+            $('.index-banner-img').each(function(index) {
+                $(this).attr('src','./images/index/sm-banner'+ (index + 1) + '.png');
+            });
+        }else if(($(document).width() <= 1200) && $(document).width() > 750) {
+            $('.index-banner-img').css('margin-left',Math.floor( ($(document).width() - 1200)/2));
+        }else{
+            $('.index-banner-img').css('margin-left',Math.floor( ($(document).width() - 2300)/2));
+        }
+        $(window).resize(function(){
+            if($(document).width() <= 750){
+                $('.index-banner-img').each(function(index) {
+                    $(this).attr('src','./images/index/sm-banner'+ (index + 1) + '.png');
+                });
+            }else if(($(document).width() <= 1200) && $(document).width() > 750) {
+                $('.index-banner-img').css('margin-left',Math.floor( ($(document).width() - 1200)/2));
+            }else{
+                $('.index-banner-img').css('margin-left',Math.floor( ($(document).width() - 2300)/2));
+            }
+        });
+
+
+        // 获取新闻列表
+        var indexNewNum = 1;
+        var indexNewPerPage = 6;
+        var newsPath = $.apiPath.newsPath + '?pageNum=' + indexNewNum + '&numPerPage=' + indexNewPerPage ;
+        $.getIndexNews(newsPath, '.index-news-text' , function(response) {
+            firstListHtml = "";
+            newsListHtml = "";
+
+            if(response.data && response.data.recordList && response.data.recordList.length !== 0){
+                var recordList = response.data.recordList;
+                var imgUrl = recordList[0].mainPic ? $.addDomain(recordList[0].mainPic) : './images/new/new-default.png';
+                $('.index-news-img').attr('src',imgUrl);
+                $('.index-img-a').attr('href',$.getProUrl() + "/news/" + recordList[0].id + ".html");
+
+                firstListHtml = "<div class=\"index-new-first\"><a href=\"" + $.getProUrl() + "/news/" + recordList[0].id + ".html\"><span class=\"index-news-title\">" + recordList[0].title + "</span>\n" +
+                    "<p class=\"index-news-content\">" + recordList[0].summary + "</p>\n</a></div>";
+
+                for (var i = 1; i < recordList.length; i++) {
+                    newsListHtml += "<li class='index-news-item'><a href=\"" + $.getProUrl() + "/news/" + recordList[i].id + ".html\" >" + recordList[i].title + "</a></li>";
+                }
+
+                $(".index-news-text").empty();
+                $(".index-news-text").append(firstListHtml);
+                $(".index-news-list").empty();
+                $(".index-news-list").append(newsListHtml);
+
+                if ( recordList.length >= 6) {
+                    $(".index-news").append("<span class=\"index-news-more\"><a href=\"./pages/newsCenter.html\">更多 &gt</a></span>");
+                }
+
+                $('.index-news-content').each(function () {
+                    $clamp(this, {clamp: 3});
+                });
+
+            }else{
+                $(".index-news").empty();
+                $('.index-news-img').attr('src','./images/index/banner1.jpg');
+                $('.index-news').append("<span class=\"msg-not-find\">暂无新闻数据</span>");
+            }
+        });
+
+        $('.banner-icon1').on('click',function (){
+            if($('#udesk_container').css('display') == 'none'){
+                $('#udesk_container').css('display','block');
+            } else {
+                $('#udesk_container').css('display','none');
+            }
+        })
+    })
+</script>
+<script>
+    $(document).ready(function() {
+        var scrollHeight = $('.index-banner-item').outerHeight() ;
+        // 滚动条距离顶部的距离 大于 100px时
+        if($(window).scrollTop() > 0) {
+            $(".header").css({'background-color': 'rgba(255,255,255,1)','box-shadow': '0px 5px 5px #e3e3e3'})
+        } else {
+            $(".header").css({'background-color': 'rgba(255,255,255,1)','box-shadow': '0 0 0 #e3e3e3'})
+        }
+        $(window).scroll(function(){
+            // 滚动条距离顶部的距离 大于 100px时
+            if($(window).scrollTop() > 0) {
+                $(".header").css({'background-color': 'rgba(255,255,255,1)','box-shadow': '0px 5px 5px #e3e3e3'})
+            } else {
+                $(".header").css({'background-color': 'rgba(255,255,255,1)','box-shadow': '0 0 0 #e3e3e3'})
+            }
+        });
+    })
+</script>
+<script>
+    function backTop() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+    // // WPA start
+    //     // 手机端
+    //     if (document.documentElement.clientWidth <= 992) {
+    //         document.write('<script id="qd2852167516bdec368ba8457b53565d54be74022b13" src="https://wp.qiye.qq.com/qidian/2852167516/bdec368ba8457b53565d54be74022b13" charset="utf-8" async defer><\/script>');
+    //     // PC端
+    //     } else {
+    //         document.write('<script id= "qd2852167516faae91be6bc3774238b01581ab77858e" src = "https://wp.qiye.qq.com/qidian/2852167516/faae91be6bc3774238b01581ab77858e" charset = "utf-8" async defer ><\/script>');
+    //     }
+    // // WPA end
+</script>
+<script>
+    //初始化模态框
+
+$(window).on('load',function(){
+    loadNoticeData();
+});
+
+function init() {
+    if (document.getElementById('panelBody').scrollHeight >  document.getElementById('panelBody').clientHeight) {
+        document.getElementById('modal-btn').innerText = '我已阅读并确认';
+    } else {
+        document.getElementById('modal-btn').innerText =  '3s';
+        document.getElementById('modal-tip').style.display = 'none'
+        var num = 2
+        var count = setInterval(function () {
+            document.getElementById('modal-btn').innerText =  num + 's';
+        num--
+        if (num < 0) {
+            document.getElementById('modal-btn').removeAttribute('disabled')
+            document.getElementById('modal-btn').innerText = '我已阅读并确认';
+            clearInterval(count)
+        }
+
+    },1000)
+    }
+    document.getElementById('panelBody').addEventListener('scroll', function () {
+        if((Math.ceil(parseFloat(document.getElementById('panelBody').scrollTop)) + parseInt(document.getElementById('panelBody').clientHeight)) < (parseInt(document.getElementById('panelBody').scrollHeight))) {
+//                        _this.scollBottom = true
+        }else {
+            document.getElementById('modal-tip').style.display = 'none'
+            document.getElementById('modal-btn').removeAttribute('disabled')
+        }
+    })
+}
+
+function loadNoticeData(){
+    $.ajax({
+        type: 'GET',
+        url: $.apiPath.host + $.apiPath.getUnclosedNotice,
+        dataType: 'json',
+        crossDomain: true == !(document.all),
+        success: function(response) {
+            if(response.msg === 'success' && response.data !== null) {
+                    $('#myModal').modal('show');
+                    $('#myModal').on('shown.bs.modal', function (e) {
+                        init();
+                    })
+                    document.getElementById('panelBody').innerHTML =  response.data.content;
+                    document.getElementById('myModalLabel').innerText =  response.data.title;
+                    init();
+            }
+        },
+        error: function(e) {
+            console.error(e);
+        }
+    });
+}
+</script>
+</body>
+</html>

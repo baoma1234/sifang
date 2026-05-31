@@ -1,0 +1,129 @@
+ <include file="Public/header"/>
+  <include file="Public/top"/>
+  <include file="Public/left-nav"/>
+<!-- Content Wrapper. Contains page content -->
+<!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+      权限配置
+      </h1>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="breadcrumb-item"><a href="#">System setting</a></li>
+        <li class="breadcrumb-item active">Menu settings</li>
+      </ol>
+    </section>
+
+     <section class="content"> 
+      <div class="row">		  
+        <div class="col-lg-12 col-12">
+			<!-- Basic Forms -->
+			  <div class="box">
+				<div class="box-header with-border">
+				  <h4 class="box-title">菜单列表</h4>			
+					<ul class="box-controls pull-right">
+					  <li><a class="box-btn-close" href="#"></a></li>
+					  <li><a class="box-btn-slide" href="#"></a></li>	
+				 <h4 class="box-title"><a href="javascript:menu_add('添加菜单','<{:U('Menu/addMenu')}>',310,350);" class="btn btn-info btn-xs" ><span class="glyphicon glyphicon-plus"></span> 添加菜单</a></h4>
+					</ul>
+				</div>
+				<!-- /.box-header -->
+                <div class="box-body">
+				  <div class="row">
+					<div class="col-12">
+            <div class="ibox-content">
+                <div class="table-responsive">
+                    <table class="layui-table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th style="text-align: left;">菜单名称</th>
+                            <th>控制器名称</th>
+                            <th>方法名称</th>
+                            <th>菜单级别</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="menu" id="vo">
+                            <tr>
+                                <td><{$vo.id}></td>
+                                <td style="text-align: left;">
+                                    <if condition="$vo['level'] eq 0">
+                                        ├─
+                                    <else/>
+                                        └─
+                                </if><{$vo.title}>
+                                </td>
+                                <td><{$vo.controller}></td>
+                                <td><{$vo.action}></td>
+                                <td>
+                                    <if condition="!$vo['pid']">
+                                        一级菜单
+                                        <else/>
+                                        二级菜单
+                                    </if>
+                                </td>
+                                <td>
+                                    <a class="layui-btn layui-btn-mini"
+                                       onclick="menu_add('添加子菜单','<{:U('Menu/addMenu',['pid'=>$vo[id]])}>',310,350)"><i
+                                            class="layui-icon">
+                                        &#xe608;</i>添加子菜单</a>
+                                    <a class="layui-btn layui-btn-mini layui-btn-normal"
+                                       onclick="menu_edit('编辑菜单','<{:U('Menu/editMenu',['id'=>$vo[id]])}>',310,350)"><i
+                                            class="layui-icon">&#xe642;</i>编辑</a>
+                                    <a class="layui-btn layui-btn-danger layui-btn-mini"
+                                       onclick="menu_del(this,'<{$vo[id]}>')"><i
+                                            class="layui-icon">&#xe640;</i>删除</a>
+                                </td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="page"><{$page}></div>
+            </div>
+        </div>
+    </div>
+</div></div></div></div></div>
+<include file="Public/footer"/>
+<script>
+    layui.use(['form','laydate','layer'], function(){
+        var form = layui.form
+            ,layer = layui.layer
+            ,laydate = layui.laydate;
+    });
+    //添加菜单
+    function menu_add(title,url,w,h){
+        x_admin_show(title,url,w,h);
+    }
+    //添加菜单
+    function menu_edit(title,url,w,h){
+        x_admin_show(title,url,w,h);
+    }
+    //添加菜单
+    function menu_del(title,url,w,h){
+        x_admin_show(title,url,w,h);
+    }
+    /*用户-删除*/
+    function menu_del(obj,id){
+        layer.confirm('确认要删除吗？',function(index){
+            $.ajax({
+                url:"<{:U('Menu/delMenu')}>",
+                type:'post',
+                data:'id='+id,
+                success:function(res){
+                    if(res.status){
+                        $(obj).parents("tr").remove();
+                        layer.msg('已删除!',{icon:1,time:1000});
+                    }
+                }
+            });
+        });
+    }
+</script>
+
+</body>
+</html>

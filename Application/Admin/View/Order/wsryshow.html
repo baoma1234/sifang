@@ -1,0 +1,34 @@
+<include file="Public/header1"/>
+   <div class="box-body">
+				  <div class="row">
+					<div class="col-12">
+        <table class="layui-table">
+          <tr><td>商户编号：</td><td><{$order.shid}></td></tr>      
+          <tr><td>商户订单号：</td><td><strong class="text-success"><{$order.orderno}></strong></td></tr>
+           <tr><td>平台订单号：</td><td><strong class="text-success"><{$order.ordernotwo}></strong></td></tr>
+          <tr><td>交易金额：</td><td><strong class="text-danger"><{$order.money}></strong></td></tr>
+          <tr><td>手续费：</td><td><strong class=""><{$order.sxf}></strong></td></tr>
+          <tr><td>实际金额：</td><td><strong class="text-success"><{$order.sjmoney}></strong></td></tr>
+          <tr><td>提交时间：</td><td><strong class="text-warning"><{$order[gettime]}></strong></td></tr>
+          <tr><td>成功时间：</td><td><strong class="text-danger"><{$order[time]}></strong></td></tr>
+          <tr><td>交易通道：</td><td><{$order.paytype}></td></tr>
+              <tr><td>支付状态：</td> <td><if condition="$order[status]==1">
+                   <font color=#008B00>成功,已通知</font>
+                        </if>
+                       <if condition="$order[status]==0">
+                       <strong class="text-danger">未付,未处理</strong>
+                        </if>
+                </td>  <tr>
+     </table>
+</div></div></div>
+<include file="Public/foot"/>
+<script>
+layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'element'], function() {
+        var laydate = layui.laydate //日期
+            , laypage = layui.laypage //分页
+            ,layer = layui.layer //弹层
+            , table = layui.table; //表格
+    });
+</script>
+</body>
+</html>

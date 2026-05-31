@@ -1,0 +1,46 @@
+<include file="Public/header"/>
+<div class="wrapper">
+            <div class="container-fluid">
+
+                <!-- Page title box -->
+                <div class="page-title-alt-bg"></div>
+                <div class="page-title-box">
+                    <ol class="breadcrumb float-right">
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">Aggregate Payment</a></li>
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">channel</a></li>
+                        <li class="breadcrumb-item active">analysis</li>
+                    </ol>
+                    <h4 class="page-title">通道成功率分析</h4>
+                </div>
+                <!-- End page title box -->
+ <div class="row">     
+<foreach name="list" item="v">
+<div class="col-md-3 col-sm-6">
+                        <div class="card-box">
+                          <h4 class="header-title mb-3"><button type="button" class="btn btn-light w-sm"><{$v.name}></button></h4>
+                         <p class="text-info"><strong>交易金额：</strong><{$v.pay_amount}>元</p>
+                    <p class="text-primary"><strong>手续费  &nbsp;&nbsp;&nbsp;&nbsp;：</strong><{$v.pay_poundage}>元</p>
+                    <p class="text-danger"><strong>入金总额：</strong><{$v.pay_actualamount}>元</p>
+           
+                    
+
+
+                         <p><button type="button" class="btn btn-info waves-effect waves-light btn-sm" id="<{$v.id}>">交易数：<strong><{$v.count}></strong> 笔</button>
+                <button type="button" class="btn btn-success waves-effect waves-light btn-sm" id="<{$v.id}>"> 成功率：<strong><{$v.success_rate}>%</strong></button>
+</span></p>
+
+   <p>
+                        <button type="button" class="btn btn-warning waves-effect waves-light btn-sm" id="<{$v.id}>">成功数：<strong><{$v.success_count}></strong>  笔</button>
+                      <button type="button" class="btn btn-danger waves-light waves-effect btn-sm" id="<{$v.id}>">失败数：<strong><{$v.fail_count}></strong>  笔</button>
+</p>
+                        </div> <!-- end card-box -->
+                    </div> <!-- end col -->
+
+        </foreach> 
+
+                      
+ </div>    </div>
+ </div>   
+<include file="Public/footer"/>
+</body>
+</html>

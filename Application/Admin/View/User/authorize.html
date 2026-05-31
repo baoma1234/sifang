@@ -1,0 +1,98 @@
+<include file="Public/header1"/>
+<div class="box-body">
+<div class="row">
+  <div class="col-sm-12">
+			<form class="layui-form1" action="" id="authorize">
+				<input type="hidden" name="u[userid]" value="<{$u.id}>">
+				<div class="layui-form-item">
+                  	<div class="input-group">
+            <span class="input-group-addon">商户密钥：</span>
+
+						<input type="text" name="u[apikey]" autocomplete="off" value="<{$u.apikey}>" id="md5key"  class="form-control">
+					</div>
+				</div>
+<div class="layui-form-item">
+  <div class="layui-input-block">
+						<a href="javascript:changeKey();" class="layui-btn layui-btn-danger"><i class="layui-icon">&#x1002;</i> 换一换密钥</a>
+</div></div>
+				
+
+			<div class="layui-form-item"><div class="input-group">
+<select name="u[authorized]" class="form-control">
+							<option <if condition="$u['authorized'] eq 0">selected</if> value="0">未认证</option>
+							<option <if condition="$u['authorized'] eq 2">selected</if> value="2">等待审核</option>
+							<option <if condition="$u['authorized'] eq 1">selected</if> value="1">认证用户</option>
+						</select>
+				</div></div>
+
+				<if condition="$u['authorized']">
+					<div class="layui-form-item">
+					<div class="input-group">
+            <span class="input-group-addon">认证图片</span>
+							<volist name="u['images']" id="img">
+								<a class="fancybox" href="<{$img.path}>" title="点击放大查看"  target="_blank">
+									<img alt="image" src="<{$img.path}>" data-src="holder.js/50x50" class="img-thumbnail" alt="50x50" style="width: 50px; height: 50px;"/>
+								</a>
+							</volist>
+						</div>
+					</div>
+				</if>
+                
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<button class="layui-btn" lay-submit="submit" lay-filter="add"><i class="fa fa-check-square-o"></i> 提交保存</button>
+					</div>
+				</div>
+			</form>
+
+		</div>
+	</div>
+</div>
+<include file="Public/foot"/>
+<script>
+    $(document).ready(function () {
+        $('.fancybox').fancybox({
+            openEffect: 'none',
+            closeEffect: 'none'
+        });
+    });
+</script>
+
+<script>
+    layui.use(['layer', 'form'], function(){
+        var form = layui.form
+            ,layer = layui.layer;
+
+        //监听提交
+        form.on('submit(add)', function(data){
+            $.ajax({
+                url:"<{:U('User/editAuthoize')}>",
+                type:"post",
+                data:$('#authorize').serialize(),
+                success:function(res){
+                    if(res.status){
+                        layer.alert("编辑成功", {icon: 6},function () {
+                            parent.location.reload();
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        });
+                    }
+                }
+            });
+            return false;
+        });
+    });
+    //监听切换密钥
+    function changeKey(){
+        $.ajax({
+            url:"<{:U('User/getRandstr')}>",
+            type:"GET",
+            success:function(str){
+                $('#md5key').val(str);
+            }
+        });
+        return false;
+    }
+</script>
+</body>
+</html>

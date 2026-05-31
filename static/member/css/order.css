@@ -1,0 +1,87 @@
+.order{
+    padding: 30px;
+    margin: 30px;
+    background: #fff;
+
+}
+.order .title{
+    font-size: 24px;
+    color: #000;
+    margin-bottom: 20px;
+}
+.order section{
+    display: flex;
+}
+.order section>div{
+    flex:1;
+    border: 1px solid #E4EAED;
+    padding: 30px;
+    background: #FBFDFF;
+}
+.order section>div:nth-of-type(2n+2){
+    background: #fff;
+    border-right:  none;
+    border-left:  none;
+}
+.order section p{
+    font-size: 24px;
+    margin-bottom: 30px;
+}
+.order section>div div{
+    font-size: 20px;
+    display: flex;
+    line-height: 24px;
+    color: #666666;
+    margin-bottom: 20px;
+}
+.order section i{
+    font-style: normal;
+    width: 110px;
+}
+.order section>div span{
+    font-size: 24px;
+    color: #000;
+    font-weight: bold;
+}
+.order section>div .num{
+    font-weight: normal;
+    color: #0091FF;
+}
+.info{
+    margin: 0 30px;
+}
+.walletTop{
+    margin-bottom: 30px;
+    display: flex;
+}
+.leftHow{
+    display: flex;
+    padding: 30px;
+    height: 180px;
+    box-sizing: border-box;
+    background: #fff;
+    justify-content: space-between;
+}
+.leftHow .right{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.leftHow .right a{
+    color: #4D7CFE;
+    margin-bottom: 10px;
+}
+.leftHow .right a img{
+    margin-right: 5px;
+}
+.leftHow .right .button{
+    height: 42px;
+    line-height: 42px;
+    width: 80px;
+    font-size: 16px;
+    color: #fff;
+    cursor: pointer;
+    text-align: center;
+    background: #6DD230;
+}

@@ -1,0 +1,82 @@
+<include file="Public/header1"/>
+   <div class="box-body">
+				  <div class="row">
+					<div class="col-12">
+        <table class="layui-table" style="table-layout:fixed;">
+          <tr><td>商户编号：</td><td><{$order.pay_memberid}></td></tr>
+          <tr><td>商户用户名：</td><td><{$order.username}></td></tr>
+          <!--<tr><td>商户姓名：</td><td><{$order.realname}></td></tr>-->
+          <tr><td>商户订单号：</td><td><strong class="text-success"><{$order.out_trade_id}></strong></td></tr>
+          <tr><td>交易金额：</td><td><strong class="text-danger"><{$order.pay_amount}></strong></td></tr>
+          <tr><td>手续费：</td><td><strong class=""><{$order.pay_poundage}></strong></td></tr>
+          <tr><td>实际金额：</td><td><strong class="text-success"><{$order.pay_actualamount}></strong></td></tr>
+          <tr><td>提交时间：</td><td><strong class="text-warning"><{$order['pay_applydate']|date='Y-m-d H:i:s',###}></strong></td></tr>
+          <tr><td>成功时间：</td><td><strong class="text-danger"><{$order['pay_successdate']|date='Y-m-d H:i:s',
+            ###}></strong></td></tr>
+          <tr><td>交易通道：</td><td><{$order.pay_bankname}></td></tr>
+          <tr><td>交易银行：</td><td><{$order.pay_yzh_tongdao}></td></tr>
+          <tr><td>提交地址：</td><td><a href="<{$order.pay_tjurl}>" target="_blank">点击查看</a></td></tr>
+          <tr><td>返回地址：</td><td><a href="<{$order.pay_callbackurl}>" target="_blank">点击查看</a></td></tr>
+          <tr><td>通知地址：</td><td><a href="<{$order.pay_notifyurl}>" target="_blank">点击查看</a></td></tr>
+          <tr><td>订单状态：</td><td><switch name="order['pay_status']">
+              <case value="0"><strong class="text-danger">未处理</strong></case>
+              <case value="1"><strong class="text-warning">已成功，未返回 【<if condition="$order['pay_status'] eq 1">
+              		<a href="javascript:void(0)" TransID="<?php echo $order['pay_orderid']; ?>" tongdao="<?php echo $order['pay_ytongdao']; ?>" class="qdbtn qdbtn2 notify-order">补发通知</a>
+              	
+              		
+             
+					
+                 
+                </if>】	</br>  <!--a href="<{:U('Pay/Pay/mayibufa', ['TransID'=>$order['pay_orderid'],'tongdao'=>$order['pay_ytongdao']])}>" target="_blank"><br>上面的补发按钮无效时点这里补发</a--></strong></case>
+              <case value="2"><font color=#008B00>已成功，已返回</font>
+               <!--a href="<{:U('Pay/Pay/mayibufa', ['TransID'=>$order['pay_orderid'],'tongdao'=>$order['pay_ytongdao']])}>" target="_blank"><br>补发通知</a-->
+              </case>
+            </switch></td></tr>
+          <tr><td>商户返回内容：</td><td><{$order.notify_msg}></td></tr>
+          <tr><td>上游返回内容：</td><td style="word-wrap:break-word;"><{$order.tongdao_msg}></td></tr>
+        </table>
+                    </div></div></div>
+<include file="Public/foot"/>
+<script src="/static/common/js/jquery.cookie.js"></script>
+<script src="/static/common/js/cxCalendar/js/jquery.cxcalendar.min.js"></script>
+<script src="/static/common/js/jquery.min.js"></script>
+	<script src="/static/common/js/bootstrap.min.js"></script>
+	<script src="/static/common/js/common.js"></script>
+	<!--element js-->
+	<script src="/static/common/vue/vue.js"></script>
+	<script src="/static/common/element/index.js"></script>
+	<!--element js-->
+	<!--layer-->
+	<script src="/static/common/layer/layer.js"></script>
+
+<script>
+ //补单
+        $('.notify-order').click(function () {
+            var TransID = $(this).attr('TransID');
+                       $.ajax({
+                type: 'POST',
+                url: '/Pay_pay_mayibufa?TransID=<?php echo $order['pay_orderid']; ?>&tongdao=<?php echo $order['pay_ytongdao']; ?>',
+                data: "TransID=<?php echo $order['pay_orderid']; ?>",
+                dataType: 'json',
+                success: function (str) {
+                    if (str.pay_status == 1) {
+                        alert(str.msg);
+                    }else{
+                    	  alert(str.msg);
+                    }
+                }
+            });
+       
+    });
+               
+</script>
+<script>
+layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'element'], function() {
+        var laydate = layui.laydate //日期
+            , laypage = layui.laypage //分页
+            ,layer = layui.layer //弹层
+            , table = layui.table; //表格
+    });
+</script>
+</body>
+</html>

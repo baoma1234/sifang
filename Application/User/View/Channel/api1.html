@@ -1,0 +1,813 @@
+<include file="Public/header"/>
+<div class="wrapper">
+            <div class="container-fluid">
+
+                <!-- Page title box -->
+                <div class="page-title-alt-bg"></div>
+                <div class="page-title-box">
+                    <ol class="breadcrumb float-right">
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">Aggregate Payment</a></li>
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">API</a></li>
+                        <li class="breadcrumb-item active">Docking</li>
+                    </ol>
+                    <h4 class="page-title">API 接入帮助</h4>
+                </div>
+                <!-- End page title box -->
+ <div class="row">
+                    <div class="col-12">
+                        <div class="card-box">
+					
+					
+<div class="card-body">
+                   <div class="layui-tab layui-tab-card">
+  <ul class="layui-tab-title">
+<li class="layui-this">支付请求</li><li>同步通知</li><li>异步通知</li><li>支付订单查询</li><li>代付接口</li><li>代付订单查询</li></ul>
+<div class="layui-tab-content">
+<div class="layui-tab-item layui-show">
+  
+
+   <div class="card m-b-30">
+<div class="ribbon-box">
+<div class="ribbon-two ribbon-two-success"><span>HELP</span></div></div>
+<div class="card-header text-center"> 
+<i class="mdi mdi-help-circle mr-1 text-primary"></i> 支付请求接口说明</div>
+ <div class="card-body">
+<blockquote class="card-bodyquote mb-2">
+              <p>1，接口标准<br>在商户支付请求接口中，数据通信是使用HTTP协议，请求数据以POST形式提交。<br>2，MD5签名处理<br>签名生成的通用步骤如下：
+第一步，设所有发送或者接收到的数据为集合M，将集合M内非空参数值的参数按照参数名ASCII码从小到大排序（字典序），使用URL键值对的格式（即key1=value1&key2=value2…）拼接成字符串。
+第二步，在stringA最后拼接上key得到stringSignTemp字符串，并对stringSignTemp进行MD5运算，再将得到的字符串所有字符转换为大写，得到sign值signValue。<br>
+[1].	stringSignTemp="pay_amount={value}&pay_applydate={value}&pay_bankcode={value}&pay_callbackurl={value}&pay_memberid={value}&pay_notifyurl={value}&pay_orderid={value}&key=key"<br>[2].	sign=MD5(stringSignTemp).toUpperCase(); pay_md5sign=$sign;
+            </blockquote>
+</div></div>
+
+                    <table class="layui-table mb-15">
+            <thead>
+                <tr>
+                    <th style="width:100px;">属性</th>
+                    <th>内容</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="cen">
+                    <td>版本</td>
+                    <td class="lt">1.00</td>
+                </tr>
+                                <tr class="cen">
+                    <td>网关</td>
+                    <td class="lt"><{$siteurl}>/Pay_Index.html</td>
+                </tr>
+                                <tr class="cen">
+                    <td>请求方式</td>
+                    <td class="lt">POST 请不要用 GET 方式提交</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="layui-table">
+        <thead>
+            <tr>
+                <th align="center">参数名称</th>
+                <th align="center">参数含义</th>
+                <th align="center">参与签名</th>
+                <th align="center">必填</th>
+                <th align="center">说明</th>
+            </tr>
+        </thead>
+        <tbody>
+                    <tr>
+                <td align="center">pay_memberid</td>
+                <td align="center">商户号</td>
+                <td align="center">是</td>
+                <td align="center">是</td>
+                <td align="left">平台分配商户号</td>
+            </tr>
+        
+                    <tr>
+                <td align="center">pay_orderid</td>
+                <td align="center">商户订单号</td>
+                <td align="center">是</td>
+                <td align="center">是</td>
+                <td align="left">上送订单号唯一, 字符长度20</td>
+            </tr>
+                                <tr>
+                <td align="center">pay_applydate</td>
+                <td align="center">提交时间</td>
+                <td align="center">是</td>
+                <td align="center">是</td>
+                <td align="left">时间格式：2018-12-28 18:18:18</td>
+            </tr>
+                                <tr>
+                <td align="center">pay_bankcode</td>
+                <td align="center">通道编码</td>
+                <td align="center">是</td>
+                <td align="center">是</td>
+                <td align="left">开发文档[附件]银行编码参考，或通道费率中查看</td>
+            </tr>
+                                <tr>
+                <td align="center">pay_notifyurl</td>
+                <td align="center">异步回调</td>
+                <td align="center">是</td>
+                <td align="center">是</td>
+                <td align="left">请给出有效的地址,地址后可以携带自定义get(?a=1&b=2)参数。（POST返回数据）</td>
+            </tr>
+                                <tr>
+                <td align="center">pay_callbackurl</td>
+                <td align="center">同步回调</td>
+                <td align="center">是</td>
+                <td align="center">是</td>
+                <td align="left">请给出有效的地址,地址后可以携带自定义get(?a=1&b=2)参数。（POST返回数据）</td>
+            </tr>
+                                <tr>
+                <td align="center">pay_amount</td>
+                <td align="center">订单金额</td>
+                <td align="center">是</td>
+                <td align="center">是</td>
+                <td align="left">订单金额 如：100 单位：元</td>
+            </tr>
+                                <tr>
+                <td align="center">pay_md5sign</td>
+                <td align="center">MD5数据签名</td>
+                <td align="center">是</td>
+                <td align="center">否</td>
+                <td align="left">请看MD5签名处理</td>
+            </tr>
+                                <tr>
+                <td align="center">pay_attach</td>
+                <td align="center">附加字段</td>
+                <td align="center">否</td>
+                <td align="center">否</td>
+                <td align="left">此字段在返回时按原样返回 (中文需要url编码)</td>
+            </tr>
+                                <tr>
+                <td align="center">pay_productname</td>
+                <td align="center">商品名称</td>
+                <td align="center">是</td>
+                <td align="center">否</td>
+                <td align="left">商品名称</td>
+            </tr>
+                                <tr>
+                <td align="center">pay_productnum</td>
+                <td align="center">商户品数量</td>
+                <td align="center">否</td>
+                <td align="center">否</td>
+                <td align="left">商户品数量</td>
+            </tr>
+                                <tr>
+                <td align="center">pay_productdesc</td>
+                <td align="center">商品描述</td>
+                <td align="center">否</td>
+                <td align="center">否</td>
+                <td align="left">商品描述</td>
+            </tr>
+                      <tr>
+                <td align="center">pay_producturl</td>
+                <td align="center">商户链接地址</td>
+                <td align="center">否</td>
+                <td align="center">否</td>
+                <td align="left">商户链接地址</td>
+            </tr>
+
+        </tbody>
+        </table>
+  <div class="card m-b-30">
+<div class="card-header"><i class="mdi mdi-amazon mr-1 text-primary"></i> 返回数据：HTML</div>
+ <div class="card-body">
+<blockquote class="card-bodyquote mb-2">成功将转跳至支付页面<br>失败返回{"status":"error","msg":"错误原因","data":[]}  </blockquote>
+</div></div>
+  </div>
+
+        
+            <div class="layui-tab-item"> 
+              <div class="card m-b-30">
+                <div class="ribbon-box">
+<div class="ribbon-two ribbon-two-success"><span>HELP</span></div></div>
+<div class="card-header text-center"> 
+                               <i class="mdi mdi-help-circle mr-1 text-primary"></i> 同步通知接口说明
+                            </div>
+ <div class="card-body">
+<blockquote class="card-bodyquote mb-2">
+              <p>接口标准：在商户同步通知接口中，数据通信是使用HTTP协议，同步回调数据以POST形式跳转。</p>
+              </blockquote>
+</div></div>
+                    <table class="layui-table mb-15">
+            <thead>
+                <tr>
+                    <th style="width:100px;">属性</th>
+                    <th>内容</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="cen">
+                    <td>版本</td>
+                    <td class="lt">1.0</td>
+                </tr>
+                                <tr class="cen">
+                    <td>网关</td>
+                    <td class="lt">此回调不需要网关，根据你传递同步回调地址传参,不管交易是否成功都将跳转到该地址。</td>
+                </tr>
+                                <tr class="cen">
+                    <td>返回方式</td>
+                    <td class="lt">POST返回数据</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="layui-table">
+        <thead>
+            <tr>
+                <th align="center">参数说明</th>
+                <th align="center">参数名称</th>
+                <th align="center">最大长度</th>
+                <th align="center">必填</th>
+                <th align="center">说明</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+                    <tr>
+                <td align="center">交易订单号</td>
+                <td align="center">orderid</td>
+                <td align="center">40</td>
+                <td align="center">否</td>
+                <td align="left">订单号</td>
+            </tr>
+                    
+        </tbody>
+        </table>
+  <div class="card m-b-30">
+<div class="card-header"><i class="mdi mdi-amazon mr-1 text-primary"></i> 无需返回数据</div>
+ <div class="card-body">
+<blockquote class="card-bodyquote mb-2">可通过订单查询接口，查询订单是否交易成功！     </blockquote>
+</div>
+    </div></div>
+
+        
+ <div class="layui-tab-item"> 
+              <div class="card m-b-30">
+                <div class="ribbon-box">
+<div class="ribbon-two ribbon-two-success"><span>HELP</span></div></div>
+<div class="card-header text-center"> <i class="mdi mdi-help-circle mr-1 text-primary"></i> 异步通知接口说明</div>
+ <div class="card-body">
+<blockquote class="card-bodyquote mb-2">
+       <p>1，接口标准<br>在商户异步通知接口中，数据通信是使用HTTP协议，请求数据以POST形式提交。<br>2，MD5签名处理<br>签名生成的通用步骤如下：
+第一步，设所有发送或者接收到的数据为集合M，将集合M内非空参数值的参数按照参数名ASCII码从小到大排序（字典序），使用URL键值对的格式（即key1=value1&key2=value2…）拼接成字符串。
+第二步，在stringA最后拼接上key得到stringSignTemp字符串，并对stringSignTemp进行MD5运算，再将得到的字符串所有字符转换为大写，得到sign值signValue。<br>
+[1].	stringSignTemp="pay_amount={value}&pay_applydate={value}&pay_bankcode={value}&pay_callbackurl={value}&pay_memberid={value}&pay_notifyurl={value}&pay_orderid={value}&key=key"<br>[2].	sign=MD5(stringSignTemp).toUpperCase(); pay_md5sign=$sign;
+           </blockquote>
+</div></div>
+              
+                    <table class="layui-table mb-15">
+            <thead>
+                <tr>
+                    <th style="width:100px;">属性</th>
+                    <th>内容</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="cen">
+                    <td>版本</td>
+                    <td class="lt">1.0</td>
+                </tr>
+                                <tr class="cen">
+                    <td>网关</td>
+                    <td class="lt">此回调不需要网关，根据你传递异步回调地址传参,只回调交易成功的订单信息。</td>
+                </tr>
+                                <tr class="cen">
+                    <td>返回方式</td>
+                    <td class="lt">POST返回数据</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="layui-table">
+        <thead>
+            <tr>
+                <th align="center">参数名称</th>
+                <th align="center">参数含义</th>
+                <th align="center">参与签名</th>
+                <th align="center">参数说明</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+                    <tr>
+                <td align="center">memberid</td>
+                <td align="center">商户编号</td>
+                <td align="center">是</td>
+                <td align="left">平台分配商户号</td>
+            </tr>
+                                <tr>
+                <td align="center">orderid</td>
+                <td align="center">平台订单号</td>
+                <td align="center">是</td>
+                <td align="left">订单号唯一, 字符长度20</td>
+            </tr>
+                                <tr>
+                <td align="center">amount</td>
+                <td align="center">订单金额</td>
+                <td align="center">是</td>
+                <td align="left">订单金额 单位：元</td>
+            </tr>
+               <tr>
+                <td align="center">true_amount</td>
+                <td align="center">实际付款金额</td>
+                <td align="center">是</td>
+                <td align="left">订单金额 单位：元，新增参数，参与签名,回调的实际付款金额，以此参数为准</td>
+            </tr>
+                                <tr>
+                <td align="center">transaction_id</td>
+                <td align="center">交易流水号</td>
+                <td align="center">是</td>
+                <td align="left">交易流水号</td>
+            </tr>
+                                <tr>
+                <td align="center">datetime</td>
+                <td align="center">交易成功时间</td>
+                <td align="center">是</td>
+                <td align="left">时间格式：2018-12-28 18:18:18</td>
+            </tr>
+                                <tr>
+                <td align="center">returncode</td>
+                <td align="center">交易状态</td>
+                <td align="center">是</td>
+                <td align="left">“00” 为成功</td>
+            </tr>
+                                <tr>
+                <td align="center">attach</td>
+                <td align="center">扩展返回</td>
+                <td align="center">否</td>
+                <td align="left">商户附加数据返回</td>
+            </tr>
+                                <tr>
+                <td align="center">sign</td>
+                <td align="center">签名</td>
+                <td align="center">否</td>
+                <td align="left">请看MD5签名处理</td>
+            </tr>
+                     
+                    
+        </tbody>
+        </table>
+  <div class="card m-b-30">
+<div class="card-header"><i class="mdi mdi-amazon mr-1 text-primary"></i> 返回数据格式：string</div>
+ <div class="card-body">
+<blockquote class="card-bodyquote mb-2">返回文本均为小写不能有任何其它字符。<br>成功返回:OK （OK两个字母大写）<br>失败返回:fail
+             </blockquote>
+</div></div></div>
+
+
+ <div class="layui-tab-item"> 
+              <div class="card m-b-30">
+                <div class="ribbon-box">
+<div class="ribbon-two ribbon-two-success"><span>HELP</span></div></div>
+<div class="card-header text-center"> <i class="mdi mdi-help-circle mr-1 text-primary"></i> 
+支付订单查询接口说明</div>
+ <div class="card-body">
+<blockquote class="card-bodyquote mb-2">
+              <p>1，接口标准<br>在商户订单查询接口中，数据通信是使用HTTP协议，请求数据以POST形式提交。<br>2，MD5签名处理<br>签名生成的通用步骤如下：
+第一步，设所有发送或者接收到的数据为集合M，将集合M内非空参数值的参数按照参数名ASCII码从小到大排序（字典序），使用URL键值对的格式（即key1=value1&key2=value2…）拼接成字符串。
+第二步，在stringA最后拼接上key得到stringSignTemp字符串，并对stringSignTemp进行MD5运算，再将得到的字符串所有字符转换为大写，得到sign值signValue。<br>
+[1].	stringSignTemp="pay_memberid={value}&pay_orderid={value}&key=key"<br>[2].	sign=MD5(stringSignTemp).toUpperCase(); pay_md5sign=$sign;
+         </blockquote>
+</div></div>
+                    <table class="layui-table mb-15">
+            <thead>
+                <tr>
+                    <th style="width:100px;">属性</th>
+                    <th>内容</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="cen">
+                    <td>版本</td>
+                    <td class="lt">1.0</td>
+                </tr>
+                                <tr class="cen">
+                    <td>网关</td>
+                    <td class="lt"><{$siteurl}>/Pay_Trade_query.html</td>
+                </tr>
+                                <tr class="cen">
+                    <td>请求方式</td>
+                    <td class="lt">POST 请不要用 GET 方式提交</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="layui-table">
+        <thead>
+          <tr>
+                <th align="center">参数名称</th>
+                <th align="center">参数含义</th>
+                <th align="center">是否必填</th>
+                <th align="center">参与签名</th>
+                <th align="center">参数说明</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+                    <tr>
+                <td align="center">pay_memberid</td>
+                <td align="center">商户号</td>
+                <td align="center">是</td>
+                <td align="center">是</td>
+                <td align="left">平台分配商户号</td>
+            </tr>
+                                <tr>
+                <td align="center">pay_orderid</td>
+                <td align="center">商户订单号</td>
+                <td align="center">是</td>
+                <td align="center">是</td>
+                <td align="left">上送订单号唯一, 字符长度20</td>
+            </tr>
+                                <tr>
+                <td align="center">pay_md5sign</td>
+                <td align="center">数据签名</td>
+                <td align="center">否</td>
+                <td align="center">否</td>
+                <td align="left">请看MD5签名处理</td>
+            </tr>
+                    
+        </tbody>
+        </table>
+
+               <div class="card m-b-30">
+<div class="card-header"><i class="mdi mdi-amazon mr-1 text-primary"></i> 返回数据格式：JSON</div>
+ <div class="card-body">
+<blockquote class="card-bodyquote mb-2">
+{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"memberid":"商户编号",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"orderid":"商户订单号",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"amount":"订单金额",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"true_amount":"实付金额",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"time_end":"支付成功时间",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"transaction_id":"交易流水号",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"returncode":"交易状态",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"trade_state":"支付状态",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"sign":"签名",<br>}
+   </blockquote>
+</div></div></div>
+
+        
+  <div class="layui-tab-item"> 
+              <div class="card m-b-30">
+                <div class="ribbon-box">
+<div class="ribbon-two ribbon-two-success"><span>HELP</span></div></div>
+<div class="card-header text-center"> <i class="mdi mdi-help-circle mr-1 text-primary"></i> 
+代付请求接口说明</div>
+ <div class="card-body">
+<blockquote class="card-bodyquote mb-2">
+             <p>1，接口标准<br>在商户代付请求接口中，数据通信是使用HTTP协议，请求数据以POST形式提交。<br>2，MD5签名处理<br>签名生成的通用步骤如下：
+第一步，设所有发送或者接收到的数据为集合M，将集合M内非空参数值的参数按照参数名ASCII码从小到大排序（字典序），使用URL键值对的格式（即key1=value1&key2=value2…）拼接成字符串。
+第二步，在stringA最后拼接上key得到stringSignTemp字符串，并对stringSignTemp进行MD5运算，再将得到的字符串所有字符转换为大写，得到sign值signValue。<br>
+[1].	stringSignTemp="accountname=accountname&bankname=bankname&cardnumber=cardnumber&city=city&extends=base64_encode(json_encode(extends))=&mchid=mchid&money=money&out_trade_no=out_trade_no&province=province&subbranch=subbranch&key=key"<br>[2].	sign=MD5(stringSignTemp).toUpperCase(); pay_md5sign=$sign;
+          </blockquote>
+</div></div>
+                    <table class="layui-table mb-15">
+            <thead>
+                <tr>
+                    <th style="width:100px;">属性</th>
+                    <th>内容</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="cen">
+                    <td>版本</td>
+                    <td class="lt">1.0</td>
+                </tr>
+                                <tr class="cen">
+                    <td>网关</td>
+                    <td class="lt"><{$siteurl}>/Payment_Dfpay_add.html</td>
+                </tr>
+                                <tr class="cen">
+                    <td>请求方式</td>
+                    <td class="lt">POST</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="layui-table">
+        <thead>
+            <tr>
+                <th align="center">参数名称</th>
+                <th align="center">参数含义</th>
+                <th align="center">是否必填</th>
+                <th align="center">参与签名</th>
+                <th align="center">参数说明</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+                    <tr>
+                <td align="center">mchid</td>
+                <td align="center">商户号</td>
+                <td align="center">是</td>
+                <td align="center">是</td>
+                <td align="left">平台分配商户号</td>
+            </tr>
+                                <tr>
+                <td align="center">out_trade_no</td>
+                <td align="center">商户代付订单号</td>
+                <td align="center">是</td>
+                <td align="center">是</td>
+                <td align="left">上送订单号唯一, 字符长度20</td>
+            </tr>
+                                <tr>
+                <td align="center">money</td>
+                <td align="center">代付金额</td>
+                <td align="center">是</td>
+                <td align="center">是</td>
+                <td align="left">单位：元</td>
+            </tr>
+              <tr>
+                <td align="center">bankname</td>
+                <td align="center">开户行名称</td>
+                <td align="center">是</td>
+                <td align="center">是</td>
+                <td align="left">代付银行卡 开户行名称</td>
+            </tr>
+              <tr>
+                <td align="center">subbranch</td>
+                <td align="center">支行名称</td>
+                <td align="center">是</td>
+                <td align="center">是</td>
+                <td align="left">代付银行卡 支行名称</td>
+            </tr>
+              <tr>
+                <td align="center">accountname</td>
+                <td align="center">结算卡 开户名</td>
+                <td align="center">是</td>
+                <td align="center">是</td>
+                <td align="left">结算卡 开户名</td>
+            </tr>
+              <tr>
+                <td align="center">cardnumber</td>
+                <td align="center">结算卡 银行卡号</td>
+                <td align="center">是</td>
+                <td align="center">是</td>
+                <td align="left">银行卡号</td>
+            </tr>
+              <tr>
+                <td align="center">money</td>
+                <td align="center">代付金额</td>
+                <td align="center">是</td>
+                <td align="center">是</td>
+                <td align="left">单位：元</td>
+            </tr>
+              <tr>
+                <td align="center">province</td>
+                <td align="center">省份</td>
+                <td align="center">是</td>
+                <td align="center">是</td>
+                <td align="left">省份 如：广东省</td>
+            </tr>
+              <tr>
+                <td align="center">city</td>
+                <td align="center">城市</td>
+                <td align="center">是</td>
+                <td align="center">是</td>
+                <td align="left">城市 如：广州市</td>
+            </tr>
+              <tr>
+                <td align="center">extends</td>
+                <td align="center">附加字段</td>
+                <td align="center">否（平台有扩展字段 则是）</td>
+                <td align="center">是</td>
+                <td align="left">格式：数组，具体需要哪些字段以及字段的含义，<br>对接时请咨询上级站点，如果不需要扩展字段不传<br>注：extends字段具体需要上送哪些字段以及字段的含义，<br>对接时请咨询平台方，如果不需要扩展字段则不传。不为空时，格式：先转化为JSON，<br>接着进行Base64加密
+例如：扩展字段为phone和lhh，extends[phone]=13800138000，<br>extends[lhh]=111111111111111111。首先将extends转化为JSON格式得到{"phone":"13800138000","lhh":"111111111111111111"}，<br>然后将此JSON字符串进行base64加密得到eyJwaG9uZSI6IjEzODAwMTM4MDAwIiwiaWRubyI6IjExMTExMTExMTExMTExMTExMSJ9，<br>最终得到extends=eyJwaG9uZSI6IjEzODAwMTM4MDAwIiwiaWRubyI6IjExMTExMTExMTExMTExMTExMSJ9。</td>
+            </tr>
+                            
+              <tr>
+                <td align="center">pay_md5sign</td>
+                <td align="center">数据签名</td>
+                <td align="center">否</td>
+                <td align="center">否</td>
+                <td align="left">请看MD5签名处理</td>
+            </tr>       
+        </tbody>
+        </table>
+
+                   <div class="card m-b-30">
+<div class="card-header"><i class="mdi mdi-amazon mr-1 text-primary"></i> 代付返回数据：json</div>
+ <div class="card-body">
+<blockquote class="card-bodyquote mb-2">
+{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"status":"成功:success 失败：error",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"msg":"状态描述"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"transaction_id":"平台流水号,成功时返回"<br>} </blockquote>
+</div></div></div>
+
+
+        
+ <div class="layui-tab-item"> 
+              <div class="card m-b-30">
+                <div class="ribbon-box">
+<div class="ribbon-two ribbon-two-success"><span>HELP</span></div></div>
+<div class="card-header text-center"> <i class="mdi mdi-help-circle mr-1 text-primary"></i> 
+代付查询求接口说明</div>
+ <div class="card-body">
+<blockquote class="card-bodyquote mb-2">
+             <p>1，接口标准<br>在代付查询接口中，数据通信是使用HTTP协议，请求数据以POST形式提交。<br>2，MD5签名处理<br>签名生成的通用步骤如下：
+第一步，设所有发送或者接收到的数据为集合M，将集合M内非空参数值的参数按照参数名ASCII码从小到大排序（字典序），使用URL键值对的格式（即key1=value1&key2=value2…）拼接成字符串。
+第二步，在stringA最后拼接上key得到stringSignTemp字符串，并对stringSignTemp进行MD5运算，再将得到的字符串所有字符转换为大写，得到sign值signValue。<br>
+[1].	stringSignTemp="out_trade_no={value}&mchid={value}&key=key"<br>[2].	sign=MD5(stringSignTemp).toUpperCase(); pay_md5sign=$sign;
+          </blockquote>
+</div></div>
+                    <table class="layui-table mb-15">
+            <thead>
+                <tr>
+                    <th style="width:100px;">属性</th>
+                    <th>内容</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="cen">
+                    <td>版本</td>
+                    <td class="lt">1.0</td>
+                </tr>
+                                <tr class="cen">
+                    <td>网关</td>
+                    <td class="lt"><{$siteurl}>/Payment_Dfpay_query.html</td>
+                </tr>
+                                <tr class="cen">
+                    <td>提交方式</td>
+                    <td class="lt">POST ，请不要用 GET 方式提交</td>
+                </tr>
+            </tbody>
+        </table>
+              
+                <table class="layui-table">
+        <thead>
+            <tr>
+                <th align="center">请求参数名称</th>
+                <th align="center">参数含义</th>
+                <th align="center">参与签名</th>
+                <th align="center">参数说明</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+                    <tr>
+                <td align="center">out_trade_no</td>
+                <td align="center">商户代付订单号</td>
+                <td align="center">是</td>
+                <td align="left">代付订单号唯一, 字符长度20</td>
+            </tr>
+                                <tr>
+                <td align="center">mchid</td>
+                <td align="center">商户号</td>
+                <td align="center">是</td>
+                <td align="left">平台分配商户号</td>
+            </tr>
+                                <tr>
+                <td align="center">pay_md5sign</td>
+                <td align="center">签名</td>
+                <td align="center">否</td>
+                <td align="left">请看MD5签名处理</td>
+            </tr>
+          
+          </tbody>
+        </table>
+          
+
+        <table class="layui-table">
+        <thead>
+            <tr>
+                <th align="center">代付结果查询返回字段：参数名称</th>
+                <th align="center">参数含义</th>
+                <th align="center">参与签名</th>
+                <th align="center">参数说明</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+                    <tr>
+                <td align="center">status</td>
+                <td align="center">提现状态</td>
+                <td align="center">是</td>
+                <td align="left">success：请求成功,不代表业务成功<br>error：请求失败</td>
+            </tr>
+                                <tr>
+                <td align="center">msg</td>
+                <td align="center">状态描述</td>
+                <td align="center">是</td>
+                <td align="left">代付结果描述</td>
+            </tr>
+                                <tr>
+                <td align="center">mchid</td>
+                <td align="center">商户号</td>
+                <td align="center">是</td>
+                <td align="left">status=success时返回</td>
+            </tr>
+                                <tr>
+                <td align="center">out_trade_no</td>
+                <td align="center">商户代付订单号</td>
+                <td align="center">是</td>
+                <td align="left">status=success时返回</td>
+            </tr>
+                                <tr>
+                <td align="center">amount</td>
+                <td align="center">代付金额</td>
+                <td align="center">是</td>
+                <td align="left">status=success时返回</td>
+            </tr>
+                                <tr>
+                <td align="center">transaction_id</td>
+                <td align="center">平台流水号</td>
+                <td align="center">是</td>
+                <td align="left">status=success时返回</td>
+            </tr>
+            <tr>
+                <td align="center">refCode</td>
+                <td align="center">业务状态</td>
+                <td align="center">是</td>
+                <td align="left">status=success时返回<br>refCode返回值：1	成功   2	失败</td>
+            </tr>
+            <tr>
+                <td align="center">refMsg</td>
+                <td align="center">业务描述</td>
+                <td align="center">是</td>
+                <td align="left">status=success时返回</td>
+            </tr>
+            <tr>
+                <td align="center">success_time</td>
+                <td align="center">代付成功时间</td>
+                <td align="center">是</td>
+                <td align="left">status=success，refCode=1时返回</td>
+            </tr>
+            <tr>
+                <td align="center">pay_md5sign</td>
+                <td align="center">签名</td>
+                <td align="center">否</td>
+                <td align="left">请看MD5签名处理</td>
+            </tr>
+                    
+        </tbody>
+        </table>
+
+                <div class="card m-b-30">
+     
+               <div class="card-header">
+                              <i class="mdi mdi-amazon mr-1 text-primary"></i> 返回数据：json
+                            </div>
+ <div class="card-body">
+<blockquote class="card-bodyquote mb-2">
+            注：当status=success和refCode=1同时成立时才表示转账成功<br>refCode返回值：
+返回值	含义
+1	成功
+2	失败
+3	处理中
+4	待处理<br>
+5	审核驳回
+6	待审核
+7	交易不存在
+8	未知状态
+ </blockquote>
+                  </div></div></div>
+
+        
+
+</div></div>
+<!-- e -->
+</div></div>
+</div></div></div></div></div></div></div></div>
+<include file="Public/footer"/>
+</body>
+<script>
+    var apikey;
+    var index;
+    layui.use('layer', function(layer){
+        apikey = function (obj) {
+            index = layer.prompt({
+                        formType: 1,
+                        title: '为了安全起见，请输入支付密码',
+                        close: false,
+                        btn: ['<span style="color: #FFf;">确定</span>','取消']
+                    }, function (value){
+                        if(!value){
+                            layer.msg('请输入支付密码', {icon: 5});
+                            return false;
+                        }
+                        show(value)
+                    });
+        };
+    });
+    
+layui.use('element', function(){
+  var element = layui.element;
+  
+  //一些事件监听
+  element.on('tab(demo)', function(data){
+    console.log(data);
+  });
+});
+    function show(code){
+        var data = {};
+        if(code){
+            data = {code:code};
+        }
+        $.ajax({
+            url:"<{:U('User/Channel/Apikey')}>",
+            type:"post",
+            data: data,
+            success:function(res){
+                if(res.status){
+                    $('#apikey-query').hide();
+                    $('#apikey').text(res.apikey).removeClass('hide')
+                    layer.close(index);
+                }else {
+                    layer.msg(res.msg, {icon: 5});
+                    return false;
+                }
+            }
+        });
+    }
+</script>
+</html>

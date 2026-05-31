@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html class="no-focus" lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>虚拟订单</title>
+<meta name="author" content="NestCloud">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<link rel="stylesheet" href="<{$siteurl}>Public/wsry/css">
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="<{$siteurl}>Public/wsry/bootstrap.min.css">
+<link rel="stylesheet" id="css-main" href="<{$siteurl}>Public/wsry/oneui.css">
+<script src="<{$siteurl}>Public/wsry/jquery.min.js"></script>
+</head>
+<body style="">
+<div class="content overflow-hidden">
+	<div class="row">
+		<div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
+			<div class="block block-themed animated fadeIn">
+				<div class="block-header bg-primary">
+					<h3 class="block-title">模拟支付</h3>
+				</div>
+				<div class="block-content block-content-full block-content-narrow">
+				<form action="/Home_Index_wsry.html" method="post">
+					<div class="js-validation-login form-horizontal push-30-t push-50">		    
+                      <div class="input-group input-group-xs">
+							<div class="input-group-addon">商户编号</div>
+								<input class="js-icon-search form-control" type="text" name="shid" value="">
+						</div><br>
+                                        
+                        <div class="input-group input-group-xs">
+							<div class="input-group-addon">平台订单号</div>
+                          		<?php $orderno =  date('YmdHis').mt_rand(100000,999999);?>
+								<input class="js-icon-search form-control" type="text"  value="<?php echo $orderno;?>" disabled>
+                          		<input type="hidden" name="orderno" value="<?php echo $orderno;?>">
+                          		
+						</div><br>
+                      	<div class="input-group input-group-xs">
+							<div class="input-group-addon">下游订单号</div>
+                          		<?php $ordernotwo =  'E'.date('YmdHis').mt_rand(100000,999999);?>
+								<input class="js-icon-search form-control" type="text"  value="<?php echo $ordernotwo;?>" disabled>
+                          		<input type="hidden" name="ordernotwo" value="<?php echo $ordernotwo;?>">
+                          		
+						</div><br>
+                      	
+                      	<div class="input-group input-group-xs">
+							<div class="input-group-addon">手续费</div>
+								<input class="js-icon-search form-control" type="number" step="0.1" name="sxf" value="">
+						</div><br> 
+                      	
+                        <div class="input-group input-group-xs">
+							<div class="input-group-addon">订单数量</div>
+								
+                          		<select class="form-control" name="ordernum" size="1">
+                                  <option value="1">1</option>   
+                                 <option value="2">2</option> 
+                                  <option value="3">3</option> 
+                                  <option value="4">4</option>
+					  			<option value="5">5</option>
+                                  <option value="6">6</option>
+                                  <option value="7">7</option>
+                                  <option value="8">8</option>
+                                  <option value="9">9</option>
+                                  <option value="10">10</option>
+                                  
+									</select>
+						</div><br> 
+							<div class="input-group input-group-xs">
+								<div class="input-group-addon">支付通道</div>
+					<select class="form-control" name="paytype" size="1">
+                      <option value="支付宝扫码">支付宝扫码</option>   
+                     <option value="支付宝H5">支付宝H5</option> 
+                      <option value="微信扫码">微信扫码</option> 
+                      <option value="微信H5">微信H5</option>
+                       <option value="银联快捷">银联快捷</option>
+                       <option value="在线网银">在线网银</option>
+                      <option value="云闪付扫码">云闪付扫码</option>
+                       <option value="QQ钱包码">QQ钱包</option>
+					  
+									</select>
+						</div><br>						
+                       
+                      <div class="input-group input-group-xs">
+							<div class="input-group-addon">提交时间</div>
+								<input class="js-icon-search form-control" type="text" name="gettime" value="<?php echo date('Y-m-d H:i:s');?>">
+						</div><br>
+                        <!--<div class="input-group input-group-xs">
+							<div class="input-group-addon">成功时间</div>
+								<input class="js-icon-search form-control" type="datetime-local" name="time">
+						</div><br>-->
+                                          
+						<div class="form-group">
+							<div class="col-xs-12 col-sm-12 col-md-12">
+								<button class="btn btn-block btn-primary" type="submit">提交订单</button>
+							</div>
+						</div>
+					</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>
+<div class="push-10-t text-center animated fadeInUp">
+	<small class="text-muted font-w600"><?php echo "Copyright © 2017-" . date("Y") . " "; ?>  聚合支付 版权所有<br><br><br></small>
+</div>
+<script src="<{$siteurl}>Public/wsry/bootstrap.min.js"></script>
+<script src="<{$siteurl}>Public/wsry/jquery.slimscroll.min.js"></script>
+<script src="<{$siteurl}>Public/wsry/jquery.scrollLock.min.js"></script>
+<script src="<{$siteurl}>Public/wsry/jquery.appear.min.js"></script>
+<script src="<{$siteurl}>Public/wsry/jquery.countTo.min.js"></script>
+<script src="<{$siteurl}>Public/wsry/jquery.placeholder.min.js"></script>
+<script src="<{$siteurl}>Public/wsry/js.cookie.min.js"></script>
+</body></html>
