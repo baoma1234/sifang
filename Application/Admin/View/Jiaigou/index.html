@@ -18,8 +18,9 @@
     <section class="content">
         <div class="jg-card">
             <div class="jg-title">
-                <h4 style="margin:0;">账号列表</h4>
+                <h4 style="margin:0;">账号列表 <small class="text-muted jg-refresh-status">自动检测中</small></h4>
                 <div class="jg-filter">
+                    <button type="button" class="btn btn-success" onclick="refreshCookieStatus()">立即检测</button>
                     <form method="get" action="" class="form-inline" style="margin:0;">
                         <input type="text" name="keyword" value="<{$keyword}>" class="form-control jg-search" placeholder="搜索账号名称 / 商户号">
                         <select name="channel_id" class="form-control" style="margin-left:8px;" onchange="this.form.submit()">
@@ -42,8 +43,8 @@
                         <th>所属通道</th>
                         <th>商户号</th>
                         <th>Cookie状态</th>
-                        <th>更新时间</th>
-                        <th style="width:280px;">操作</th>
+                        <th>最后检测时间</th>
+                        <th style="width:360px;">操作</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -60,6 +61,7 @@
                             <td>
                                 <button class="btn btn-warning btn-sm" onclick="openJg('<{:U('Admin/Jiaigou/loginAccount', array('aid'=>$p[id]))}>')">登录</button>
                                 <button class="btn btn-info btn-sm" onclick="openJg('<{:U('Admin/Jiaigou/editAccount', array('aid'=>$p[id]))}>')">编辑</button>
+                                <button class="btn btn-success btn-sm" onclick="checkOne(<{$p.id}>)">立即检测</button>
                             </td>
                         </tr>
                     </volist>
@@ -95,4 +97,47 @@ function openJg(url){
         content: url
     });
 }
+
+function refreshCookieStatus(){
+    $('.jg-refresh-status').text('检测中...');
+    $.ajax({
+        url: "<{:U('Admin/Jiaigou/checkCookieStatus')}>",
+        type: 'post',
+        dataType: 'json',
+        data: {},
+        success: function(res){
+            $('.jg-refresh-status').text(res.status ? '已检测' : '检测失败');
+            if(res.status){
+                window.location.reload();
+            }
+        },
+        error: function(){
+            $('.jg-refresh-status').text('检测失败');
+        }
+    });
+}
+
+function checkOne(aid){
+    $.ajax({
+        url: "<{:U('Admin/Jiaigou/checkCookieStatus')}>",
+        type: 'post',
+        dataType: 'json',
+        data: {aid: aid},
+        success: function(res){
+            if(res.status){
+                layer.msg('检测完成', {icon:1});
+                window.location.reload();
+            }else{
+                layer.msg(res.msg || '检测失败', {icon:2});
+            }
+        },
+        error: function(){
+            layer.msg('检测失败', {icon:2});
+        }
+    });
+}
+
+setInterval(function(){
+    refreshCookieStatus();
+}, 300000);
 </script>

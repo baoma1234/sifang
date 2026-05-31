@@ -134,14 +134,15 @@ class JiaigouController extends BaseController
             $result = $this->doLogin($cookieFile, $username, $password, $captcha);
             if ($result['code'] == 1) {
                 $cookie = @file_get_contents($cookieFile);
-                if ($cookie !== false && trim($cookie) !== '') {
+                $valid = $this->checkCookieValid($cookieFile);
+                if ($cookie !== false && trim($cookie) !== '' && $valid) {
                     M('channel_account')->where(['id' => $aid])->save(array(
                         'cookie' => trim($cookie),
                         'cookie_status' => 1,
                         'cookie_update_time' => time(),
                     ));
+                    $this->ajaxReturn(['status' => 1, 'msg' => '登录成功']);
                 }
-                $this->ajaxReturn(['status' => 1, 'msg' => '登录成功']);
             }
 
             M('channel_account')->where(['id' => $aid])->save(array(
@@ -202,6 +203,48 @@ class JiaigouController extends BaseController
         return false;
     }
 
+    private function checkCookieValid($cookieFile)
+    {
+        $targetUrl = $this->baseUrl . '/bs/biz/notice/list';
+        $postData = http_build_query(array(
+            'pageSize' => 10,
+            'pageNum' => 1,
+            'orderByColumn' => 'id',
+            'isAsc' => 'desc',
+            'noticeType' => '',
+            'noticeTitle' => '',
+            'readStatus' => '',
+        ));
+
+        $ch = curl_init($targetUrl);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile);
+        curl_setopt($ch, CURLOPT_COOKIEJAR, $cookieFile);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Accept: application/json, text/javascript, */*; q=0.01',
+            'Accept-Language: zh-CN,zh;q=0.9,zh-HK;q=0.8',
+            'Connection: keep-alive',
+            'Content-Type: application/x-www-form-urlencoded',
+            'Origin: ' . $this->baseUrl,
+            'Referer: ' . $this->baseUrl . '/bs/biz/notice',
+            'Sec-Fetch-Dest: empty',
+            'Sec-Fetch-Mode: cors',
+            'Sec-Fetch-Site: same-origin',
+            'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36',
+            'X-Requested-With: XMLHttpRequest',
+        ));
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        $resArr = json_decode($response, true);
+        return is_array($resArr) && isset($resArr['code']) && intval($resArr['code']) === 0;
+    }
+
     public function editAccount()
     {
         $aid = I('get.aid', 0, 'intval');
@@ -242,6 +285,40 @@ class JiaigouController extends BaseController
         $this->assign('aid', $aid);
         $this->assign('account', $account);
         $this->display('saveCookie');
+    }
+
+    public function checkCookieStatus()
+    {
+        $aid = I('post.aid', 0, 'intval');
+        $where = array();
+        if ($aid) {
+            $where['id'] = $aid;
+        }
+
+        $accounts = M('channel_account')->where($where)->select();
+        if (empty($accounts)) {
+            $this->ajaxReturn(['status' => 0, 'msg' => '账号不存在']);
+        }
+
+        $result = array();
+        foreach ($accounts as $account) {
+            $cookieFile = $this->getCookieFile($account['id']);
+            $valid = $this->checkCookieValid($cookieFile);
+            M('channel_account')->where(['id' => $account['id']])->save(array(
+                'cookie_status' => $valid ? 1 : 0,
+                'cookie_update_time' => time(),
+            ));
+            $result[] = array(
+                'aid' => $account['id'],
+                'cookie_status' => $valid ? 1 : 0,
+                'cookie_text' => $valid ? '已登录' : '未登录',
+            );
+        }
+
+        $this->ajaxReturn(array(
+            'status' => 1,
+            'data' => $result,
+        ));
     }
 
     private function getCookieFile($aid)
