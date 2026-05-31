@@ -21,7 +21,7 @@
                 <h4 style="margin:0;">账号列表 <small class="text-muted jg-refresh-status">自动检测中</small></h4>
                 <div class="jg-filter">
                     <button type="button" class="btn btn-success" onclick="refreshCookieStatus()">立即检测</button>
-                    <button type="button" class="btn btn-primary" onclick="openJg('<{:U('Admin/Jiaigou/editAccount')}>')">添加账号</button>
+                    <button type="button" class="btn btn-primary" onclick="openJg('<{:U('Admin/Jiaigou/editAccount', array('aid'=>0))}>')">添加账号</button>
                     <form method="get" action="" class="form-inline" style="margin:0;">
                         <input type="text" name="keyword" value="<{$keyword}>" class="form-control jg-search" placeholder="搜索账号名称 / 商户号">
                         <select name="channel_id" class="form-control" style="margin-left:8px;" onchange="this.form.submit()">

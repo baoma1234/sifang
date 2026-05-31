@@ -248,7 +248,22 @@ class JiaigouController extends BaseController
     public function editAccount()
     {
         $aid = I('get.aid', 0, 'intval');
-        $account = M('channel_account')->where(['id' => $aid])->find();
+        $account = array(
+            'id' => 0,
+            'channel_id' => I('get.channel_id', 0, 'intval'),
+            'title' => '',
+            'mch_id' => '',
+            'signkey' => '',
+            'weight' => 1,
+            'status' => 1,
+            'gudingmoney' => '',
+        );
+        if ($aid) {
+            $dbAccount = M('channel_account')->where(['id' => $aid])->find();
+            if ($dbAccount) {
+                $account = $dbAccount;
+            }
+        }
         $channels = M('Channel')->where(['status' => 1])->select();
         $this->assign('aid', $aid);
         $this->assign('account', $account);
@@ -264,6 +279,10 @@ class JiaigouController extends BaseController
             if (!$aid) {
                 $this->ajaxReturn(['status' => 0, 'msg' => '参数错误']);
             }
+            $gudingmoney = isset($data['gudingmoney']) ? trim($data['gudingmoney']) : '';
+            if ($gudingmoney === '') {
+                $this->ajaxReturn(['status' => 0, 'msg' => '固定金额池不能为空']);
+            }
             $save = array(
                 'channel_id' => intval($data['channel_id']),
                 'title' => trim($data['title']),
@@ -271,6 +290,7 @@ class JiaigouController extends BaseController
                 'signkey' => trim($data['signkey']),
                 'weight' => intval($data['weight']),
                 'status' => intval($data['status']),
+                'gudingmoney' => $gudingmoney,
                 'updatetime' => time(),
             );
             $res = M('channel_account')->where(['id' => $aid])->save($save);
