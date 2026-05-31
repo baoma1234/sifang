@@ -59,8 +59,7 @@
                             <td><{$p.cookie_updated_text}></td>
                             <td>
                                 <button class="btn btn-warning btn-sm" onclick="openJg('<{:U('Admin/Jiaigou/loginAccount', array('aid'=>$p[id]))}>')">登录</button>
-                                <button class="btn btn-info btn-sm" onclick="openJg('<{:U('Admin/Jiaigou/saveCookieView', array('aid'=>$p[id]))}>')">保存Cookie</button>
-                                <button class="btn btn-default btn-sm" onclick="window.open('<{:U('Pay/JiuaigouSync/syncOrderList', array('key'=>'abc123','aid'=>$p[id]))}>')">同步订单</button>
+                                <button class="btn btn-info btn-sm" onclick="openJg('<{:U('Admin/Jiaigou/editAccount', array('aid'=>$p[id]))}>')">编辑</button>
                             </td>
                         </tr>
                     </volist>

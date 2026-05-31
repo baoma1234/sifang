@@ -196,6 +196,39 @@ class JiaigouController extends BaseController
         return false;
     }
 
+    public function editAccount()
+    {
+        $aid = I('get.aid', 0, 'intval');
+        $account = M('channel_account')->where(['id' => $aid])->find();
+        $channels = M('Channel')->where(['status' => 1])->select();
+        $this->assign('aid', $aid);
+        $this->assign('account', $account);
+        $this->assign('channels', $channels);
+        $this->display('editAccount');
+    }
+
+    public function saveAccount()
+    {
+        if (IS_POST) {
+            $aid = I('post.aid', 0, 'intval');
+            $data = I('post.data/a');
+            if (!$aid) {
+                $this->ajaxReturn(['status' => 0, 'msg' => '参数错误']);
+            }
+            $save = array(
+                'channel_id' => intval($data['channel_id']),
+                'title' => trim($data['title']),
+                'mch_id' => trim($data['mch_id']),
+                'signkey' => trim($data['signkey']),
+                'weight' => intval($data['weight']),
+                'status' => intval($data['status']),
+                'updatetime' => time(),
+            );
+            $res = M('channel_account')->where(['id' => $aid])->save($save);
+            $this->ajaxReturn(['status' => $res ? 1 : 0, 'msg' => $res ? '保存成功' : '保存失败']);
+        }
+    }
+
     public function saveCookieView()
     {
         $aid = I('get.aid', 0, 'intval');
