@@ -126,6 +126,13 @@ public function showQrcode()
             $this->error('参数错误');
         }
 
+        if (empty($qrcode)) {
+            $orderInfo = M('Order')->where(['out_trade_id' => $orderid])->find();
+            if (!empty($orderInfo) && !empty($orderInfo['account_id'])) {
+                $qrcode = (string)$orderInfo['account_id'];
+            }
+        }
+
         $orderInfo = M('Order')->where(['out_trade_id' => $orderid])->find();
         if (empty($orderInfo)) {
             $this->error('订单不存在');
@@ -153,23 +160,12 @@ public function showQrcode()
             $this->error('订单已超时封单');
         }
 
-        if (empty($qrcode)) {
-            $qrcodeRow = $this->fetchMerchantQrcode($merchant, $money, $orderid);
-            if (empty($qrcodeRow) || empty($qrcodeRow['qrcode'])) {
-                $this->releaseMerchantByMoney($merchant['id'], $money);
-                $this->error('二维码不存在，请稍后再试');
-            }
-
-            $qrcode = $qrcodeRow['qrcode'];
-            $expire = time() + 60;
-        }
-
         $this->assign('data', [
-            'qrcode' => $qrcode,
+            'qrcode' => '',
             'money'  => $money,
             'orderid'=> $orderid,
             'body'   => $body,
-            'expire' => $expire,
+            'expire' => time() + 60,
         ]);
 
         $this->display('showQrcode');
@@ -573,6 +569,38 @@ public function showQrcode()
             'expire' => time() + 60,
             'raw' => $result,
         );
+    }
+
+    public function ajaxQrcode()
+    {
+        $orderid = I('post.orderid', '', 'trim');
+        if (empty($orderid)) {
+            $this->ajaxReturn(array('status' => 0, 'msg' => '参数错误'));
+        }
+
+        $orderInfo = M('Order')->where(['pay_orderid' => $orderid])->find();
+        if (empty($orderInfo) || empty($orderInfo['account_id'])) {
+            $this->ajaxReturn(array('status' => 0, 'msg' => '订单不存在'));
+        }
+
+        $merchant = M('channel_account')->where(['id' => intval($orderInfo['account_id'])])->find();
+        if (empty($merchant)) {
+            $this->ajaxReturn(array('status' => 0, 'msg' => '商户不存在'));
+        }
+
+        $qrcodeRow = $this->fetchMerchantQrcode($merchant, floatval($orderInfo['pay_amount']), $orderid);
+        if (empty($qrcodeRow) || empty($qrcodeRow['qrcode'])) {
+            $this->releaseMerchantByMoney(intval($merchant['id']), floatval($orderInfo['pay_amount']));
+            $this->ajaxReturn(array('status' => 0, 'msg' => '二维码不存在，请稍后再试'));
+        }
+
+        $this->ajaxReturn(array(
+            'status' => 1,
+            'data' => array(
+                'qrcode' => $qrcodeRow['qrcode'],
+                'expire' => $qrcodeRow['expire'],
+            ),
+        ));
     }
 
     private function getMerchantCookieFile($account)

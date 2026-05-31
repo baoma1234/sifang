@@ -139,7 +139,7 @@
                 <div class="spinner"></div>
                 <div>正在获取二维码...</div>
             </div>
-            <img src="<{$data.qrcode}>" alt="二维码" onload="document.getElementById('qrLoading').style.display='none';">
+            <img id="qrImg" src="" alt="二维码" style="display:none;" onload="document.getElementById('qrLoading').style.display='none'; this.style.display='block';">
         </div>
 
         <div class="expire" id="countdown"></div>
@@ -167,6 +167,8 @@
         var expiredText = document.getElementById('expiredText');
         var qrBox = document.getElementById('qrBox');
         var regenBtn = document.getElementById('regenBtn');
+        var qrImg = document.getElementById('qrImg');
+        var orderid = "<{$data.orderid}>";
 
         function tick() {
             var now = Math.floor(Date.now() / 1000);
@@ -185,6 +187,31 @@
             setTimeout(tick, 1000);
         }
 
+        function loadQrcode() {
+            $.ajax({
+                url: '<{:U("Pay/Ceshi/ajaxQrcode")}>',
+                type: 'post',
+                dataType: 'json',
+                data: {orderid: orderid},
+                success: function(res) {
+                    if (res.status && res.data && res.data.qrcode) {
+                        qrImg.src = res.data.qrcode;
+                        expireTime = res.data.expire || expireTime;
+                    } else {
+                        expiredText.style.display = 'block';
+                        expiredText.innerHTML = res.msg || '二维码获取失败';
+                        qrBox.style.display = 'none';
+                    }
+                },
+                error: function() {
+                    expiredText.style.display = 'block';
+                    expiredText.innerHTML = '二维码获取失败';
+                    qrBox.style.display = 'none';
+                }
+            });
+        }
+
+        loadQrcode();
         tick();
     })();
 </script>
