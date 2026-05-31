@@ -158,6 +158,32 @@ class PayController extends Controller
                 $channel_account_item[] = $v;
             }
         }
+
+        // 按金额过滤可用商户：优先匹配配置了固定金额的商户；若未配置则视为通用商户
+        $amountMatchedAccounts = array();
+        foreach ($channel_account_item as $item) {
+            if ($this->matchAccountAmount($item, $pay_amount)) {
+                $amountMatchedAccounts[] = $item;
+            }
+        }
+        if (!empty($amountMatchedAccounts)) {
+            $channel_account_item = $amountMatchedAccounts;
+        }
+
+        // 过滤已占用商户：paying_money>0 视为该商户已被订单占用
+        $freeAccountItems = array();
+        foreach ($channel_account_item as $item) {
+            if ($this->isAccountFree($item)) {
+                $freeAccountItems[] = $item;
+            }
+        }
+        if (!empty($freeAccountItems)) {
+            $channel_account_item = $freeAccountItems;
+        }
+
+        if (empty($channel_account_item)) {
+            $this->showmessage('该金额暂无可用商户，请稍后再试');
+        }
         if (empty($channel_account_item)) {
             $this->showmessage('账户:' . $error_msg);
         }
@@ -170,11 +196,14 @@ class PayController extends Controller
             $channel_account = getWeight($channel_account_item);
         }
 
+        $this->reserveChannelAccount($channel_account['id'], $pay_amount, $this->channel['userid'], $this->channel['api'], $pay_orderid);
+
         $syschannel['mch_id']    = $channel_account['mch_id'];
         $syschannel['signkey']   = $channel_account['signkey'];
         $syschannel['appid']     = $channel_account['appid'];
         $syschannel['appsecret'] = $channel_account['appsecret'];
         $syschannel['account']   = $channel_account['title'];
+        $syschannel['account_id'] = $channel_account['id'];
 
         // 定制费率
         if ($channel_account['custom_rate']) {
@@ -577,6 +606,8 @@ if(!empty(I('request.cid', 0, 'intval'))){
                 ]);
             }
 
+            $this->releaseChannelAccount($order_info['account_id'], $order_info['pay_orderid'], $order_info['pay_amount']);
+
             //-----------------------------------------修改子账号风控支付数据end----------------------------------------------
 
         }
@@ -670,6 +701,102 @@ if(!empty(I('request.cid', 0, 'intval'))){
             return $model->where(['id' => $id])->save($data);
         }
         return true;
+    }
+
+    protected function matchAccountAmount($account, $amount)
+    {
+        $amountStr = (string)intval(round($amount));
+        $pool = $this->parseAmountPool(isset($account['gudingmoney']) ? $account['gudingmoney'] : '');
+        if (empty($pool)) {
+            return true;
+        }
+        return in_array($amountStr, $pool);
+    }
+
+    protected function parseAmountPool($value)
+    {
+        $value = trim((string)$value);
+        if ($value === '' || $value === '0' || $value === '0.00') {
+            return array();
+        }
+        $parts = preg_split('/[\s,，|]+/', $value);
+        $pool = array();
+        foreach ($parts as $part) {
+            $part = trim($part);
+            if ($part === '') {
+                continue;
+            }
+            $pool[] = (string)intval(round(floatval($part)));
+        }
+        return array_values(array_unique($pool));
+    }
+
+    protected function isAccountFree($account)
+    {
+        $payingMoney = isset($account['paying_money']) ? floatval($account['paying_money']) : 0;
+        $offlineStatus = isset($account['offline_status']) ? intval($account['offline_status']) : 0;
+        return $offlineStatus == 1 && $payingMoney <= 0;
+    }
+
+    protected function reserveChannelAccount($accountId, $amount, $userid, $channelId, $orderId)
+    {
+        $accountId = intval($accountId);
+        if (!$accountId) {
+            return false;
+        }
+
+        $m = M('ChannelAccount');
+        $info = $m->where(['id' => $accountId])->find();
+        if (!$info) {
+            return false;
+        }
+
+        $money = isset($info['paying_money']) ? floatval($info['paying_money']) : 0;
+        if ($money > 0) {
+            return false;
+        }
+
+        $qrcodeUrl = $this->buildMerchantQrUrl($accountId, $amount, $orderId);
+        return $m->where(['id' => $accountId, 'paying_money' => array('elt', 0)])->save(array(
+            'paying_money' => $amount,
+            'last_paying_time' => time(),
+            'current_orderid' => $orderId,
+            'current_qrcode_url' => $qrcodeUrl,
+        ));
+    }
+
+    protected function releaseChannelAccount($accountId, $orderId, $amount = 0)
+    {
+        $accountId = intval($accountId);
+        if (!$accountId) {
+            return false;
+        }
+        $row = M('ChannelAccount')->where(['id' => $accountId])->find();
+        if (empty($row)) {
+            return false;
+        }
+        $current = floatval(isset($row['paying_money']) ? $row['paying_money'] : 0);
+        $amount = floatval($amount);
+        if ($amount > 0 && $current > 0 && abs($current - $amount) > 0.0001) {
+            return true;
+        }
+        return M('ChannelAccount')->where(['id' => $accountId])->save(array(
+            'paying_money' => 0,
+            'last_paying_time' => time(),
+            'current_orderid' => '',
+            'current_qrcode_url' => '',
+        ));
+    }
+
+    protected function buildMerchantQrUrl($accountId, $amount, $orderId)
+    {
+        $seed = md5($accountId . '|' . $amount . '|' . $orderId . '|' . time());
+        return U('Pay/Pay/merchantQr', array(
+            'aid' => $accountId,
+            'orderid' => $orderId,
+            'amount' => $amount,
+            'seed' => $seed,
+        ));
     }
 
     /**
@@ -1022,7 +1149,34 @@ if(!empty(I('request.cid', 0, 'intval'))){
         $this->assign('params', $return);
         $this->assign('orderid', $return['orderid']);
         $this->assign('money', $return['amount']);
+        $this->assign('account_id', isset($return['account_id']) ? $return['account_id'] : 0);
         $this->display("WeiXin/" . $view);
+    }
+
+    public function merchantQr()
+    {
+        $aid = I('get.aid', 0, 'intval');
+        $orderid = I('get.orderid', '', 'trim');
+        if (!$aid || $orderid === '') {
+            exit('bad request');
+        }
+
+        $account = M('ChannelAccount')->where(['id' => $aid])->find();
+        if (!$account) {
+            exit('account not found');
+        }
+
+        $qrUrl = !empty($account['current_qrcode_url']) ? $account['current_qrcode_url'] : '';
+        if ($qrUrl === '') {
+            $qrUrl = $this->_site . 'Pay_' . $account['id'] . '_' . $orderid . '.html';
+        }
+
+        import("Vendor.phpqrcode.phpqrcode", '', ".php");
+        $QR = "Uploads/codepay/" . $orderid . ".png";
+        \QRcode::png($qrUrl, $QR, "L", 20);
+        header('Content-Type: image/png');
+        readfile($QR);
+        exit;
     }
 
     /**

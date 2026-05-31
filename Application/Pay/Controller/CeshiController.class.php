@@ -291,6 +291,10 @@ public function showQrcode()
             exit('forbidden');
         }
 
+        $expired = M('qrcode_pool')->where([
+            'status'      => 1,
+            'expire_time' => ['lt', time()],
+        ])->select();
         M('qrcode_pool')->where([
             'status'      => 1,
             'expire_time' => ['lt', time()],
@@ -299,6 +303,11 @@ public function showQrcode()
             'orderid'     => '',
             'update_time' => time(),
         ]);
+        if (!empty($expired)) {
+            foreach ($expired as $row) {
+                $this->releaseMerchantByMoney(intval($row['account_id']), floatval($row['money']));
+            }
+        }
 
         echo 'qrcode cleared';
         exit;
@@ -310,255 +319,242 @@ public function showQrcode()
      */
       public function refreshQrcodePool()
     {
-          
         $key = I('get.key', '', 'trim');
-       
         if ($key !== 'abc123') {
             exit('forbidden');
         }
 
-        // 只请求一次，接口返回 5 个通道二维码
-        $deviceCode = $this->getDeviceCode();
-        //  var_dump($deviceCode);die();
-        if (empty($deviceCode)) {
-            exit('device code missing');
-        }
-
-        $result = $this->fetchDeviceData($deviceCode);
-        if (!is_array($result) || !isset($result['code']) || intval($result['code']) !== 0) {
-            exit('fetch failed');
-        }
-
-        $data = isset($result['rows']) ? $result['rows'] : [];
-        if (empty($data) || !is_array($data)) {
-            exit('empty data');
-        }
-
-        // 你的返回结构里 data 是 0-4 共 5 个通道
-        $moneyMap = [
-            0 => 10,
-            1 => 13,
-            2 => 18,
-            3 => 20,
-            4 => 25,
-        ];
-      
+        $moneyMap = array(10, 13, 18, 20, 25);
         $success = 0;
-        foreach ($data as $idx => $item) {
-            if (!isset($moneyMap[$idx])) {
+        $skip = 0;
+
+        foreach ($moneyMap as $money) {
+            $account = $this->pickFreeMerchantAccount($money);
+            if (empty($account)) {
+                $skip++;
                 continue;
             }
 
-            $channelNo = $idx + 1;
-            $money = $moneyMap[$idx];
-            $qrcode = isset($item['scanCode']) ? $item['scanCode'] : '';
-            if (empty($qrcode)) {
+            $result = $this->fetchDeviceDataByAccount($account, $money);
+            if (!is_array($result) || !isset($result['code']) || intval($result['code']) !== 0) {
+                $skip++;
                 continue;
             }
-          // var_dump($qrcode);die();
+
+            $data = isset($result['rows']) ? $result['rows'] : array();
+            if (empty($data) || !is_array($data)) {
+                $skip++;
+                continue;
+            }
+
+            $qrcode = '';
+            foreach ($data as $item) {
+                if (!empty($item['scanCode'])) {
+                    $qrcode = $item['scanCode'];
+                    break;
+                }
+            }
+            if ($qrcode === '') {
+                $skip++;
+                continue;
+            }
+
             $now = time();
             $expire = $now + 60;
-            $row = [
-                'channel_no'  => $channelNo,
+            $row = array(
+                'channel_no'  => intval($account['id']),
                 'money'       => $money,
+                'account_id'  => intval($account['id']),
                 'qrcode_url'  => $qrcode,
-                'qrcode_data' => json_encode($item, JSON_UNESCAPED_UNICODE),
+                'qrcode_data' => json_encode($result, JSON_UNESCAPED_UNICODE),
                 'status'      => 1,
                 'orderid'     => '',
                 'create_time' => $now,
                 'expire_time' => $expire,
                 'update_time' => $now,
-            ];
+            );
 
-            $exist = M('qrcode_pool')->where([
-                'channel_no' => $channelNo,
+            $exist = M('qrcode_pool')->where(array(
                 'money'      => $money,
-            ])->find();
+                'account_id' => intval($account['id']),
+            ))->find();
 
             if ($exist) {
-                M('qrcode_pool')->where(['id' => $exist['id']])->save($row);
+                M('qrcode_pool')->where(array('id' => $exist['id']))->save($row);
             } else {
                 M('qrcode_pool')->add($row);
             }
 
+            $this->markMerchantBusy($account['id'], $money, $qrcode);
             $success++;
         }
 
-        echo 'ok:' . $success;
+        echo 'ok:' . $success . ',skip:' . $skip;
         exit;
     }
 
     /**
      * 金额 -> 通道号
      */
-    private function getChannelNoByMoney($money)
+    private function parseAmountPool($value)
     {
-        $map = [
-            10 => 1,
-            13 => 2,
-            18 => 3,
-            20 => 4,
-            25 => 5,
-        ];
-
-        $money = intval($money);
-        return isset($map[$money]) ? $map[$money] : 0;
-    }
-     private function getDeviceCode()
-    {
-        return '867272085449731';
-    }
-
-    /**
-     * 通道号 -> 设备码
-     */
-    private function getDeviceCodeByChannel($channelNo)
-    {
-        $deviceMap = [
-            1 => '867272085449731',
-            2 => '通道2设备码',
-            3 => '通道3设备码',
-            4 => '通道4设备码',
-            5 => '通道5设备码',
-        ];
-
-        return isset($deviceMap[$channelNo]) ? $deviceMap[$channelNo] : '';
+        $value = trim((string)$value);
+        if ($value === '') {
+            return array();
+        }
+        $parts = preg_split('/[\s,，|]+/', $value);
+        $pool = array();
+        foreach ($parts as $part) {
+            $part = trim($part);
+            if ($part === '') {
+                continue;
+            }
+            $pool[] = (string)intval(round(floatval($part)));
+        }
+        return array_values(array_unique($pool));
     }
 
-    /**
-     * 请求三方接口获取二维码数据
-     */
-    private function fetchDeviceData($deviceCode)
+    private function pickFreeMerchantAccount($money)
     {
+        $accounts = M('channel_account')->where(array(
+            'status' => 1,
+            'offline_status' => 1,
+        ))->order('last_paying_time asc,weight desc,id asc')->select();
+        if (empty($accounts)) {
+            return array();
+        }
 
-        $cookieFile = RUNTIME_PATH . 'jiuaigou_cookie.txt';
-        
-        // 1. 定义请求的目标 URL（扫码批量创建接口）
-$targetUrl = 'https://jiuaigou.net/bs/biz/cargo/batch/create/scanCode';
+        $amount = (string)intval(round($money));
+        $matched = array();
+        foreach ($accounts as $account) {
+            $pool = $this->parseAmountPool(isset($account['gudingmoney']) ? $account['gudingmoney'] : '');
+            if (!empty($pool) && in_array($amount, $pool)) {
+                $matched[] = $account;
+            }
+        }
 
-// 2. 组装 POST 数据（对应 --data-raw）
-// 注意：ids 里面的逗号直接写在数组里，http_build_query 会自动帮我们编码为 %2C
-$postData = [
-    'ids' => '29046,30608,30609,30610,30611'
-];
+        if (empty($matched)) {
+            foreach ($accounts as $account) {
+                $pool = $this->parseAmountPool(isset($account['gudingmoney']) ? $account['gudingmoney'] : '');
+                if (empty($pool)) {
+                    $matched[] = $account;
+                }
+            }
+        }
 
-// 转换为标准表单字符串：ids=29046%2C30608%2C30609%2C30610%2C30611
-$postString = http_build_query($postData);
+        foreach ($matched as $account) {
+            if ($this->isMerchantFree($account['id'])) {
+                return $account;
+            }
+        }
 
-// 3. 复刻请求头 Headers
-$headers = [
-    'Accept: application/json, text/javascript, */*; q=0.01',
-    'Accept-Language: zh-CN,zh;q=0.9,zh-HK;q=0.8',
-    'Connection: keep-alive',
-    'Content-Type: application/x-www-form-urlencoded; charset=UTF-8',
-    'Origin: https://jiuaigou.net',
-    'Referer: https://jiuaigou.net/bs/biz/cargo?deviceId=4351&time=1780132991540',
-    'Sec-Fetch-Dest: empty',
-    'Sec-Fetch-Mode: cors',
-    'Sec-Fetch-Site: same-origin',
-    'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36',
-    'X-Requested-With: XMLHttpRequest',
-    'sec-ch-ua: "Google Chrome";v="147", "Not.A/Brand";v="8", "Chromium";v="147"',
-    'sec-ch-ua-mobile: ?0',
-    'sec-ch-ua-platform: "Windows"'
-];
+        // 同金额轮询：如果没有空闲但存在占用中的同金额商户，按更新时间最早的优先尝试
+        if (!empty($matched)) {
+            usort($matched, function ($a, $b) {
+                $at = isset($a['last_paying_time']) ? intval($a['last_paying_time']) : 0;
+                $bt = isset($b['last_paying_time']) ? intval($b['last_paying_time']) : 0;
+                if ($at === $bt) {
+                    return intval($a['id']) - intval($b['id']);
+                }
+                return $at - $bt;
+            });
+        }
 
-// 4. 初始化 cURL
-$ch = curl_init();
+        return !empty($matched) ? $matched[0] : array();
+    }
 
-curl_setopt($ch, CURLOPT_URL, $targetUrl);
-curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_POSTFIELDS, $postString);
-curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile);
-        curl_setopt($ch, CURLOPT_COOKIEJAR, $cookieFile);
+    private function isMerchantFree($accountId)
+    {
+        $row = M('channel_account')->where(array('id' => intval($accountId)))->find();
+        if (empty($row)) {
+            return false;
+        }
+        return floatval($row['paying_money']) <= 0;
+    }
 
-// 绕过 SSL 安全证书本地验证
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+    private function markMerchantBusy($accountId, $money, $qrcode = '')
+    {
+        return M('channel_account')->where(array(
+            'id' => intval($accountId),
+            'paying_money' => array('elt', 0),
+        ))->save(array(
+            'paying_money' => $money,
+            'last_paying_time' => time(),
+            'current_orderid' => '',
+            'current_qrcode_url' => $qrcode,
+        ));
+    }
 
-// 5. 执行请求并获取响应
-$response = curl_exec($ch);
+    private function releaseMerchantByMoney($accountId, $money)
+    {
+        $accountId = intval($accountId);
+        if (!$accountId) {
+            return false;
+        }
 
-// 6. 异常排查
-if (curl_errno($ch)) {
-    $errorMsg = curl_error($ch);
-    curl_close($ch);
-    $this->error('cURL 批量扫码接口请求失败: ' . $errorMsg);
-}
+        $row = M('channel_account')->where(['id' => $accountId])->find();
+        if (empty($row)) {
+            return false;
+        }
 
-curl_close($ch);
+        $pool = $this->parseAmountPool(isset($row['gudingmoney']) ? $row['gudingmoney'] : '');
+        if (!empty($pool) && !in_array((string)intval(round($money)), $pool)) {
+            return true;
+        }
 
+        return M('channel_account')->where(['id' => $accountId])->save(array(
+            'paying_money' => 0,
+            'last_paying_time' => time(),
+            'current_orderid' => '',
+            'current_qrcode_url' => '',
+        ));
+    }
 
-      // 1. 定义请求的目标 URL
-        $targetUrl = 'https://jiuaigou.net/bs/biz/cargo/list';
-        
-        // 2. 组装 POST 表单数据（对应 --data-raw）
-        $postData = [
-            'pageSize'      => 10,
-            'pageNum'       => 1,
-            'orderByColumn' => 'number',
-            'isAsc'         => 'asc',
-            'deviceId'      => 4351,
-            'useStatus'     => '',
-            'status'        => ''
-        ];
-        
-        // 将数组转换为 application/x-www-form-urlencoded 标准的字符串格式
+    private function fetchDeviceDataByAccount($account, $money)
+    {
+        $cookieFile = RUNTIME_PATH . 'jiuaigou_cookie_' . intval($account['id']) . '.txt';
+        if (!file_exists($cookieFile) || filesize($cookieFile) == 0) {
+            $cookie = trim((string)$account['cookie']);
+            if ($cookie !== '') {
+                @file_put_contents($cookieFile, $cookie);
+            }
+        }
+
+        $targetUrl = 'https://jiuaigou.net/bs/biz/cargo/batch/create/scanCode';
+        $ids = isset($account['device_ids']) ? trim($account['device_ids']) : '';
+        if ($ids === '') {
+            $ids = '29046,30608,30609,30610,30611';
+        }
+
+        $postData = array('ids' => $ids);
         $postString = http_build_query($postData);
-        
-        // 3. 完美复刻原 cURL 中的所有请求头
-        $headers = [
+        $headers = array(
             'Accept: application/json, text/javascript, */*; q=0.01',
             'Accept-Language: zh-CN,zh;q=0.9,zh-HK;q=0.8',
             'Connection: keep-alive',
-            'Content-Type: application/x-www-form-urlencoded',
+            'Content-Type: application/x-www-form-urlencoded; charset=UTF-8',
             'Origin: https://jiuaigou.net',
-            'Referer: https://jiuaigou.net/bs/biz/cargo?deviceId=4351&time=1780127875990',
+            'Referer: https://jiuaigou.net/bs/biz/cargo',
             'Sec-Fetch-Dest: empty',
             'Sec-Fetch-Mode: cors',
             'Sec-Fetch-Site: same-origin',
             'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36',
             'X-Requested-With: XMLHttpRequest',
-            'sec-ch-ua: "Google Chrome";v="147", "Not.A/Brand";v="8", "Chromium";v="147"',
-            'sec-ch-ua-mobile: ?0',
-            'sec-ch-ua-platform: "Windows"'
-        ];
-        
-        // 4. 初始化 cURL 并配置参数
+        );
+
         $ch = curl_init();
-        
         curl_setopt($ch, CURLOPT_URL, $targetUrl);
-        curl_setopt($ch, CURLOPT_POST, true);                 // 声明为 POST 请求
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $postString);     // 注入表单数据
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);       // 注入 Headers
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);        // 将返回结果保存到变量，而不是直接直出打印
-        
-        // 核心参数：完美带上 JSESSIONID 的 Cookie 会话
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postString);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile);
         curl_setopt($ch, CURLOPT_COOKIEJAR, $cookieFile);
-        
-        // 绕过 SSL 证书检测（防止服务器因为找不到本地 CA 证书直接报错导致抓取失败）
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        
-        // 5. 执行请求并获取结果
         $response = curl_exec($ch);
-        
-        // 6. 异常与错漏检测
-        if (curl_errno($ch)) {
-            $errorMsg = curl_error($ch);
-            curl_close($ch);
-            // 在 ThinkPHP 中返回错误提示
-            $this->error('cURL 请求失败: ' . $errorMsg);
-        }
-        
         curl_close($ch);
-        
-        // 7. 处理返回数据
-        // 此时 $response 是对方返回的原始 JSON 字符串，如果是做接口，可以直接输出
-       
+
         return json_decode($response, true);
     }
 

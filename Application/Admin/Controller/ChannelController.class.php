@@ -286,6 +286,7 @@ class ChannelController extends BaseController
             $account['cookie_status_text'] = $cookieInfo['text'];
             $account['cookie_file'] = $cookieInfo['file'];
             $account['cookie_updated_text'] = $this->formatTime($cookieInfo['updated']);
+            $account['gudingmoney_text'] = !empty($account['gudingmoney']) ? $account['gudingmoney'] : '-';
         }
         unset($account);
 
@@ -425,6 +426,10 @@ class ChannelController extends BaseController
             $_request['offline_status'] = $papiacc['offline_status'];
             $_request['control_status'] = $papiacc['control_status'];
             $_request['unlockdomain'] = $papiacc['unlockdomain'];
+            $_request['gudingmoney'] = isset($papiacc['gudingmoney']) ? trim($papiacc['gudingmoney']) : '';
+            if ($_request['gudingmoney'] === '') {
+                $this->ajaxReturn(['status' => 0, 'msg' => '固定金额池不能为空']);
+            }
             if ($id) {
                 //更新
                 $res = M('channel_account')->where(array('id' => $id))->save($_request);

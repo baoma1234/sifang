@@ -18,27 +18,27 @@
     <!-- Main content -->
     <section class="content">
      
-      <div class="row">		  
+      <div class="row">          
         <div class="col-lg-12 col-12">
-			<!-- Basic Forms -->
-			  <div class="box">
-				<div class="box-header with-border">
-				  <h4 class="box-title"><{$channel['title']}> 子账户管理</h4>			
-					<ul class="box-controls pull-right">
-					  <li><a class="box-btn-close" href="#"></a></li>
-					  <li><a class="box-btn-slide" href="#"></a></li>	
-					<li><a class="box-btn-fullscreen" href="#"></a></li>
-					</ul>
-				</div>
-				<!-- /.box-header -->
+            <!-- Basic Forms -->
+              <div class="box">
+                <div class="box-header with-border">
+                  <h4 class="box-title"><{$channel['title']}> 子账户管理</h4>          
+                    <ul class="box-controls pull-right">
+                      <li><a class="box-btn-close" href="#"></a></li>
+                      <li><a class="box-btn-slide" href="#"></a></li>   
+                    <li><a class="box-btn-fullscreen" href="#"></a></li>
+                    </ul>
+                </div>
+                <!-- /.box-header -->
                 <div class="box-body">
-				  <div class="row">
-					<div class="col-12">
+                  <div class="row">
+                    <div class="col-12">
                       
                     <div class="ibox-content">
                         <div class="box-controls pull-right" style="margin: 2px;">
-<button type="button"  href="javascript:;" id="batchAddAccount" class="btn btn-success btn-sm" style="margin: 2px;"><i class="mdi mdi-playlist-plus"></i> 批量导入</button>
-<button type="button"  href="javascript:;" id="addAccount" class="btn btn-primary btn-sm" style="margin: 2px;"><i class="mdi mdi-checkbox-marked-circle-outline"></i> 添加子账户</button>
+<button type="button" href="javascript:;" id="batchAddAccount" class="btn btn-success btn-sm" style="margin: 2px;"><i class="mdi mdi-playlist-plus"></i> 批量导入</button>
+<button type="button" href="javascript:;" id="addAccount" class="btn btn-primary btn-sm" style="margin: 2px;"><i class="mdi mdi-checkbox-marked-circle-outline"></i> 添加子账户</button>
 
                     </div>
                         <div class="table-responsive">
@@ -48,6 +48,7 @@
 
                                         <th>编号</th>
                                         <th>账户名称</th>
+                                        <th>固定金额池</th>
                                         <th>账户状态</th>
                                         <th>登录状态</th>
                                         <th>最近登录</th>
@@ -61,6 +62,7 @@
                                     <tr>
                                         <td><{$p.id}></td>
                                         <td><{$p.title}></td>
+                                        <td><span class="label label-info"><{$p.gudingmoney_text}></span></td>
                                         <td>
                                             <div class="layui-form">
                                             <input type="checkbox" <if condition="$p['status']">checked</if> name="status" value="1" data-id="<{$p.id}>" data-name="<{$p.title}>" lay-skin="switch" lay-filter="switchTest" lay-text="开启|关闭">
