@@ -3,30 +3,47 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="renderer" content="webkit">
 <title><{:C("WEB_TITLE")}></title>
-<link rel="stylesheet" href="/Public/Front/js/plugins/layui/css/layui.css">
+<link rel="shortcut icon" href="favicon.ico">
 <link href="/Public/Front/css/bootstrap.min.css" rel="stylesheet">
+<link href="/Public/Front/css/font-awesome.min.css" rel="stylesheet">
+<link href="/Public/Front/css/animate.css" rel="stylesheet">
+<link href="/Public/Front/css/style.css" rel="stylesheet">
+<link rel="stylesheet" href="/Public/Front/js/plugins/layui/css/layui.css">
 <style>
-body { padding: 20px; }
-.layui-form-label { width: 90px; }
+body { padding: 20px; background:#f8f9fb; }
+.jg-wrap{max-width:720px;margin:0 auto;}
+.panel{box-shadow:0 6px 20px rgba(0,0,0,.06);border:0;border-radius:10px;overflow:hidden;}
+.panel-heading{background:#fff!important;border-bottom:1px solid #eef0f3!important;}
+.jg-desc{background:#f6f8fb;border:1px solid #e9edf2;padding:12px 14px;border-radius:6px;margin-bottom:15px;}
 </style>
 </head>
 <body>
-<div class="layui-form">
-    <input type="hidden" name="aid" value="<{$aid}>">
-    <div class="layui-form-item">
-        <label class="layui-form-label">账号</label>
-        <div class="layui-input-block" style="line-height: 38px;"><{$account.title}></div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">Cookie</label>
-        <div class="layui-input-block">
-            <textarea class="layui-textarea" name="cookie" rows="10" placeholder="粘贴 cookie"><{$account.cookie}></textarea>
+<div class="jg-wrap">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">保存 Cookie - <strong><{$account.title}></strong></h3>
         </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-input-block">
-            <button class="layui-btn" id="saveBtn">保存</button>
+        <div class="panel-body">
+            <div class="jg-desc">
+                当前状态：<span class="label <if condition="$account['cookie_status'] eq 1">label-success<else/>label-default</if>"><if condition="$account['cookie_status'] eq 1">已登录<else/>未登录</if></span>
+                &nbsp;&nbsp;更新时间：<strong><{$account.cookie_update_time|date='Y-m-d H:i:s',###}></strong>
+            </div>
+            <form class="form-horizontal" id="cookieForm">
+                <input type="hidden" name="aid" value="<{$aid}>">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Cookie</label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" name="cookie" rows="12" placeholder="粘贴 cookie"><{$account.cookie}></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="button" class="btn btn-primary" id="saveBtn">保存 Cookie</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -36,21 +53,26 @@ body { padding: 20px; }
 layui.use(['layer'], function(){
   var layer = layui.layer;
   $('#saveBtn').on('click', function(){
-      $.post("<{:U('Admin/Jiaigou/saveCookie')}>", {
-          aid: $('input[name=aid]').val(),
-          cookie: $('textarea[name=cookie]').val()
-      }, function(res){
-          if(res.status){
-              layer.msg(res.msg || '保存成功', {icon:1,time:1000}, function(){
-                  parent.location.reload();
-                  var index = parent.layer.getFrameIndex(window.name);
-                  parent.layer.close(index);
-              });
-          } else {
-              layer.msg(res.msg || '保存失败', {icon:2});
+      $.ajax({
+          url: "<{:U('Admin/Jiaigou/saveCookie')}>",
+          type: 'post',
+          dataType: 'json',
+          data: $('#cookieForm').serialize(),
+          success: function(res){
+              if(res.status){
+                  layer.msg(res.msg || '保存成功', {icon:1,time:1000}, function(){
+                      parent.location.reload();
+                      var index = parent.layer.getFrameIndex(window.name);
+                      parent.layer.close(index);
+                  });
+              } else {
+                  layer.msg(res.msg || '保存失败', {icon:2});
+              }
+          },
+          error: function(){
+              layer.msg('请求失败', {icon:2});
           }
-      }, 'json');
-      return false;
+      });
   });
 });
 </script>

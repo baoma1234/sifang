@@ -2,6 +2,8 @@
 
 namespace Admin\Controller;
 
+use Think\Page;
+
 class JiaigouController extends BaseController
 {
     protected $baseUrl = 'https://jiuaigou.net';
@@ -9,13 +11,24 @@ class JiaigouController extends BaseController
     public function index()
     {
         $channelId = I('get.channel_id', 0, 'intval');
+        $keyword = I('get.keyword', '', 'trim');
+        $rows = I('get.rows', 15, 'intval');
+        if (!$rows) {
+            $rows = 15;
+        }
+
         $where = array();
         if ($channelId) {
             $where['channel_id'] = $channelId;
         }
+        if ($keyword !== '') {
+            $where['title|mch_id'] = array('like', '%' . $keyword . '%');
+        }
 
         $channels = M('Channel')->where(['status' => 1])->select();
-        $accounts = M('channel_account')->where($where)->order('id desc')->select();
+        $count = M('channel_account')->where($where)->count();
+        $Page = new Page($count, $rows);
+        $accounts = M('channel_account')->where($where)->order('id desc')->limit($Page->firstRow . ',' . $Page->listRows)->select();
         foreach ($accounts as &$account) {
             $account['channel_title'] = M('Channel')->where(['id' => $account['channel_id']])->getField('title');
             $account['cookie_updated_text'] = $this->formatTime($account['cookie_update_time']);
@@ -23,8 +36,11 @@ class JiaigouController extends BaseController
         unset($account);
 
         $this->assign('channel_id', $channelId);
+        $this->assign('keyword', $keyword);
+        $this->assign('rows', $rows);
         $this->assign('channels', $channels);
         $this->assign('accounts', $accounts);
+        $this->assign('page', $Page->show());
         $this->display('index');
     }
 
@@ -97,8 +113,10 @@ class JiaigouController extends BaseController
 
     public function loginAccount()
     {
+        $aid = I('request.aid', 0, 'intval');
+        $account = M('channel_account')->where(['id' => $aid])->find();
+
         if (IS_POST) {
-            $aid = I('post.aid', 0, 'intval');
             $username = I('post.username', '', 'trim');
             $password = I('post.password', '', 'trim');
             $captcha = I('post.captcha', '', 'trim');
@@ -126,6 +144,10 @@ class JiaigouController extends BaseController
             ));
             $this->ajaxReturn(['status' => 0, 'msg' => $result['msg']]);
         }
+
+        $this->assign('aid', $aid);
+        $this->assign('account', $account);
+        $this->display('loginAccount');
     }
 
     private function doLogin($cookieFile, $username, $password, $captcha)
@@ -172,6 +194,15 @@ class JiaigouController extends BaseController
     private function checkLoginStatus()
     {
         return false;
+    }
+
+    public function saveCookieView()
+    {
+        $aid = I('get.aid', 0, 'intval');
+        $account = M('channel_account')->where(['id' => $aid])->find();
+        $this->assign('aid', $aid);
+        $this->assign('account', $account);
+        $this->display('saveCookie');
     }
 
     private function getCookieFile($aid)

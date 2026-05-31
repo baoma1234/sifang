@@ -1,78 +1,97 @@
 <include file="Public/header"/>
 <include file="Public/top"/>
 <include file="Public/left-nav"/>
+<style>
+.jg-card{background:#fff;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.06);padding:16px;margin-bottom:16px;}
+.jg-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:10px;}
+.jg-filter{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+.jg-table td,.jg-table th{vertical-align:middle!important;}
+.jg-search{min-width:240px;}
+.jg-page{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px;}
+.jg-page .pagination{margin:0;}
+</style>
 <div class="content-wrapper">
     <section class="content-header">
         <h1>久爱购 账号管理</h1>
     </section>
 
     <section class="content">
-        <div class="panel panel-default panel-intro">
-            <div class="panel-body">
-                <div class="box box-success">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">账号列表</h3>
-                    </div>
-                    <div class="box-body">
-                        <form class="form-inline" method="get" action="">
-                            <div class="form-group" style="margin-right:10px;">
-                                <label>通道筛选</label>
-                                <select name="channel_id" class="form-control" onchange="this.form.submit()">
-                                    <option value="0">全部通道</option>
-                                    <volist name="channels" id="c">
-                                        <option value="<{$c.id}>" <if condition="$channel_id eq $c['id']">selected</if>><{$c.title}></option>
-                                    </volist>
-                                </select>
-                            </div>
-                        </form>
-
-                        <div class="table-responsive" style="margin-top:15px;">
-                            <table class="table table-bordered table-striped">
-                                <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>账号名称</th>
-                                    <th>所属通道</th>
-                                    <th>商户号</th>
-                                    <th>Cookie状态</th>
-                                    <th>更新时间</th>
-                                    <th>操作</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <volist name="accounts" id="p">
-                                    <tr>
-                                        <td><{$p.id}></td>
-                                        <td><{$p.title}></td>
-                                        <td><{$p.channel_title}></td>
-                                        <td><{$p.mch_id}></td>
-                                        <td>
-                                            <span class="label <if condition="$p['cookie_status'] eq 1">label-success<else/>label-default</if>"><if condition="$p['cookie_status'] eq 1">已登录<else/>未登录</if></span>
-                                        </td>
-                                        <td><{$p.cookie_updated_text}></td>
-                                        <td>
-                                            <button class="btn btn-warning btn-sm" onclick="openCookie('<{:U('Admin/Jiaigou/loginAccount', array('aid'=>$p[id]))}>')">登录</button>
-                                            <button class="btn btn-info btn-sm" onclick="openCookie('<{:U('Admin/Jiaigou/saveCookie', array('aid'=>$p[id]))}>')">保存Cookie</button>
-                                            <button class="btn btn-default btn-sm" onclick="window.open('<{:U('Pay/JiuaigouSync/syncOrderList', array('key'=>'abc123','aid'=>$p[id]))}>')">同步订单</button>
-                                        </td>
-                                    </tr>
-                                </volist>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+        <div class="jg-card">
+            <div class="jg-title">
+                <h4 style="margin:0;">账号列表</h4>
+                <div class="jg-filter">
+                    <form method="get" action="" class="form-inline" style="margin:0;">
+                        <input type="text" name="keyword" value="<{$keyword}>" class="form-control jg-search" placeholder="搜索账号名称 / 商户号">
+                        <select name="channel_id" class="form-control" style="margin-left:8px;" onchange="this.form.submit()">
+                            <option value="0">全部通道</option>
+                            <volist name="channels" id="c">
+                                <option value="<{$c.id}>" <if condition="$channel_id eq $c['id']">selected</if>><{$c.title}></option>
+                            </volist>
+                        </select>
+                        <input type="hidden" name="rows" value="<{$rows}>">
+                        <button type="submit" class="btn btn-primary" style="margin-left:8px;">搜索</button>
+                    </form>
                 </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered jg-table">
+                    <thead>
+                    <tr>
+                        <th style="width:70px;">ID</th>
+                        <th>账号名称</th>
+                        <th>所属通道</th>
+                        <th>商户号</th>
+                        <th>Cookie状态</th>
+                        <th>更新时间</th>
+                        <th style="width:280px;">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <volist name="accounts" id="p">
+                        <tr>
+                            <td><{$p.id}></td>
+                            <td><strong><{$p.title}></strong></td>
+                            <td><{$p.channel_title}></td>
+                            <td><{$p.mch_id}></td>
+                            <td>
+                                <span class="label <if condition="$p['cookie_status'] eq 1">label-success<else/>label-default</if>"><if condition="$p['cookie_status'] eq 1">已登录<else/>未登录</if></span>
+                            </td>
+                            <td><{$p.cookie_updated_text}></td>
+                            <td>
+                                <button class="btn btn-warning btn-sm" onclick="openJg('<{:U('Admin/Jiaigou/loginAccount', array('aid'=>$p[id]))}>')">登录</button>
+                                <button class="btn btn-info btn-sm" onclick="openJg('<{:U('Admin/Jiaigou/saveCookieView', array('aid'=>$p[id]))}>')">保存Cookie</button>
+                                <button class="btn btn-default btn-sm" onclick="window.open('<{:U('Pay/JiuaigouSync/syncOrderList', array('key'=>'abc123','aid'=>$p[id]))}>')">同步订单</button>
+                            </td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+            </div>
+            <div class="jg-page">
+                <div>
+                    <form method="get" action="" class="form-inline" style="margin:0;">
+                        <input type="hidden" name="keyword" value="<{$keyword}>">
+                        <input type="hidden" name="channel_id" value="<{$channel_id}>">
+                        <select name="rows" class="form-control" onchange="this.form.submit()">
+                            <option value="15" <if condition="$rows eq 15">selected</if>>15条/页</option>
+                            <option value="30" <if condition="$rows eq 30">selected</if>>30条/页</option>
+                            <option value="50" <if condition="$rows eq 50">selected</if>>50条/页</option>
+                            <option value="100" <if condition="$rows eq 100">selected</if>>100条/页</option>
+                        </select>
+                    </form>
+                </div>
+                <div><{$page}></div>
             </div>
         </div>
     </section>
 </div>
 <include file="Public/footer"/>
 <script>
-function openCookie(url){
+function openJg(url){
     layer.open({
         type: 2,
         title: '账号操作',
-        area: ['520px', '420px'],
+        area: ['620px', '520px'],
         shadeClose: true,
         content: url
     });
