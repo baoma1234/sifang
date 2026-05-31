@@ -481,47 +481,7 @@ public function showQrcode()
             }
         }
 
-        // 先刷新扫码池，再拉取列表获取最新二维码
-        $refreshUrl = 'https://jiuaigou.net/bs/biz/cargo/batch/create/scanCode';
-        $ids = isset($account['device_ids']) ? trim($account['device_ids']) : '';
-        if ($ids === '') {
-            $ids = '29046,30608,30609,30610,30611';
-        }
-
-        $refreshPost = http_build_query(array('ids' => $ids));
-        $refreshHeaders = array(
-            'Accept: application/json, text/javascript, */*; q=0.01',
-            'Accept-Language: zh-CN,zh;q=0.9,zh-HK;q=0.8',
-            'Connection: keep-alive',
-            'Content-Type: application/x-www-form-urlencoded; charset=UTF-8',
-            'Origin: https://jiuaigou.net',
-            'Referer: https://jiuaigou.net/bs/biz/cargo?deviceId=' . intval($account['id']) . '&time=' . (time() * 1000),
-            'Sec-Fetch-Dest: empty',
-            'Sec-Fetch-Mode: cors',
-            'Sec-Fetch-Site: same-origin',
-            'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36',
-            'X-Requested-With: XMLHttpRequest',
-            'sec-ch-ua: "Google Chrome";v="147", "Not.A/Brand";v="8", "Chromium";v="147"',
-            'sec-ch-ua-mobile: ?0',
-            'sec-ch-ua-platform: "Windows"',
-        );
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $refreshUrl);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $refreshPost);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $refreshHeaders);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile);
-        curl_setopt($ch, CURLOPT_COOKIEJAR, $cookieFile);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        $refreshResponse = curl_exec($ch);
-        if (curl_errno($ch)) {
-            curl_close($ch);
-            return array();
-        }
-        curl_close($ch);
+        $this->fetchDeviceData($account['id']);
 
         // 再拉列表，取最新的二维码
         $listUrl = 'https://jiuaigou.net/bs/biz/cargo/list';
@@ -590,6 +550,47 @@ public function showQrcode()
             'expire' => time() + 60,
             'raw' => $result,
         );
+    }
+
+    private function fetchDeviceData($deviceCode)
+    {
+        $cookieFile = RUNTIME_PATH . 'jiuaigou_cookie.txt';
+        $targetUrl = 'https://jiuaigou.net/bs/biz/cargo/batch/create/scanCode';
+        $postData = array(
+            'ids' => '29046,30608,30609,30610,30611'
+        );
+        $postString = http_build_query($postData);
+        $headers = array(
+            'Accept: application/json, text/javascript, */*; q=0.01',
+            'Accept-Language: zh-CN,zh;q=0.9,zh-HK;q=0.8',
+            'Connection: keep-alive',
+            'Content-Type: application/x-www-form-urlencoded; charset=UTF-8',
+            'Origin: https://jiuaigou.net',
+            'Referer: https://jiuaigou.net/bs/biz/cargo?deviceId=4351&time=' . time(),
+            'Sec-Fetch-Dest: empty',
+            'Sec-Fetch-Mode: cors',
+            'Sec-Fetch-Site: same-origin',
+            'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36',
+            'X-Requested-With: XMLHttpRequest',
+            'sec-ch-ua: "Google Chrome";v="147", "Not.A/Brand";v="8", "Chromium";v="147"',
+            'sec-ch-ua-mobile: ?0',
+            'sec-ch-ua-platform: "Windows"'
+        );
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $targetUrl);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postString);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile);
+        curl_setopt($ch, CURLOPT_COOKIEJAR, $cookieFile);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        return json_decode($response, true);
     }
 
     /**
