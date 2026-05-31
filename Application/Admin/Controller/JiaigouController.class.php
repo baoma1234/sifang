@@ -276,9 +276,6 @@ class JiaigouController extends BaseController
         if (IS_POST) {
             $aid = I('post.aid', 0, 'intval');
             $data = I('post.data/a');
-            if (!$aid) {
-                $this->ajaxReturn(['status' => 0, 'msg' => '参数错误']);
-            }
             $gudingmoney = isset($data['gudingmoney']) ? trim($data['gudingmoney']) : '';
             if ($gudingmoney === '') {
                 $this->ajaxReturn(['status' => 0, 'msg' => '固定金额池不能为空']);
@@ -293,8 +290,16 @@ class JiaigouController extends BaseController
                 'gudingmoney' => $gudingmoney,
                 'updatetime' => time(),
             );
-            $res = M('channel_account')->where(['id' => $aid])->save($save);
-            $this->ajaxReturn(['status' => $res ? 1 : 0, 'msg' => $res ? '保存成功' : '保存失败']);
+            if ($aid) {
+                $res = M('channel_account')->where(['id' => $aid])->save($save);
+                $msg = $res ? '保存成功' : '保存失败';
+            } else {
+                $save['cookie_status'] = 0;
+                $save['cookie_update_time'] = time();
+                $res = M('channel_account')->add($save);
+                $msg = $res ? '添加成功' : '添加失败';
+            }
+            $this->ajaxReturn(['status' => $res ? 1 : 0, 'msg' => $msg]);
         }
     }
 
