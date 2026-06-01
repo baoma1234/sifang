@@ -42,6 +42,11 @@ class CeshiController extends PayController
             $this->error('金额不正确');
         }
 
+        $merchant = $this->pickFreeMerchantAccount($requestMoney);
+        if (empty($merchant)) {
+            $this->error('通道繁忙');
+        }
+
         $orderid = I("request.pay_orderid");
         $body = I('request.pay_productname');
         $notifyurl = $this->_site . 'Pay_Huazf_notifyurl.html'; //异步通知
@@ -65,17 +70,17 @@ class CeshiController extends PayController
             $this->error('金额不正确');
         }
 
-        $merchant = $this->pickFreeMerchantAccount($money);
-        if (empty($merchant)) {
-            $this->error('通道繁忙');
-        }
-
         $this->reserveMerchantForOrder($merchant['id'], $money, $outTradeId);
         $qrcodeRow = $this->fetchMerchantQrcode($merchant, $money, $outTradeId);
         if (empty($qrcodeRow) || empty($qrcodeRow['qrcode'])) {
             $this->releaseMerchantByMoney($merchant['id'], $money);
             $this->error('二维码不存在，请稍后再试');
         }
+        M('Order')->where(array('pay_orderid' => $outTradeId))->save(array(
+            'account_id' => intval($merchant['id']),
+            'qrcode_url' => $qrcodeRow['qrcode'],
+            'bind_money' => $money,
+        ));
 
         if ($_REQUEST['type'] == 'json') {
 
@@ -127,13 +132,20 @@ public function showQrcode()
         }
 
         if (empty($qrcode)) {
-            $orderInfo = M('Order')->where(['out_trade_id' => $orderid])->find();
+            $orderInfo = M('Order')->where(['pay_orderid' => $orderid])->find();
             if (!empty($orderInfo) && !empty($orderInfo['account_id'])) {
-                $qrcode = (string)$orderInfo['account_id'];
+                $merchant = M('channel_account')->where(['id' => intval($orderInfo['account_id'])])->find();
+                if (!empty($merchant)) {
+                    $qrcodeRow = $this->fetchMerchantQrcode($merchant, floatval($orderInfo['bind_money']), $orderid);
+                    if (!empty($qrcodeRow) && !empty($qrcodeRow['qrcode'])) {
+                        $qrcode = $qrcodeRow['qrcode'];
+                        $expire = $qrcodeRow['expire'];
+                    }
+                }
             }
         }
 
-        $orderInfo = M('Order')->where(['out_trade_id' => $orderid])->find();
+        $orderInfo = M('Order')->where(['pay_orderid' => $orderid])->find();
         if (empty($orderInfo)) {
             $this->error('订单不存在');
         }
@@ -373,6 +385,7 @@ public function showQrcode()
         $accounts = M('channel_account')->where(array(
             'status' => 1,
             'offline_status' => 1,
+            'cookie_status' => 1,
         ))->order('last_paying_time asc,weight desc,id asc')->select();
         if (empty($accounts)) {
             return array();
