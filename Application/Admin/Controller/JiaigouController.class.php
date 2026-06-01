@@ -264,9 +264,14 @@ class JiaigouController extends BaseController
                 $account = $dbAccount;
             }
         }
+        $moneyMap = array();
+        if ($aid) {
+            $moneyMap = M('pay_channel_account_money')->where(array('account_id' => $aid, 'status' => 1))->order('money asc')->select();
+        }
         $channels = M('Channel')->where(['status' => 1])->select();
         $this->assign('aid', $aid);
         $this->assign('account', $account);
+        $this->assign('moneyMap', $moneyMap);
         $this->assign('channels', $channels);
         $this->display('editAccount');
     }
