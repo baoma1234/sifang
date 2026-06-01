@@ -25,6 +25,11 @@ class JiuaigouSyncController extends PayController
             exit('forbidden');
         }
 
+        $aid = I('get.aid', 0, 'intval');
+        if ($aid <= 0) {
+            exit('missing aid');
+        }
+        $this->accountId = $aid;
         $this->resolveCookieFile();
 
         $pageNum  = I('get.pageNum', 1, 'intval');
@@ -34,7 +39,26 @@ class JiuaigouSyncController extends PayController
         $callback = 0;
         $failed   = 0;
 
+        $hasPending = M('Order')->where(array(
+            'account_id' => $this->accountId,
+            'pay_status' => 0,
+            'isdel' => 0,
+        ))->count();
+        if (intval($hasPending) <= 0) {
+            echo 'no pending order';
+            exit;
+        }
+
         while (true) {
+            $hasPending = M('Order')->where(array(
+                'account_id' => $this->accountId,
+                'pay_status' => 0,
+                'isdel' => 0,
+            ))->count();
+            if (intval($hasPending) <= 0) {
+                break;
+            }
+
             $result = $this->fetchOrderList($pageNum, $pageSize);
             if (!is_array($result) || !isset($result['code']) || intval($result['code']) !== 0) {
                 exit(isset($result['msg']) ? $result['msg'] : '获取订单失败');
@@ -220,6 +244,8 @@ class JiuaigouSyncController extends PayController
             'sync_time'       => time(),
         );
 
+        $data['sync_aid'] = intval($this->accountId);
+
         $table = M('jiaigou_order');
         $existing = $table->where(array('remote_order_no' => $orderNo))->find();
         if ($existing) {
@@ -235,7 +261,7 @@ class JiuaigouSyncController extends PayController
             $matchOrder = $this->matchBackendOrder($data);
             $matched = !empty($matchOrder);
             if ($matched) {
-                $log[] = '[' . date('Y-m-d H:i:s') . '] matched remote=' . $orderNo . ' backend=' . $matchOrder['pay_orderid'] . ' amount=' . $data['amount'] . ' remoteCreate=' . $data['create_time'] . ' backendCreate=' . $matchOrder['pay_applydate'];
+                $log[] = '[' . date('Y-m-d H:i:s') . '] matched aid=' . $this->accountId . ' remote=' . $orderNo . ' backend=' . $matchOrder['pay_orderid'] . ' amount=' . $data['amount'] . ' remoteCreate=' . $data['create_time'] . ' backendCreate=' . $matchOrder['pay_applydate'];
                 if ($this->shouldCallback($data)) {
                     $callback = $this->callbackBackendOrder($matchOrder);
                     if ($callback) {
@@ -278,12 +304,16 @@ class JiuaigouSyncController extends PayController
 
         $start = $remoteCreate - 120;
         $end = $remoteCreate;
-        $order = M('Order')->where(array(
+        $where = array(
             'pay_amount' => $remoteMoney,
             'pay_applydate' => array('between', array($start, $end)),
             'pay_status' => 0,
             'isdel' => 0,
-        ))->order('id asc')->find();
+        );
+        if ($this->accountId) {
+            $where['account_id'] = intval($this->accountId);
+        }
+        $order = M('Order')->where($where)->order('id asc')->find();
 
         return $order ? $order : array();
     }
@@ -324,6 +354,11 @@ class JiuaigouSyncController extends PayController
 
     private function resolveCookieFile()
     {
+        if ($this->accountId) {
+            $this->cookieFile = $this->getJiuaigouCookiePath($this->accountId);
+            return $this->cookieFile;
+        }
+
         $aid = I('get.aid', 0, 'intval');
         if ($aid) {
             $this->accountId = $aid;
@@ -338,6 +373,22 @@ class JiuaigouSyncController extends PayController
     private function getJiuaigouCookiePath($aid)
     {
         return RUNTIME_PATH . 'jiuaigou_cookie_' . intval($aid) . '.txt';
+    }
+
+    private function getJiuaigouCookieContent($aid)
+    {
+        $path = $this->getJiuaigouCookiePath($aid);
+        if (file_exists($path) && filesize($path) > 0) {
+            return trim((string)@file_get_contents($path));
+        }
+
+        $account = M('channel_account')->where(array('id' => intval($aid)))->find();
+        if (!empty($account) && !empty($account['cookie'])) {
+            @file_put_contents($path, trim((string)$account['cookie']));
+            return trim((string)$account['cookie']);
+        }
+
+        return '';
     }
 
     private function writeJiuaigouLog($lines)
