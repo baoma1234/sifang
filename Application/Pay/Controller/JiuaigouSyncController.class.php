@@ -344,6 +344,9 @@ class JiuaigouSyncController extends PayController
                 M('Order')->where(array('pay_orderid' => $order['pay_orderid']))->save(array(
                     'notify_msg' => '久爱购同步回调成功',
                 ));
+                if (!empty($order['out_trade_no'])) {
+                    $this->EditMoney($order['out_trade_no'], 'ceshi', 0);
+                }
             }
             return $res ? true : false;
         } catch (\Exception $e) {
