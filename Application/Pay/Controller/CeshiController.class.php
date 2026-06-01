@@ -147,6 +147,9 @@ public function showQrcode()
 
         $orderInfo = M('Order')->where(['pay_orderid' => $orderid])->find();
         if (empty($orderInfo)) {
+            $orderInfo = M('Order')->where(['out_trade_id' => $orderid])->find();
+        }
+        if (empty($orderInfo)) {
             $this->error('订单不存在');
         }
 
@@ -173,11 +176,11 @@ public function showQrcode()
         }
 
         $this->assign('data', [
-            'qrcode' => '',
+            'qrcode' => $qrcode,
             'money'  => $money,
             'orderid'=> $orderid,
             'body'   => $body,
-            'expire' => time() + 60,
+            'expire' => $expire > 0 ? $expire : time() + 60,
         ]);
 
         $this->display('showQrcode');
