@@ -131,23 +131,20 @@ public function showQrcode()
             $this->error('参数错误');
         }
 
-        if (empty($qrcode)) {
-            $orderInfo = M('Order')->where(['pay_orderid' => $orderid])->find();
-            if (!empty($orderInfo) && !empty($orderInfo['account_id'])) {
-                $merchant = M('channel_account')->where(['id' => intval($orderInfo['account_id'])])->find();
-                if (!empty($merchant)) {
-                    $qrcodeRow = $this->fetchMerchantQrcode($merchant, floatval($orderInfo['bind_money']), $orderid);
-                    if (!empty($qrcodeRow) && !empty($qrcodeRow['qrcode'])) {
-                        $qrcode = $qrcodeRow['qrcode'];
-                        $expire = $qrcodeRow['expire'];
-                    }
-                }
-            }
+        $orderInfo = M('Order')->where(['out_trade_id' => $orderid])->find();
+        if (empty($orderInfo)) {
+            $this->error('订单不存在');
         }
 
-        $orderInfo = M('Order')->where(['pay_orderid' => $orderid])->find();
-        if (empty($orderInfo)) {
-            $orderInfo = M('Order')->where(['out_trade_id' => $orderid])->find();
+        if (empty($qrcode) && !empty($orderInfo['account_id'])) {
+            $merchant = M('channel_account')->where(['id' => intval($orderInfo['account_id'])])->find();
+            if (!empty($merchant)) {
+                $qrcodeRow = $this->fetchMerchantQrcode($merchant, floatval($orderInfo['bind_money']), $orderid);
+                if (!empty($qrcodeRow) && !empty($qrcodeRow['qrcode'])) {
+                    $qrcode = $qrcodeRow['qrcode'];
+                    $expire = $qrcodeRow['expire'];
+                }
+            }
         }
         if (empty($orderInfo)) {
             $this->error('订单不存在');
@@ -413,7 +410,7 @@ public function showQrcode()
         }
 
         foreach ($matched as $account) {
-            if ($this->isMerchantFree($account['id']) && !$this->hasUnfinishedOrder($account['id'])) {
+            if ($this->isMerchantFree($account['id']) && !$this->hasUnfinishedOrder($account['id'], $money)) {
                 return $account;
             }
         }
@@ -442,13 +439,17 @@ public function showQrcode()
         return floatval($row['paying_money']) <= 0;
     }
 
-    private function hasUnfinishedOrder($accountId)
+    private function hasUnfinishedOrder($accountId, $money = 0)
     {
-        $count = M('Order')->where(array(
+        $where = array(
             'account_id' => intval($accountId),
             'pay_status' => 0,
             'isdel' => 0,
-        ))->count();
+        );
+        if (floatval($money) > 0) {
+            $where['pay_amount'] = floatval($money);
+        }
+        $count = M('Order')->where($where)->count();
         return intval($count) > 0;
     }
 
@@ -604,10 +605,7 @@ public function showQrcode()
             $this->ajaxReturn(array('status' => 0, 'msg' => '参数错误'));
         }
 
-        $orderInfo = M('Order')->where(['pay_orderid' => $orderid])->find();
-        if (empty($orderInfo)) {
-            $orderInfo = M('Order')->where(['out_trade_id' => $orderid])->find();
-        }
+        $orderInfo = M('Order')->where(['out_trade_id' => $orderid])->find();
         if (empty($orderInfo) || empty($orderInfo['account_id'])) {
             $this->ajaxReturn(array('status' => 0, 'msg' => '订单不存在'));
         }
