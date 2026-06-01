@@ -266,7 +266,7 @@ class JiaigouController extends BaseController
         }
         $moneyMap = array();
         if ($aid) {
-            $moneyMap = M('pay_channel_account_money')->where(array('account_id' => $aid, 'status' => 1))->order('money asc')->select();
+            $moneyMap = M('channel_account_money')->where(array('account_id' => $aid, 'status' => 1))->order('money asc')->select();
         }
         $channels = M('Channel')->where(['status' => 1])->select();
         $this->assign('aid', $aid);
@@ -278,42 +278,46 @@ class JiaigouController extends BaseController
 
     public function saveAccount()
     {
-        if (IS_POST) {
-            $aid = I('post.aid', 0, 'intval');
-            $data = I('post.data/a');
-            $gudingmoney = isset($data['gudingmoney']) ? trim($data['gudingmoney']) : '';
-            if ($gudingmoney === '') {
-                $this->ajaxReturn(['status' => 0, 'msg' => '固定金额池不能为空']);
-            }
-            $save = array(
-                'channel_id' => intval($data['channel_id']),
-                'title' => trim($data['title']),
-                'mch_id' => trim($data['mch_id']),
-                'signkey' => trim($data['signkey']),
-                'weight' => intval($data['weight']),
-                'status' => intval($data['status']),
-                'gudingmoney' => $gudingmoney,
-                'updatetime' => time(),
-            );
-            if ($aid) {
-                $res = M('channel_account')->where(['id' => $aid])->save($save);
-                $msg = $res ? '保存成功' : '保存失败';
-            } else {
-                $save['cookie_status'] = 0;
-                $save['cookie_update_time'] = time();
-                $res = M('channel_account')->add($save);
-                $msg = $res ? '添加成功' : '添加失败';
-                if ($res) {
-                    $aid = intval($res);
-                }
-            }
-
-            if ($res && $aid) {
-                $this->syncAccountMoneyMap($aid, $gudingmoney);
-            }
-
-            $this->ajaxReturn(['status' => $res ? 1 : 0, 'msg' => $msg]);
+        if (!IS_POST) {
+            return;
         }
+
+        $aid = I('post.aid', 0, 'intval');
+        $data = I('post.data/a');
+        $gudingmoney = isset($data['gudingmoney']) ? trim($data['gudingmoney']) : '';
+        if ($gudingmoney === '') {
+            $this->ajaxReturn(['status' => 0, 'msg' => '固定金额池不能为空']);
+        }
+
+        $save = array(
+            'channel_id' => intval($data['channel_id']),
+            'title' => trim($data['title']),
+            'mch_id' => trim($data['mch_id']),
+            'signkey' => trim($data['signkey']),
+            'weight' => intval($data['weight']),
+            'status' => intval($data['status']),
+            'gudingmoney' => $gudingmoney,
+            'updatetime' => time(),
+        );
+
+        if ($aid) {
+            $res = M('channel_account')->where(['id' => $aid])->save($save);
+            $msg = $res ? '保存成功' : '保存失败';
+        } else {
+            $save['cookie_status'] = 0;
+            $save['cookie_update_time'] = time();
+            $res = M('channel_account')->add($save);
+            $msg = $res ? '添加成功' : '添加失败';
+            if ($res) {
+                $aid = intval($res);
+            }
+        }
+
+        if ($res && $aid) {
+            $this->syncAccountMoneyMap($aid, $gudingmoney);
+        }
+
+        $this->ajaxReturn(['status' => $res ? 1 : 0, 'msg' => $msg]);
     }
 
     public function saveCookieView()
@@ -371,7 +375,7 @@ class JiaigouController extends BaseController
             return false;
         }
 
-        $mapModel = M('pay_channel_account_money');
+        $mapModel = M('channel_account_money');
         $mapModel->where(array('account_id' => $accountId))->delete();
 
         $moneyList = preg_split('/[\s,，|]+/', trim((string)$gudingmoney));

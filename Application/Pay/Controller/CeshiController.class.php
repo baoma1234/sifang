@@ -384,7 +384,7 @@ public function showQrcode()
             return array();
         }
 
-        $accountIds = M('pay_channel_account_money')->where(array(
+        $accountIds = M('channel_account_money')->where(array(
             'money' => $money,
             'status' => 1,
         ))->getField('account_id', true);
