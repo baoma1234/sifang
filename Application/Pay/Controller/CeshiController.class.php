@@ -595,6 +595,9 @@ public function showQrcode()
         }
 
         $orderInfo = M('Order')->where(['pay_orderid' => $orderid])->find();
+        if (empty($orderInfo)) {
+            $orderInfo = M('Order')->where(['out_trade_id' => $orderid])->find();
+        }
         if (empty($orderInfo) || empty($orderInfo['account_id'])) {
             $this->ajaxReturn(array('status' => 0, 'msg' => '订单不存在'));
         }
@@ -604,11 +607,15 @@ public function showQrcode()
             $this->ajaxReturn(array('status' => 0, 'msg' => '商户不存在'));
         }
 
-        $qrcodeRow = $this->fetchMerchantQrcode($merchant, floatval($orderInfo['pay_amount']), $orderid);
+        $qrcodeRow = $this->fetchMerchantQrcode($merchant, floatval($orderInfo['bind_money']), $orderid);
         if (empty($qrcodeRow) || empty($qrcodeRow['qrcode'])) {
-            $this->releaseMerchantByMoney(intval($merchant['id']), floatval($orderInfo['pay_amount']));
+            $this->releaseMerchantByMoney(intval($merchant['id']), floatval($orderInfo['bind_money']));
             $this->ajaxReturn(array('status' => 0, 'msg' => '二维码不存在，请稍后再试'));
         }
+
+        M('Order')->where(['pay_orderid' => $orderid])->save(array(
+            'qrcode_url' => $qrcodeRow['qrcode'],
+        ));
 
         $this->ajaxReturn(array(
             'status' => 1,
