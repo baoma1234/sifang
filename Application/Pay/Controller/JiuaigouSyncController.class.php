@@ -328,10 +328,6 @@ class JiuaigouSyncController extends PayController
         if (empty($order) || empty($order['pay_orderid'])) {
             return false;
         }
-        $payModel = D('Pay');
-        if (!$payModel) {
-            return false;
-        }
 
         try {
             if (!empty($order['pay_status']) && intval($order['pay_status']) != 0) {
@@ -339,16 +335,15 @@ class JiuaigouSyncController extends PayController
                 return false;
             }
 
-            $res = $payModel->completeOrder($order['pay_orderid'], '', 0);
+            $res = $this->EditMoney($order['pay_orderid'], 'ceshi', 0);
             if ($res) {
                 M('Order')->where(array('pay_orderid' => $order['pay_orderid']))->save(array(
                     'notify_msg' => '久爱购同步回调成功',
                 ));
-                if (!empty($order['out_trade_no'])) {
-                    $this->EditMoney($order['out_trade_no'], 'ceshi', 0);
-                }
+                return true;
             }
-            return $res ? true : false;
+            $this->writeJiuaigouLog('[' . date('Y-m-d H:i:s') . '] callback failed backend=' . $order['pay_orderid'] . ' reason=EditMoney_return_false');
+            return false;
         } catch (\Exception $e) {
             $this->writeJiuaigouLog('[' . date('Y-m-d H:i:s') . '] callback exception backend=' . $order['pay_orderid'] . ' msg=' . $e->getMessage());
             return false;
