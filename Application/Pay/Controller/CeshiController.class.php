@@ -413,7 +413,7 @@ public function showQrcode()
         }
 
         foreach ($matched as $account) {
-            if ($this->isMerchantFree($account['id'])) {
+            if ($this->isMerchantFree($account['id']) && !$this->hasUnfinishedOrder($account['id'])) {
                 return $account;
             }
         }
@@ -440,6 +440,16 @@ public function showQrcode()
             return false;
         }
         return floatval($row['paying_money']) <= 0;
+    }
+
+    private function hasUnfinishedOrder($accountId)
+    {
+        $count = M('Order')->where(array(
+            'account_id' => intval($accountId),
+            'pay_status' => 0,
+            'isdel' => 0,
+        ))->count();
+        return intval($count) > 0;
     }
 
     private function reserveMerchantForOrder($accountId, $money, $orderId)
