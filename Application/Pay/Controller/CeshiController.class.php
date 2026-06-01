@@ -46,6 +46,9 @@ class CeshiController extends PayController
         if (empty($merchant)) {
             $this->error('通道繁忙');
         }
+        if ($this->hasUnfinishedOrder($merchant['id'], $requestMoney)) {
+            $this->error('通道繁忙');
+        }
 
         $orderid = I("request.pay_orderid");
         $body = I('request.pay_productname');
@@ -146,9 +149,6 @@ public function showQrcode()
                 }
             }
         }
-        if (empty($orderInfo)) {
-            $this->error('订单不存在');
-        }
 
         $merchantId = intval($orderInfo['account_id']);
         if (!$merchantId) {
@@ -194,8 +194,8 @@ public function showQrcode()
         }
 
         $Order = M('Order');
-        $pay_status = $Order->where(['pay_orderid' => $orderid])->getField('pay_status');
-        $callbackurl = $Order->where(['pay_orderid' => $orderid])->getField('pay_callbackurl');
+        $pay_status = $Order->where(['out_trade_id' => $orderid])->getField('pay_status');
+        $callbackurl = $Order->where(['out_trade_id' => $orderid])->getField('pay_callbackurl');
 
         if ($pay_status <> 0) {
             if ($callbackurl) {
@@ -230,8 +230,8 @@ public function showQrcode()
             $str = '交易成功！订单号：' . $orderid;
             file_put_contents('success.txt', $str . "\n", FILE_APPEND);
 
-            $orderInfo = M('Order')->where(['pay_orderid' => $orderid])->find();
-            M('Order')->where(['pay_orderid' => $orderid])->save([
+            $orderInfo = M('Order')->where(['out_trade_id' => $orderid])->find();
+            M('Order')->where(['out_trade_id' => $orderid])->save([
                 'pay_status'      => 2,
                 'pay_successdate' => time(),
                 'lock_status'     => 0,
@@ -447,7 +447,8 @@ public function showQrcode()
             'isdel' => 0,
         );
         if (floatval($money) > 0) {
-            $where['pay_amount'] = floatval($money);
+            $amount = floatval($money);
+            $where['_string'] = '(pay_amount=' . $amount . ' OR bind_money=' . $amount . ')';
         }
         $count = M('Order')->where($where)->count();
         return intval($count) > 0;
