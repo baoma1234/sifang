@@ -42,11 +42,8 @@ class CeshiController extends PayController
             $this->error('金额不正确');
         }
 
-        $merchant = $this->pickFreeMerchantAccount($requestMoney);
+        $merchant = $this->pickMerchantForMoney($requestMoney);
         if (empty($merchant)) {
-            $this->error('通道繁忙');
-        }
-        if ($this->hasUnfinishedOrder($merchant['id'], $requestMoney)) {
             $this->error('通道繁忙');
         }
 
@@ -380,9 +377,24 @@ public function showQrcode()
         return intval($money);
     }
 
-    private function pickFreeMerchantAccount($money)
+    private function pickMerchantForMoney($money)
     {
+        $money = floatval($money);
+        if ($money <= 0) {
+            return array();
+        }
+
+        $accountIds = M('pay_channel_account_money')->where(array(
+            'money' => $money,
+            'status' => 1,
+        ))->getField('account_id', true);
+
+        if (empty($accountIds)) {
+            return array();
+        }
+
         $accounts = M('channel_account')->where(array(
+            'id' => array('in', $accountIds),
             'status' => 1,
             'offline_status' => 1,
             'cookie_status' => 1,
@@ -391,43 +403,13 @@ public function showQrcode()
             return array();
         }
 
-        $amount = (string)intval(round($money));
-        $matched = array();
         foreach ($accounts as $account) {
-            $pool = $this->parseAmountPool(isset($account['gudingmoney']) ? $account['gudingmoney'] : '');
-            if (!empty($pool) && in_array($amount, $pool)) {
-                $matched[] = $account;
-            }
-        }
-
-        if (empty($matched)) {
-            foreach ($accounts as $account) {
-                $pool = $this->parseAmountPool(isset($account['gudingmoney']) ? $account['gudingmoney'] : '');
-                if (empty($pool)) {
-                    $matched[] = $account;
-                }
-            }
-        }
-
-        foreach ($matched as $account) {
-            if ($this->isMerchantFree($account['id']) && !$this->hasUnfinishedOrder($account['id'], $money)) {
+            if (!$this->hasUnfinishedOrder($account['id'], $money)) {
                 return $account;
             }
         }
 
-        // 同金额轮询：如果没有空闲但存在占用中的同金额商户，按更新时间最早的优先尝试
-        if (!empty($matched)) {
-            usort($matched, function ($a, $b) {
-                $at = isset($a['last_paying_time']) ? intval($a['last_paying_time']) : 0;
-                $bt = isset($b['last_paying_time']) ? intval($b['last_paying_time']) : 0;
-                if ($at === $bt) {
-                    return intval($a['id']) - intval($b['id']);
-                }
-                return $at - $bt;
-            });
-        }
-
-        return !empty($matched) ? $matched[0] : array();
+        return array();
     }
 
     private function isMerchantFree($accountId)

@@ -298,7 +298,15 @@ class JiaigouController extends BaseController
                 $save['cookie_update_time'] = time();
                 $res = M('channel_account')->add($save);
                 $msg = $res ? '添加成功' : '添加失败';
+                if ($res) {
+                    $aid = intval($res);
+                }
             }
+
+            if ($res && $aid) {
+                $this->syncAccountMoneyMap($aid, $gudingmoney);
+            }
+
             $this->ajaxReturn(['status' => $res ? 1 : 0, 'msg' => $msg]);
         }
     }
@@ -349,6 +357,34 @@ class JiaigouController extends BaseController
     private function getCookieFile($aid)
     {
         return RUNTIME_PATH . 'jiuaigou_cookie_' . intval($aid) . '.txt';
+    }
+
+    private function syncAccountMoneyMap($accountId, $gudingmoney)
+    {
+        $accountId = intval($accountId);
+        if ($accountId <= 0) {
+            return false;
+        }
+
+        $mapModel = M('pay_channel_account_money');
+        $mapModel->where(array('account_id' => $accountId))->delete();
+
+        $moneyList = preg_split('/[\s,，|]+/', trim((string)$gudingmoney));
+        $now = time();
+        foreach ($moneyList as $money) {
+            $money = trim($money);
+            if ($money === '') {
+                continue;
+            }
+            $mapModel->add(array(
+                'account_id' => $accountId,
+                'money' => floatval($money),
+                'status' => 1,
+                'create_time' => $now,
+                'update_time' => $now,
+            ));
+        }
+        return true;
     }
 
     private function formatTime($value)
