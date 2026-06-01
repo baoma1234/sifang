@@ -363,6 +363,20 @@ class JiaigouController extends BaseController
         ));
     }
 
+    public function toggleStatus()
+    {
+        $aid = I('post.aid', 0, 'intval');
+        $status = I('post.status', 0, 'intval');
+        if (!$aid) {
+            $this->ajaxReturn(array('status' => 0, 'msg' => '参数错误'));
+        }
+        $res = M('channel_account')->where(array('id' => $aid))->save(array(
+            'status' => $status ? 1 : 0,
+            'updatetime' => time(),
+        ));
+        $this->ajaxReturn(array('status' => $res !== false ? 1 : 0, 'msg' => $res !== false ? '操作成功' : '操作失败'));
+    }
+
     private function getCookieFile($aid)
     {
         return RUNTIME_PATH . 'jiuaigou_cookie_' . intval($aid) . '.txt';
